@@ -1,0 +1,6 @@
+
+#ignore webstorm config
+.idea/*
+
+#ignore lib
+node_modules/*
