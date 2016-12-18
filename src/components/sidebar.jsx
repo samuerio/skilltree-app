@@ -12,7 +12,7 @@ class SideBar extends Component{
                 <div className="sidebar-wrapper">
                     <div className="user">
                         <div className="photo">
-                            <img src="src/assets/images/faces/avatar.jpg" />
+                            <img src="/src/assets/images/faces/avatar.jpg" />
                         </div>
                     </div>
                     <ul className="nav nav-pills nav-pills-rose nav-stacked">

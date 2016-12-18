@@ -11,166 +11,31 @@
     <meta name="viewport" content="width=device-width" />
     <link href="/assets/style.css" rel="stylesheet" />
     <!--     Fonts and icons     -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <!--<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />-->
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />-->
 </head>
 
 <body>
-    <!--
-    <div>
-        <div class="sidebar">
-            <div class="sidebar-logo">
-                <a href="http://www.creative-tim.com" class="simple-text">
-                    Creative Tim
-                </a>
-            </div>
-            <div class="sidebar-wrapper">
-                <div class="user">
-                    <div class="photo">
-                        <img src="src/assets/images/faces/avatar.jpg" />
-                    </div>
-                </div>
-                <ul class="nav nav-pills nav-pills-rose nav-stacked">
-                    <li class="active"><a href="#tab1" data-toggle="tab">技能树</a></li>
-                    <li><a href="#tab2" data-toggle="tab">任务</a></li>
-                </ul>
-            </div>
-            <div class="sidebar-background"></div>
+    <div id="root">
+        <div class="top-menu">
+            <a href="https://developer.mozilla.org" >
+                <img src="/src/assets/images/logo.png" style="height: 60px;" />
+            </a>
         </div>
-        <div class="wrapper">
-            <div class="sec-menu">
-                <header>技能中心</header>
-                <div style="padding-left: 25px;" ><button class="btn btn-success btn-xs btn-round">创建技能</button></div>
-                <ul class="nav nav-pills nav-pills-info nav-stacked">
-                    <li class="active"><a href="#tab1" data-toggle="tab">所有技能</a></li>
-                    <li><a href="#tab2" data-toggle="tab">我关注的</a></li>
-                </ul>
-                <div class="sep"></div>
-            </div>
-            <div class="content">
-                <nav class="navbar navbar-default">
-                    <div class="cards">
-                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                            <form class="navbar-form navbar-right" role="search">
-                                <div class="form-group form-white is-empty">
-                                    <input type="text" class="form-control" placeholder="Search">
-                                    <span class="material-input"></span></div>
-                                <button type="submit" class="btn btn-white btn-raised btn-fab btn-fab-mini"><i class="material-icons">search</i></button>
-                            </form>
-                        </div>
-                    </div>
-                </nav>
-                <div class="cards">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="content">
-                                    <h6 class="category text-danger">
-                                        <i class="material-icons">trending_up</i> Trending
-                                    </h6>
-
-                                    <h4 class="card-title">
-                                        <a href="#pablo">Java Core Skill</a>
-                                    </h4>
-
-                                    <div class="footer">
-                                        <div class="author">
-                                            <a href="#pablo">
-                                                <img src="/src/assets/img/faces/christian.jpg" alt="..." class="avatar img-raised">
-                                                <span>Lord Alex</span>
-                                            </a>
-                                        </div>
-                                        <div class="stats">
-                                            <i class="material-icons">favorite</i> 342 ·
-                                            <i class="material-icons">chat_bubble</i> 45
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="content content-success">
-                                    <h6 class="category text-danger">
-                                        <i class="material-icons">trending_up</i> Trending
-                                    </h6>
-
-                                    <h4 class="card-title">
-                                        <a href="#pablo">Java Core Skill</a>
-                                    </h4>
-
-                                    <div class="footer">
-                                        <div class="author">
-                                            <a href="#pablo">
-                                                <img src="/src/assets/img/faces/christian.jpg" alt="..." class="avatar img-raised">
-                                                <span>Lord Alex</span>
-                                            </a>
-                                        </div>
-                                        <div class="stats">
-                                            <i class="material-icons">favorite</i> 342 ·
-                                            <i class="material-icons">chat_bubble</i> 45
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="content content-info">
-                                    <h6 class="category text-danger">
-                                        <i class="material-icons">trending_up</i> Trending
-                                    </h6>
-
-                                    <h4 class="card-title">
-                                        <a href="#pablo">J2EE Skill</a>
-                                    </h4>
-
-                                    <div class="footer">
-                                        <div class="author">
-                                            <a href="#pablo">
-                                                <img src="/src/assets/img/faces/christian.jpg" alt="..." class="avatar img-raised">
-                                                <span>Lord Alex</span>
-                                            </a>
-                                        </div>
-                                        <div class="stats">
-                                            <i class="material-icons">favorite</i> 342 ·
-                                            <i class="material-icons">chat_bubble</i> 45
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="content content-info">
-                                    <h6 class="category text-danger">
-                                        <i class="material-icons">trending_up</i> Trending
-                                    </h6>
-
-                                    <h4 class="card-title">
-                                        <a href="#pablo">J2EE Skill</a>
-                                    </h4>
-
-                                    <div class="footer">
-                                        <div class="author">
-                                            <a href="#pablo">
-                                                <img src="/src/assets/img/faces/christian.jpg" alt="..." class="avatar img-raised">
-                                                <span>Lord Alex</span>
-                                            </a>
-                                        </div>
-                                        <div class="stats">
-                                            <i class="material-icons">favorite</i> 342 ·
-                                            <i class="material-icons">chat_bubble</i> 45
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="sidebar">
+            <a class="item">
+                <img src="/src/assets/images/logo2.png" />
+            </a>
+            <a class="item">
+                <i class="icon icon-tree"></i>
+                <span class="menu-title" >技能</span>
+            </a>
+            <a class="item">
+                <i class="icon icon-task"></i>
+                <span class="menu-title" >任务</span>
+            </a>
         </div>
     </div>
-    -->
-    <div id="root"></div>
     <script src="/assets/bundle.js"></script>
 </body>
 </html>
