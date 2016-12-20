@@ -1,7 +1,7 @@
 require('./assets/stylus/main.styl');
 require('font-awesome-webpack');
 
-//import 'antd/dist/antd.css';
+import 'antd/dist/antd.css';
 //
 //import React from 'react';
 //import {render} from 'react-dom';

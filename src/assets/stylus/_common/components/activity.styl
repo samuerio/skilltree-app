@@ -1,0 +1,68 @@
+.activity-area{}
+
+.activity-area-head{
+  .start-date{
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+}
+
+.activity{
+  position: relative;
+  padding: 10px 0 10px 50px;
+  font-size: 14px;
+  min-height: 32px;
+
+  &:before{
+    width: 1px;
+    position: absolute;
+    top: 20px;
+    left: 15px;
+    height: 100%;
+    border-left: 1px solid #CCC;
+    content: '';
+  }
+
+  &.not-bordered:before{
+    border: 0;
+  }
+
+  .time-line{
+    width: 80px;
+    float: left;
+
+    &:before{
+      position: absolute;
+      top: 14px;
+      left: 11px;
+      display: block;
+      width: 9px;
+      height: 9px;
+      background-color: #EEE;
+      border: 1px solid gray;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      content: '';
+    }
+  }
+
+  .content{
+    padding-left: 100px;
+    word-break: break-all;
+  }
+
+  .target{
+    color: #666;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    a{
+      display: inline-block;
+      margin-top: 10px;
+      color: #444;
+    }
+  }
+}

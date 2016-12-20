@@ -1,29 +1,52 @@
 .wrapper{
-  margin-left : 200px;
+  margin-left: 80px;
+  padding: 60px 0 0;
+  -webkit-transition: padding-left ease-in-out .3s;
+  -moz-transition: padding-left ease-in-out .3s;
+  -ms-transition: padding-left ease-in-out .3s;
+  -o-transition: padding-left ease-in-out .3s;
+  transition: padding-left ease-in-out .3s;
 }
 
-.sec-menu{
-  position: fixed;
-  height : 100%
-  width : 230px;
-  overflow-y: hidden;
-  border-right: 1px solid #CCC;
+.user-index{
+  margin: 0;
+  padding: 12px 20px;
 }
 
-.content{
-  padding-left: 230px;
 
-  .cards {
-    width: 970px;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
+.my-projects {
+  @extends $contentArea;
+
+  .header{
+    @extends $contentArea-title
+    .more-link{
+      float: right;
+      font-size: 14px;
+      color: #000;
+      margin-top: 5px;
+      margin-left: 10px;
+    }
+  }
+}
+
+.my-tasks {
+  @extends $contentArea;
+
+  .header{
+    @extends $contentArea-title
+  }
+}
+
+.my-activities{
+  @extends $contentArea;
+
+  .header{
+    @extends $contentArea-title
   }
 
-  /*adjsut theme*/
-  .navbar{
-    background-color:transparent;
-    box-shadow:none;
+  .inner{
+    margin: 1em 0;
+    padding: 1em;
   }
 }
+

@@ -1,0 +1,23 @@
+clearfix() {
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+  &:after { clear: both; }
+}
+
+
+$contentArea{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 20px;
+  background: #fff;
+}
+
+$contentArea-title{
+  padding-bottom: 10px;
+  font-size: 18px;
+  font-weight: 400;
+  border-bottom: 1px solid rgba(0,0,0,.1);
+}
