@@ -1,0 +1,59 @@
+.secMenu{
+
+  position: fixed;
+  margin: 0;
+  width: 200px;
+  height: 100%!important;
+  border-right: 1px solid #CCC;
+  overflow-y: hidden;
+  z-index: 999;
+
+  a{
+    &:hover{
+      opacity: 1;
+      background-color: rgba(0,0,0,.02);
+    }
+    color: rgba(0,0,0,.75);
+  }
+
+  header{
+    font-size: 17px;
+    font-weight: 700;
+    padding: 30px 25px 10px;
+    margin: 0 0 .3em;
+    border: none;
+    background-color: transparent;
+
+    a{
+      float: right;
+    }
+  }
+
+  article{
+    margin: 5px 0;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    color: #666;
+    word-wrap: break-word;
+    word-break: normal;
+  }
+
+  .item{
+
+    &.active{
+      background: rgba(0,0,0,.08);
+      color: rgba(0,0,0,.95);
+      opacity: 1;
+    }
+    display: block;
+    font-size: 14px;
+    padding: 10px 25px;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0 0 .3em;
+    opacity: .8;
+  }
+}

@@ -30,7 +30,7 @@ module.exports = {
                 secure:false
             }
         },
-        historyApiFallback:true,
+        //historyApiFallback:true,
         port:'3000'
     },
     entry:['./src/main.jsx'],
