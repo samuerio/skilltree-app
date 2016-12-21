@@ -56,31 +56,42 @@
                     <div class="designer-nav-wrapper">
                         <nav class="designer-nav">
                             <span>
-                                <a class="nav-item"><i class="icon icon-info"></i><span>基本信息</span></a>
+                                <a class="nav-item selected"><i class="icon icon-info"></i><span>基本信息</span></a>
                             </span>
                             <span>
-                                <a class="nav-item selected"><i class="icon icon-puzzle"></i><span>设计器</span></a>
+                                <a class="nav-item "><i class="icon icon-puzzle"></i><span>设计器</span></a>
                             </span>
                         </nav>
                     </div>
-                    <div class="header">
-                        <!--
-                            下面三个按钮都是
-                            <Button type="ghost">Ghost</Button>
-                        -->
-                        <button type="button" class="ant-btn ant-btn-ghost"><span>保存</span></button>
-                        <button id="node-plus" type="button" class="ant-btn ant-btn-ghost"><span>新增</span></button>
-                        <button id="node-cancel" type="button" class="ant-btn ant-btn-ghost"><span>删除</span></button>
-
-                        <div id="label-group" style="display: inline-block">
-                            <!-- <Input placeholder="输入节点名称" /> -->
-                            <input type="text" placeholder="输入节点名称" class="ant-input " style="width: 200px;">
-                            <button type="button" class="ant-btn ant-btn-ghost"><span>确定</span></button>
+                    <div>
+                        <div class="field">
+                            <!--
+                                <Select size="large" defaultValue="lucy" style={{ width: 120 }} onChange={handleChange}>
+                                  <Option value="jack">Jack</Option>
+                                  <Option value="lucy">Lucy</Option>
+                                  <Option value="disabled" disabled>Disabled</Option>
+                                  <Option value="Yiminghe">yiminghe</Option>
+                                </Select>
+                            -->
+                            <div class="ant-select-lg ant-select ant-select-enabled" style="width: 120px;">
+                                <div class="ant-select-selection ant-select-selection--single" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false" tabindex="0">
+                                    <div class="ant-select-selection__rendered">
+                                        <div class="ant-select-selection-selected-value" title="Lucy"
+                                             style="display: block; opacity: 1;">Lucy
+                                        </div>
+                                    </div>
+                                    <span class="ant-select-arrow" unselectable="unselectable"style="user-select: none;">
+                                        <b></b>
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- <Input size="large" placeholder="技能名称" /> -->
+                            <input type="text" placeholder="技能名称" class="ant-input ant-input-lg" style="width: 600px;">
                         </div>
-                    </div>
-                    <div style="background-color: rgb(242, 242, 242);margin-top: 10px;position: relative;">
-                        <canvas id="designer_grids"></canvas>
-                        <div id="mindmap-canvas" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"></div>
+                        <div class="field">
+                            <!-- <Input type="textarea" rows={4} /> -->
+                            <textarea type="textarea" rows="4" class="ant-input"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>

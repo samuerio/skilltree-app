@@ -31,7 +31,9 @@ module.exports = {
             }
         },
         //historyApiFallback:true,
-        port:'3000'
+        port:'3000',
+        //hot: true,
+        inline: true
     },
     entry:['./src/main.jsx'],
     output:{

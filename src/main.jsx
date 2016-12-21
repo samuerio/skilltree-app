@@ -19,4 +19,38 @@ import 'antd/dist/antd.css';
 //    document.getElementById('root')
 //);
 
+import {initDrawBoard} from './designer/drawBoard'
+import Renderer from './designer/Renderer'
+import Graph from './designer/Graph'
+
+//初始化设计器画板
+initDrawBoard();
+
+var renderer = new Renderer({
+    canvasId: 'mindmap-canvas'
+});
+var graph = new Graph(renderer);
+
+$('#node-plus').click(function(){
+    graph.addNode(graph.selected, {});
+});
+
+$('#node-cancel').click(function(){
+    if(graph.selected){
+        if(graph.selected.isRootNode()){
+            console.log('cannot cancel root node');
+        }else{
+            graph.removeNode(graph.selected);
+            graph.setSelected(null);
+        }
+    }
+});
+
+$('#label-group button').click(function(){
+    var text = $('#label-group input').val();
+    if(graph.selected){
+        graph.setLabel(graph.selected, text);
+    }
+});
+
 
