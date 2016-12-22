@@ -23,7 +23,7 @@ var Toolbar = function(){
         },
         function(){
             $tipBox.hide();
-        });
+    });
 
     function _adjustTipBox(btn){
         //改变tip box的标签值

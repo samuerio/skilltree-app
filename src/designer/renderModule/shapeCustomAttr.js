@@ -27,6 +27,7 @@ function setNodePosition(label, rect, nodeX, nodeY, nodePadding){
         width: rectWidth,
         height: rectHeight
     })
+
 }
 
 /**

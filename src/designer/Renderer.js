@@ -32,6 +32,7 @@ function Renderer(options){
     shapeCustomAttr.init(this.paper);
 
 }
+
 Renderer.prototype = {
     constructor: Renderer,
 
@@ -280,6 +281,12 @@ Renderer.prototype = {
         var selfRen = this;
         this.canvasDom.addEventListener('mousedown', function(event){
             if(event.target.nodeName === 'svg'){
+                var text = $('#tempText').val();
+                if(graph.selected){
+                    graph.setLabel(graph.selected, text);
+                    $('#tempText').remove();
+                }
+
                 graph.setSelected(null);
                 selfRen.toolbar.setAllUnactive();
                 $('#label-group input').val('');
