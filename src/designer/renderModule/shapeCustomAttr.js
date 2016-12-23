@@ -5,134 +5,6 @@ import Raphael from 'raphael';
  */
 //------------------------
 
-
-/**
- * 将label和rect设置为合适的位置
- * @param label
- * @param rect
- * @param nodeX
- * @param nodeY
- * @param nodePadding
- */
-function setNodePosition(label, rect, nodeX, nodeY, nodePadding){
-    var textBox = label.getBBox();
-    var rectWidth = textBox.width + nodePadding.width;
-    var rectHeight = textBox.height + nodePadding.height;
-
-    label.attr({
-        x: nodeX + rectWidth * 0.5,
-        y: nodeY + rectHeight * 0.5
-    });
-    rect.attr({
-        width: rectWidth,
-        height: rectHeight
-    })
-
-}
-
-/**
- * 设置根结点的外形
- * @param shape
- * @param nodeX
- * @param nodeY
- * @param text
- */
-function setRootShape(shape, nodeX, nodeY, text, mindmapType){
-    var label = shape[0];
-    var rect = shape[1];
-
-
-    label.attr({
-        'font-size': 25,
-        'fill': 'white',
-        'text': text
-    });
-
-    rect.attr({
-        'rootAndFirstStroke': null
-    });
-
-    if(mindmapType === 'desktop'){
-        rect.attr({
-            'fill': '#428bca'
-        });
-    }else if(mindmapType === 'taskMore'){
-        rect.attr({
-            'fill': '#64d4a5'
-        });
-    }
-
-    var rootNodepadding = {
-        width: 42,
-        height: 24
-    };
-    setNodePosition(label, rect, nodeX, nodeY, rootNodepadding);
-
-};
-
-/**
- * 设置第一层节点的外形
- * @param shape
- * @param nodeX
- * @param nodeY
- * @param text
- */
-function setFirstLevelShape(shape, nodeX, nodeY, text){
-    var label = shape[0];
-    var rect = shape[1];
-
-    label.attr({
-        'font-size': 16,
-        'text': text
-    });
-
-    rect.attr({
-        'fill': 'white',
-        'rootAndFirstStroke': null
-    });
-
-    var firstLevelPadding = {
-        width: 40,
-        height: 20
-    };
-
-    setNodePosition(label, rect, nodeX, nodeY, firstLevelPadding);
-
-
-
-};
-
-
-/**
- * 设置n>=2层节点的外形
- * @param shape
- * @param nodeX
- * @param nodeY
- * @param text
- */
-function setSecondMoreShape(shape, nodeX, nodeY, text){
-    var label = shape[0];
-    var rect = shape[1];
-
-    label.attr({
-        'font-size': 15,
-        'text': text
-    });
-
-    rect.attr({
-        'secondMoreStroke': null
-    });
-
-    var secondMorePadding = {
-        width: 10,
-        height: 10
-    };
-
-    setNodePosition(label, rect, nodeX, nodeY, secondMorePadding);
-};
-
-
-
 /**
  * 根绝节点的类型，设置节点的外形
  * @param node
@@ -145,6 +17,130 @@ Raphael.st.nodeShape = function(node, mindmapType){
         setFirstLevelShape(this, node.x, node.y, node.label);
     }else{
         setSecondMoreShape(this, node.x, node.y, node.label);
+    }
+
+    /**
+     * 设置根结点的外形
+     * @param shape
+     * @param nodeX
+     * @param nodeY
+     * @param text
+     */
+    function setRootShape(shape, nodeX, nodeY, text, mindmapType){
+        var label = shape[0];
+        var rect = shape[1];
+
+
+        label.attr({
+            'font-size': 25,
+            'fill': 'white',
+            'text': text
+        });
+
+        rect.attr({
+            'rootAndFirstStroke': null
+        });
+
+        if(mindmapType === 'desktop'){
+            rect.attr({
+                'fill': '#428bca'
+            });
+        }else if(mindmapType === 'taskMore'){
+            rect.attr({
+                'fill': '#64d4a5'
+            });
+        }
+
+        var rootNodepadding = {
+            width: 42,
+            height: 24
+        };
+        setNodePosition(label, rect, nodeX, nodeY, rootNodepadding);
+
+    };
+
+    /**
+     * 设置第一层节点的外形
+     * @param shape
+     * @param nodeX
+     * @param nodeY
+     * @param text
+     */
+    function setFirstLevelShape(shape, nodeX, nodeY, text){
+        var label = shape[0];
+        var rect = shape[1];
+
+        label.attr({
+            'font-size': 16,
+            'text': text
+        });
+
+        rect.attr({
+            'fill': 'white',
+            'rootAndFirstStroke': null
+        });
+
+        var firstLevelPadding = {
+            width: 40,
+            height: 20
+        };
+
+        setNodePosition(label, rect, nodeX, nodeY, firstLevelPadding);
+
+
+
+    };
+
+    /**
+     * 设置n>=2层节点的外形
+     * @param shape
+     * @param nodeX
+     * @param nodeY
+     * @param text
+     */
+    function setSecondMoreShape(shape, nodeX, nodeY, text){
+        var label = shape[0];
+        var rect = shape[1];
+
+        label.attr({
+            'font-size': 15,
+            'text': text
+        });
+
+        rect.attr({
+            'secondMoreStroke': null
+        });
+
+        var secondMorePadding = {
+            width: 10,
+            height: 10
+        };
+
+        setNodePosition(label, rect, nodeX, nodeY, secondMorePadding);
+    };
+
+    /**
+     * 将label和rect设置为合适的位置
+     * @param label
+     * @param rect
+     * @param nodeX
+     * @param nodeY
+     * @param nodePadding
+     */
+    function setNodePosition(label, rect, nodeX, nodeY, nodePadding){
+        var textBox = label.getBBox();
+        var rectWidth = textBox.width + nodePadding.width;
+        var rectHeight = textBox.height + nodePadding.height;
+
+        label.attr({
+            x: nodeX + rectWidth * 0.5,
+            y: nodeY + rectHeight * 0.5
+        });
+        rect.attr({
+            width: rectWidth,
+            height: rectHeight
+        })
+
     }
 };
 
@@ -209,12 +205,15 @@ Raphael.st.unOverlapShape = function(node){
     }
 };
 
+/**
+ * 设置节点文本值
+ * @param node
+ */
 Raphael.st.setLabel = function(node){
     this[0].attr({
         'text': node.label
     })
 };
-
 
 /**
  * 透明样式：用于拖动节点时的透明显示

@@ -10,24 +10,29 @@ var nodeShapeRelative = (function(){
         littleNodeDefaultHeight: 26,
         nodeXInterval: 40,
         nodeYInterval: 16,
+        /**
+         * 获取Node的高度
+         * @param node
+         * @returns {*}
+         */
         getSingleNodeHeight: function(node){
             if(node.shape){
                 return node.shape[1].attr('height');
-            }
-            //如果为新结点则返回默认高度
-            else{
+            }else{//如果为新结点则返回默认高度
 
                 if(node.isFirstLevelNode()){
                     return this.nodeDefaultHeight;
-                }
-                //@workaround:如果为第三层或以上层节点
-                else{
+                }else{//@workaround:如果为第三层或以上层节点
                     return this.littleNodeDefaultHeight;
                 }
 
-
             }
         },
+        /**
+         * 获取Node的宽度
+         * @param node
+         * @returns {*}
+         */
         getSingleNodeWidth: function(node){
             if(node.shape){
                 return node.shape[1].attr('width');

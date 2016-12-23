@@ -48,11 +48,9 @@ Renderer.prototype = {
         //节点渲染
         if(node.x && node.y){
             this.drawNode(node);
-        }
-
-        //如果没有设置x,y.则按照父节点的位置设置之
-        else{
+        }else{//如果没有设置x,y.则按照父节点的位置设置之其x y的值
             this._reRenderChildrenNode(node.father);
+
             //向上递归移动父节点的同级节点,只有一个点时不用移动
             if(node.father && node.father.childrenCount() > 1) {
                 this._resetBrotherPosition(node.father, nodeShapeRelative.getNodeAreaHeight(node));
@@ -60,19 +58,43 @@ Renderer.prototype = {
         }
 
 
-
         //边渲染
         if(node.connectFather){
             this._drawEdge(node.connectFather);
         }
 
+        /**
+         * 设置node的相关交互事件
+         */
         this._setDrag(node);
+    },
 
-        node.shape.mousedown(function(){
-            $('#label-group input').val(node.label);
-        });
+    /**
+     * 创建node的shape
+     * @param node
+     * @private
+     */
+    drawNode: function(node){
+
+        //创建node的shape对象
+        var paper = this.paper;
+        //已设置node的x和y时才能渲染节点
+        var label = paper.text(node.x, node.y, node.label);
+        var textBox = label.getBBox();
+        //得到矩形的长度
+        var rectWidth = textBox.width + this._widthNodePadding;
+        var rectHeight = textBox.height + this._heightNodePadding;
 
 
+        var rect = paper.rect(node.x, node.y,
+            nodeShapeRelative.nodeDefaultWidth,
+            nodeShapeRelative.nodeDefaultHeight, 4)
+            .data('id', node.id);
+
+        label.toFront();
+
+        node.shape = paper.set().push(label).push(rect);
+        node.shape.nodeShape(node);
     },
 
     setParentRender: function(node){
@@ -197,14 +219,9 @@ Renderer.prototype = {
               this._drawEdge(node.connectFather);
             }
 
-        }
-        //如果改变label的节点为左方向节点,则向左移动该节点(translate回递归)和toolbar
-        else if(node.direction === -1){
+        }else if(node.direction === -1){//如果改变label的节点为左方向节点,则向左移动该节点(translate回递归)和toolbar
             node.translate(-gap, 0);
-
-        }
-        //如果节点为根结点
-        else if(node.isRootNode()){
+        }else if(node.isRootNode()){//如果节点为根结点
           node.translate(-gap/2, 0);
           DataHelper.forEach(node.children, function(child){
             if(child.direction === 1){
@@ -217,61 +234,6 @@ Renderer.prototype = {
 
     },
 
-    /**
-     * 根结点渲染
-     * @param node
-     */
-    rootNodeRender: function(rootNode){
-        var self = this;
-        var oldWidth = nodeShapeRelative.getSingleNodeWidth(rootNode);
-
-        rootNode.shape.nodeShape(rootNode, self.type);
-        var newWidth = nodeShapeRelative.getSingleNodeWidth(rootNode);
-        var gap = newWidth - oldWidth;
-
-        rootNode.translate(-gap/2, 0);
-        DataHelper.forEach(rootNode.children, function(child){
-            if(child.direction === 1){
-                child.translate(gap, 0);
-            }
-        });
-
-
-
-    },
-
-
-    /**
-     * 创建node的shape
-     * @param node
-     * @private
-     */
-    drawNode: function(node){
-
-
-        //创建node的shape对象
-        var paper = this.paper;
-        //已设置node的x和y时才能渲染节点
-        var label = paper.text(node.x, node.y, node.label);
-        var textBox = label.getBBox();
-        //得到矩形的长度
-        var rectWidth = textBox.width + this._widthNodePadding;
-        var rectHeight = textBox.height + this._heightNodePadding;
-
-
-        var rect = paper.rect(node.x, node.y,
-            nodeShapeRelative.nodeDefaultWidth,
-            nodeShapeRelative.nodeDefaultHeight, 4)
-            .data('id', node.id);
-
-        label.toFront();
-
-
-        node.shape = paper.set().push(label).push(rect);
-
-        node.shape.nodeShape(node);
-
-    },
 
     /**
      * 点击画布时,取消graph的选择
@@ -289,7 +251,6 @@ Renderer.prototype = {
 
                 graph.setSelected(null);
                 selfRen.toolbar.setAllUnactive();
-                $('#label-group input').val('');
             }
         });
 

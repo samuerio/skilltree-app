@@ -36,6 +36,8 @@ Graph.prototype = {
         //数据变更部分
         var node = new Node(this, attr);
         this.nodes[node.id] = node;
+
+        //进行引用信息的更新
         this.setParentData(parent, node);
 
         //新增节点渲染
@@ -67,28 +69,15 @@ Graph.prototype = {
             y: 200,
             id: 0});
         root.label = "中心主题";
-        this.gRenderer.rootNodeRender(root);
+        //this.gRenderer.rootNodeRender(root);
+        this.gRenderer.setLabelRender(root);
 
         return root;
 
     },
-
-
-    setRoot: function(attr){
-        if(!attr) { attr = {} };
-        if(attr.hasOwnProperty('label')){
-            this.root.label = attr.label;
-            this.gRenderer.rootNodeRender(this.root);
-
-        }
-        if(attr.hasOwnProperty('x') && attr.hasOwnProperty('y')){
-            this.root.translate(attr.x - this.root.x, attr.y - this.root.y);
-        }
-    },
     setSubTaskNodeClick: function(node, context){
         this.gRenderer.setSubTaskNodeClick(node, context);
     },
-
     setParent: function(parentId, childId){
         var self = this;
 
@@ -122,6 +111,12 @@ Graph.prototype = {
             self._resetChildrenProperty(child.children);
         });
     },
+    /**
+     * 更新/添加父节点和子节点的相互引用,以及设置child的direction值
+     * @param parent
+     * @param child
+     * @returns {*}
+     */
     setParentData: function(parent, child){
 
         //如果设置父节点为自己或parent为null时,则返回null
@@ -137,7 +132,7 @@ Graph.prototype = {
         //设置新父节点的children;
         child.father.children[child.id] = child;
 
-        //设置child的connectFather,并创建新边
+        //设置child的connectFather,并创建新边Model
         child.connectFather = this.addEdge(parent, child);
         //设置新父节点的connectChildren
         child.father.connectChildren[child.connectFather.id] = child.connectFather;
@@ -327,13 +322,14 @@ Node = function(g, attr){
         this.y = null;
     }
 
-    //节点的直接子节点引用集合
-    this.children = {};
+
     //节点的父节点引用
     this.father = null;
-
     //与父节点的边的引用
     this.connectFather = null;
+
+    //节点的直接子节点引用集合
+    this.children = {};
     //与子节点的边的引用集合
     this.connectChildren = {};
 

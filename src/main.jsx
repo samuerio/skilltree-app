@@ -30,6 +30,7 @@ var renderer = new Renderer({
     canvasId: 'mindmap-canvas'
 });
 var graph = new Graph(renderer);
+document.graph = graph;
 
 $('#node-plus').click(function(){
     if(graph.selected){
