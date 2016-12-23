@@ -238,12 +238,21 @@ var Drag = function(aNode, options){
                 var fontSize = this.attr()['font-size'];
                 var fontFamily = this.attr()['font-family'];
 
+                var paper = this.paper;
+                var viewBoxX =   0;
+                var viewBoxY =   0;
+
+                if(paper._viewBox){
+                    viewBoxX = paper._viewBox[0];
+                    viewBoxY = paper._viewBox[1];
+                }
+
                 var width = this[0].clientWidth;
                 var height = this[0].clientHeight;
 
                 //input 绝对定位为
-                var left = x-width/2;
-                var top = y-height/2;
+                var left = x-width/2-viewBoxX;
+                var top = y-height/2-viewBoxY;
                 var inputEle = document.createElement('input');
                 inputEle.setAttribute('value',this.attr('text'));
                 inputEle.setAttribute('type','text');
@@ -269,4 +278,7 @@ var Drag = function(aNode, options){
 
     };
 };
+
+
+
 export default Drag;
