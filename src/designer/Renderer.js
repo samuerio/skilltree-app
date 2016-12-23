@@ -282,7 +282,7 @@ Renderer.prototype = {
         this.canvasDom.addEventListener('mousedown', function(event){
             if(event.target.nodeName === 'svg'){
                 var text = $('#tempText').val();
-                if(graph.selected){
+                if(graph.selected && $('#tempText').length){
                     graph.setLabel(graph.selected, text);
                     $('#tempText').remove();
                 }

@@ -195,6 +195,11 @@ var Drag = function(aNode, options){
 
                 //TODO 由于drag会和dbclick事件冲突.建议使用原生的 mousedown mousemove mouseup来模拟drag效果
                 //node.shape.drag(moveFnc, startFnc, endFnc);
+                node.shape.mousedown(function(){
+                    if(!enableRender.canRender) { return false; }
+                    node.graph.setSelected(node);
+                    toolbar.setActive(node);
+                });
             }else{
                 node.shape.mousedown(function(event){
                     if(!enableRender.canRender) { return false; }
@@ -226,49 +231,40 @@ var Drag = function(aNode, options){
                     if(!enableRender.canRender) { return false; }
 
                 });
-
-                //add label dbClick event
-                node.shape[0].dblclick(function(event){
-                    var attr = this.attr();
-                    var {x,y} = attr;
-
-                    var width = this[0].clientWidth;
-                    var height = this[0].clientHeight;
-
-                    //input 绝对定位为
-                    var left = x-width/2;
-                    var top = y-height/2;
-                    var inputEle = document.createElement('input');
-                    inputEle.setAttribute('value',this.attr('text'));
-                    inputEle.setAttribute('type','text');
-                    inputEle.setAttribute('id','tempText');
-                    inputEle.style.position = 'absolute';
-                    inputEle.style.top = top+'px';
-                    inputEle.style.left = left+'px';
-                    inputEle.style.border = 'none';
-                    inputEle.style.lineHeight = '1';
-                    inputEle.style.fontSize = '25px';
-                    inputEle.style.fontFamily = 'Arial';
-                    inputEle.style.color = '#ffffff';
-                    inputEle.style.backgroundColor = 'transparent';
-                    inputEle.style.zIndex = '1000';
-                    inputEle.style.width = width+'px';
-
-                    //inputEle.onblur = function(){
-                    //    graph.setLabel(graph.selected, this.value);
-                    //    this.parentNode.removeChild(this);
-                    //}
-
-
-
-                    var mindmapCanvas = document.getElementById('mindmap-canvas');
-                    mindmapCanvas.appendChild(inputEle);
-                    this.attr({text:''});
-                    $(inputEle).focus();
-
-                    //event.stopPropagation();
-                });
             }
+            //add label dbClick event
+            node.shape[0].dblclick(function(event){
+                var {x,y,fill} = this.attr();
+                var fontSize = this.attr()['font-size'];
+                var fontFamily = this.attr()['font-family'];
+
+                var width = this[0].clientWidth;
+                var height = this[0].clientHeight;
+
+                //input 绝对定位为
+                var left = x-width/2;
+                var top = y-height/2;
+                var inputEle = document.createElement('input');
+                inputEle.setAttribute('value',this.attr('text'));
+                inputEle.setAttribute('type','text');
+                inputEle.setAttribute('id','tempText');
+                inputEle.style.position = 'absolute';
+                inputEle.style.top = top+'px';
+                inputEle.style.left = left+'px';
+                inputEle.style.border = 'none';
+                inputEle.style.lineHeight = '1';
+                inputEle.style.fontSize = fontSize+'px';
+                inputEle.style.fontFamily = fontFamily;
+                inputEle.style.color = fill;
+                inputEle.style.backgroundColor = 'transparent';
+                inputEle.style.zIndex = '1000';
+                inputEle.style.width = width+'px';
+
+                var mindmapCanvas = document.getElementById('mindmap-canvas');
+                mindmapCanvas.appendChild(inputEle);
+                this.attr({text:''});
+                $(inputEle).focus();
+            });
         }
 
     };

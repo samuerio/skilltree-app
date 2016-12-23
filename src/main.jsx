@@ -32,7 +32,9 @@ var renderer = new Renderer({
 var graph = new Graph(renderer);
 
 $('#node-plus').click(function(){
-    graph.addNode(graph.selected, {});
+    if(graph.selected){
+        graph.addNode(graph.selected, {});
+    }
 });
 
 $('#node-cancel').click(function(){
@@ -46,13 +48,13 @@ $('#node-cancel').click(function(){
     }
 });
 
-$('#label-group button').click(function(){
-    //var text = $('#label-group input').val();
-    var text = $('#tempText').val();
-    if(graph.selected){
-        graph.setLabel(graph.selected, text);
-        $('#tempText').remove();
-    }
-});
+//$('#label-group button').click(function(){
+//    //var text = $('#label-group input').val();
+//    var text = $('#tempText').val();
+//    if(graph.selected){
+//        graph.setLabel(graph.selected, text);
+//        $('#tempText').remove();
+//    }
+//});
 
 
