@@ -226,7 +226,7 @@ Renderer.prototype = {
      * @param graph
      */
     setCanvasClick: function(graph) {
-        var selfRen = this;
+        var self = this;
         this.canvasDom.addEventListener('mousedown', function(event){
             if(event.target.nodeName === 'svg'){
                 var text = $('#tempText').val();
@@ -236,7 +236,19 @@ Renderer.prototype = {
                 }
 
                 graph.setSelected(null);
-                selfRen.toolbar.setAllUnactive();
+                self.toolbar.setAllUnactive();
+            }
+        });
+
+        this.canvasDom.addEventListener('keyup', function(event){
+            if(event.keyCode === 13){
+                var text = $('#tempText').val();
+                if(graph.selected && $('#tempText').length){
+                    graph.setLabel(graph.selected, text);
+                    $('#tempText').remove();
+                }
+
+                graph.setSelected(null);
             }
         });
 
