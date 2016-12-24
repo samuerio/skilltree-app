@@ -6,7 +6,6 @@ import ChildrenRenderFactory from './renderModule/ChildrenRenderFactory'
 import Drag from './renderModule/Drag'
 import Viewport from './renderModule/Viewport'
 import EdgeDraw from './renderModule/EdgeDraw'
-import Toolbar from './renderModule/Toolbar'
 let Raphael = require('raphael')
 
 
@@ -20,9 +19,6 @@ function Renderer(options){
     this.viewportHandle = Viewport(this.canvasDom, this.paper);
     this.viewportHandle.setViewportDrag();
 
-    //小工具条对象
-    this.toolbar = Toolbar();
-
     //Raphael Extension  &&  Custom Attr Value
     shapeCustomAttr.init(this.paper);
 }
@@ -30,30 +26,6 @@ function Renderer(options){
 Renderer.prototype = {
 
     constructor: Renderer,
-
-    /**
-     * 新增节点时的渲染
-     * @param node
-     */
-    addNodeRender: function(node){
-        //节点渲染
-        if(node.x && node.y){
-            this.renderNodeModel(node);
-        }else{//如果没有设置x,y.则按照父节点的位置设置之其x y的值
-            this._reRenderChildrenNode(node.father);
-
-            //向上递归移动父节点的同级节点,只有一个点时不用移动
-            if(node.father && node.father.childrenCount() > 1) {
-                this._resetBrotherPosition(node.father, nodeShapeRelative.getNodeAreaHeight(node));
-            }
-        }
-
-
-        //边渲染
-        if(node.connectFather){
-            this._drawEdge(node.connectFather);
-        }
-    },
 
     /**
      * 渲染NodeModel到Paper Canvas
@@ -125,7 +97,6 @@ Renderer.prototype = {
 
         }
         this.removeNodeAndChildrenShape(node);
-        this.toolbar.setAllUnactive();
 
     },
 
@@ -159,7 +130,6 @@ Renderer.prototype = {
                 }
 
                 graph.setSelected(null);
-                self.toolbar.setAllUnactive();
             }
         });
 
@@ -267,7 +237,6 @@ Renderer.prototype = {
      */
     _setDrag: function(node){
         var DragHandle = Drag(node, {
-            toolbar: this.toolbar,
             viewportHandle: this.viewportHandle
         });
 

@@ -17,6 +17,8 @@ let Node = function (g, attr) {
         this.id = ++(this.graph.nodeCount);
     }
 
+    this.graph.nodes[this.id] = this;
+
 
     if (attr.hasOwnProperty('x') && attr.hasOwnProperty('y')) {
         this.x = attr.x;

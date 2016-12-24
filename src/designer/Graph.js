@@ -32,17 +32,28 @@ Graph.prototype = {
      * @returns {Node}
      */
     addNode: function(parent, attr){
-        //数据变更部分
-        var node = new Node(this, attr);
-        this.nodes[node.id] = node;
 
-        //进行引用信息的更新
-        this._setParentData(parent, node);
+        var nodeModel = new Node(this, attr);
+        this._setParentData(parent, nodeModel);//进行引用信息的更新
 
-        //新增节点渲染
-        this.gRenderer.addNodeRender(node);
+        //节点渲染
+        if(nodeModel.x && nodeModel.y){
+            this.gRenderer.renderNodeModel(nodeModel);
+        }else{//如果没有设置x,y.则按照父节点的位置设置之其x y的值
+            this.gRenderer._reRenderChildrenNode(nodeModel.father);
 
-        return node;
+            //向上递归移动父节点的同级节点,只有一个点时不用移动
+            if(nodeModel.father && nodeModel.father.childrenCount() > 1) {
+                this.gRenderer._resetBrotherPosition(nodeModel.father, nodeShapeRelative.getNodeAreaHeight(nodeModel));
+            }
+        }
+
+        //边渲染
+        if(nodeModel.connectFather){
+            this.gRenderer._drawEdge(nodeModel.connectFather);
+        }
+
+        return nodeModel;
     },
     /**
      * 删除节点
@@ -98,7 +109,6 @@ Graph.prototype = {
         this.selected = node;
 
         this.gRenderer.setSelectedRender(this.selected, oldSelected);
-
     },
     /**
      * 初始化根结点
@@ -114,16 +124,11 @@ Graph.prototype = {
         this.setLabel(root,"中心主题");
         return root;
     },
-    _addEdgeModel: function(source, target, attr){
-        var edge = new Edge(this, source, target, attr);
-        this.edges[edge.id] = edge;
-        return edge;
-    },
     //重新设置节点的direction和edge等
     _resetChildrenProperty: function(children){
         var self = this;
         DataHelper.forEach(children, function(child){
-            child.connectFather = self._addEdgeModel(child.father, child);
+            child.connectFather = new Edge(this, source, target);
 
 
             self._setNodeDirection(child);
@@ -152,7 +157,7 @@ Graph.prototype = {
         child.father.children[child.id] = child;
 
         //设置child的connectFather,并创建新边Model
-        child.connectFather = this._addEdgeModel(parent, child);
+        child.connectFather = new Edge(this, parent, child);
         //设置新父节点的connectChildren
         child.father.connectChildren[child.connectFather.id] = child.connectFather;
 

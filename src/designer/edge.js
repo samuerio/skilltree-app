@@ -4,6 +4,8 @@ let Edge = function (g, source, target, attr) {
 
     this.id = ++(this.graph.edgeCount);
 
+    this.graph.edges[this.id] = this;
+
     //起点节点的引用
     this.source = source;
     //终点节点的引用

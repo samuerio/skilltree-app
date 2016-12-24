@@ -10,8 +10,6 @@ let Raphael = require('raphael')
  */
 var Drag = function(aNode, options){
     var node = aNode;
-    //小工具条引用,用于显示和移动小工具条
-    var toolbar = options.toolbar;
 
     var viewportHandle = options.viewportHandle;
 
@@ -135,7 +133,6 @@ var Drag = function(aNode, options){
         //设置节点的选择渲染
         // _selectedHandle();
         node.graph.setSelected(node);
-        toolbar.setActive(node);
 
         //创一个克隆的节点占位
         cloneShape = _cloneNodeShape(node);
@@ -195,15 +192,15 @@ var Drag = function(aNode, options){
                     node.graph.setSelected(node);
                 });
             }else{
-                //node.shape.mousedown(function(event){
-                //    viewportHandle.mousedownHandle(event);
-                //});
-                //node.shape.mousemove(function(event){
-                //    viewportHandle.mousemoveHandle(event);
-                //});
-                //node.shape.mouseup(function(event){
-                //    viewportHandle.mouseupHandle(event);
-                //});
+                node.shape.mousedown(function(event){
+                    viewportHandle.mousedownHandle(event);
+                });
+                node.shape.mousemove(function(event){
+                    viewportHandle.mousemoveHandle(event);
+                });
+                node.shape.mouseup(function(event){
+                    viewportHandle.mouseupHandle(event);
+                });
 
 
                 node.shape.mousedown(function(){
