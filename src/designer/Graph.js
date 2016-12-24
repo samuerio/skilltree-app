@@ -64,19 +64,29 @@ Graph.prototype = {
     setLabel: function(nodeModel, label){
         nodeModel.label = label;
 
-        //label改变渲染
-        this.gRenderer.setLabelRender(nodeModel);
+        var oldWidth = nodeModel.shape[1].attr('width');
+        nodeModel.shape.nodeShape(nodeModel);
+        var newWidth = nodeModel.shape[1].attr('width');
 
-        //let oldWidth = nodeModel.shape[1].width;
-        //nodeModel.shape.nodeShape(nodeModel);
-        //let newWidth = nodeModel.shape[1].widths;
-        //
-        //let widthGap = newWidth - oldWidth;
-        //if(nodeModel.direction == 1){
-        //    DataHelper.forEach(nodeModel.children)
-        //}
-        //
-        //this.gRenderer.renderNodeModel(nodeModel)
+        var gap = newWidth - oldWidth;
+
+
+        if(nodeModel.direction === 1){ //如果改变label的节点为右方向节点,则只向右移动该节点的子节点
+            DataHelper.forEach(nodeModel.children, function(child){
+                child.translate(gap, 0);
+            });
+        }else if(nodeModel.direction === -1){//如果改变label的节点为左方向节点,则向左移动该节点(translate回递归)
+            nodeModel.translate(-gap, 0);
+        }else if(nodeModel.isRootNode()){//如果节点为根结点
+            nodeModel.translate(-gap/2, 0);
+            DataHelper.forEach(nodeModel.children, function(child){
+                if(child.direction === 1){
+                    child.translate(gap, 0);
+                }else if(child.direction === -1){
+                    child.translate(-gap/2, 0);
+                }
+            });
+        }
     },
     /**
      * 设置选中的节点
@@ -101,8 +111,7 @@ Graph.prototype = {
             x: this.gRenderer.paper.width / 2 -50,
             y: 200,
             id: 0});
-        root.label = "中心主题";
-        this.gRenderer.setLabelRender(root);
+        this.setLabel(root,"中心主题");
         return root;
     },
     _addEdgeModel: function(source, target, attr){

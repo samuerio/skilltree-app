@@ -140,49 +140,8 @@ Renderer.prototype = {
         }
         if(oldSelected && oldSelected.shape){
             oldSelected.shape.unSelectedShape(oldSelected);
-
         }
     },
-
-    /**
-     * 节点文本设置渲染
-     * @param node
-     */
-    setLabelRender: function(node){
-
-        //取得原来的长度
-        var oldWidth = nodeShapeRelative.getSingleNodeWidth(node);
-
-        //设置文本的shape
-        node.shape.nodeShape(node);
-
-        if(node.graph.selected){
-            node.graph.selected.shape.selectedShape(node);
-        }
-
-        var newWidth = nodeShapeRelative.getSingleNodeWidth(node);
-        var gap = newWidth - oldWidth;
-
-        //如果改变label的节点为右方向节点,则只向右移动该节点的子节点
-        if(node.direction === 1){
-            DataHelper.forEach(node.children, function(child){
-                child.translate(gap, 0);
-            });
-        }else if(node.direction === -1){//如果改变label的节点为左方向节点,则向左移动该节点(translate回递归)和toolbar
-            node.translate(-gap, 0);
-        }else if(node.isRootNode()){//如果节点为根结点
-          node.translate(-gap/2, 0);
-          DataHelper.forEach(node.children, function(child){
-            if(child.direction === 1){
-              child.translate(gap, 0);
-            }else if(child.direction === -1){
-              child.translate(-gap/2, 0);
-            }
-          });
-        }
-
-    },
-
 
     /**
      * 点击画布时,取消graph的选择
