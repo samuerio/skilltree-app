@@ -193,23 +193,21 @@ var Drag = function(aNode, options){
                 //node.shape.drag(moveFnc, startFnc, endFnc);
                 node.shape.mousedown(function(){
                     node.graph.setSelected(node);
-                    toolbar.setActive(node);
                 });
             }else{
-                node.shape.mousedown(function(event){
-                    viewportHandle.mousedownHandle(event);
-                });
-                node.shape.mousemove(function(event){
-                    viewportHandle.mousemoveHandle(event);
-                });
-                node.shape.mouseup(function(event){
-                    viewportHandle.mouseupHandle(event);
-                });
+                //node.shape.mousedown(function(event){
+                //    viewportHandle.mousedownHandle(event);
+                //});
+                //node.shape.mousemove(function(event){
+                //    viewportHandle.mousemoveHandle(event);
+                //});
+                //node.shape.mouseup(function(event){
+                //    viewportHandle.mouseupHandle(event);
+                //});
 
 
                 node.shape.mousedown(function(){
                     node.graph.setSelected(node);
-                    toolbar.setActive(node);
                 });
             }
             //add label dbClick event

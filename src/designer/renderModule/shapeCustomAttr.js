@@ -9,14 +9,13 @@ import Raphael from 'raphael';
  * 根绝节点的类型，设置节点的外形
  * @param node
  */
-Raphael.st.nodeShape = function(node, mindmapType){
-    mindmapType = mindmapType || 'desktop';
-    if(node.isRootNode()){
-        setRootShape(this, node.x, node.y, node.label, mindmapType);
-    }else if(node.isFirstLevelNode()){
-        setFirstLevelShape(this, node.x, node.y, node.label);
+Raphael.st.nodeShape = function(nodeModel){
+    if(nodeModel.isRootNode()){
+        setRootShape(this, nodeModel.x, nodeModel.y, nodeModel.label);
+    }else if(nodeModel.isFirstLevelNode()){
+        setFirstLevelShape(this, nodeModel.x, nodeModel.y, nodeModel.label);
     }else{
-        setSecondMoreShape(this, node.x, node.y, node.label);
+        setSecondMoreShape(this, nodeModel.x, nodeModel.y, nodeModel.label);
     }
 
     /**
@@ -26,10 +25,9 @@ Raphael.st.nodeShape = function(node, mindmapType){
      * @param nodeY
      * @param text
      */
-    function setRootShape(shape, nodeX, nodeY, text, mindmapType){
+    function setRootShape(shape, nodeX, nodeY, text){
         var label = shape[0];
         var rect = shape[1];
-
 
         label.attr({
             'font-size': 25,
@@ -38,18 +36,9 @@ Raphael.st.nodeShape = function(node, mindmapType){
         });
 
         rect.attr({
-            'rootAndFirstStroke': null
+            'rootAndFirstStroke': null,
+            'fill': '#428bca'
         });
-
-        if(mindmapType === 'desktop'){
-            rect.attr({
-                'fill': '#428bca'
-            });
-        }else if(mindmapType === 'taskMore'){
-            rect.attr({
-                'fill': '#64d4a5'
-            });
-        }
 
         var rootNodepadding = {
             width: 42,
@@ -86,8 +75,6 @@ Raphael.st.nodeShape = function(node, mindmapType){
         };
 
         setNodePosition(label, rect, nodeX, nodeY, firstLevelPadding);
-
-
 
     };
 

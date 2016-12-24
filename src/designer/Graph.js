@@ -1,8 +1,6 @@
-/**
- * Created by rockyren on 15/2/5.
- */
 
 import DataHelper from './otherModule/DataHelper';
+import nodeShapeRelative from  './renderModule/nodeShapeRelative'
 import Node from './node';
 import Edge from './edge';
 
@@ -39,17 +37,58 @@ Graph.prototype = {
         this.nodes[node.id] = node;
 
         //进行引用信息的更新
-        this.setParentData(parent, node);
+        this._setParentData(parent, node);
 
         //新增节点渲染
         this.gRenderer.addNodeRender(node);
 
         return node;
     },
-    addEdge: function(source, target, attr){
-        var edge = new Edge(this, source, target, attr);
-        this.edges[edge.id] = edge;
-        return edge;
+    /**
+     * 删除节点
+     * 先先断开父节点的children和connectChildren连接，再渲染删除，然后删除递归数据
+     * @param node
+     */
+    removeNode: function(node) {
+        this._removeParentConnect(node);
+        this.gRenderer.removeNodeRender(node);
+
+        this._removeNodeData(node);
+
+    },
+    /**
+     * 设置节点的文本
+     * @param node
+     * @param label
+     */
+    setLabel: function(nodeModel, label){
+        nodeModel.label = label;
+
+        //label改变渲染
+        this.gRenderer.setLabelRender(nodeModel);
+
+        //let oldWidth = nodeModel.shape[1].width;
+        //nodeModel.shape.nodeShape(nodeModel);
+        //let newWidth = nodeModel.shape[1].widths;
+        //
+        //let widthGap = newWidth - oldWidth;
+        //if(nodeModel.direction == 1){
+        //    DataHelper.forEach(nodeModel.children)
+        //}
+        //
+        //this.gRenderer.renderNodeModel(nodeModel)
+    },
+    /**
+     * 设置选中的节点
+     * @param node
+     */
+    setSelected: function(node){
+        if(this.selected == node) { return };
+        var oldSelected = this.selected;
+        this.selected = node;
+
+        this.gRenderer.setSelectedRender(this.selected, oldSelected);
+
     },
     /**
      * 初始化根结点
@@ -63,42 +102,19 @@ Graph.prototype = {
             y: 200,
             id: 0});
         root.label = "中心主题";
-        //this.gRenderer.rootNodeRender(root);
         this.gRenderer.setLabelRender(root);
-
         return root;
-
     },
-    setSubTaskNodeClick: function(node, context){
-        this.gRenderer.setSubTaskNodeClick(node, context);
-    },
-    setParent: function(parentId, childId){
-        var self = this;
-
-        var parent = self.nodes[parentId];
-        var child = self.nodes[childId];
-        if(child === parent || parent ===null) { return null; }
-        if(child.father === parent) { return; }
-        else{
-            //需要设置新父节点的children，才能正确删除重绘子节点时
-            delete child.father.children[child.id];
-            //在child.connectFather改变之前，递归删除子节点
-            this.gRenderer.removeNodeRender(child);
-        }
-
-        this.setParentData(parent, child);
-
-        this._resetChildrenProperty(child.children);
-
-        //在新的father上递归添加原节点（递归添加）的渲染
-        this.gRenderer.setParentRender(child);
-
+    _addEdgeModel: function(source, target, attr){
+        var edge = new Edge(this, source, target, attr);
+        this.edges[edge.id] = edge;
+        return edge;
     },
     //重新设置节点的direction和edge等
     _resetChildrenProperty: function(children){
         var self = this;
         DataHelper.forEach(children, function(child){
-            child.connectFather = self.addEdge(child.father, child);
+            child.connectFather = self._addEdgeModel(child.father, child);
 
 
             self._setNodeDirection(child);
@@ -111,7 +127,7 @@ Graph.prototype = {
      * @param child
      * @returns {*}
      */
-    setParentData: function(parent, child){
+    _setParentData: function(parent, child){
 
         //如果设置父节点为自己或parent为null时,则返回null
         if(child === parent || parent === null) { return null };
@@ -127,7 +143,7 @@ Graph.prototype = {
         child.father.children[child.id] = child;
 
         //设置child的connectFather,并创建新边Model
-        child.connectFather = this.addEdge(parent, child);
+        child.connectFather = this._addEdgeModel(parent, child);
         //设置新父节点的connectChildren
         child.father.connectChildren[child.connectFather.id] = child.connectFather;
 
@@ -147,44 +163,6 @@ Graph.prototype = {
             delete node.father.connectChildren[node.connectFather.id];
         }
     },
-
-    //获得当前节点可成为父节点候选的节点集
-    getParentAddableNodeSet: function(node){
-        var self = this;
-
-        var addableNodeSet = {};
-        //获得this.nodes的副本
-        DataHelper.forEach(self.nodes, function(curNode){
-            addableNodeSet[curNode.id] = curNode;
-        });
-
-        var notAddableNodeSet = self.getChildrenNodeSet(node);
-        notAddableNodeSet[node.id] = node;
-        if(node.father){
-            notAddableNodeSet[node.father.id] = node.father;
-        }
-
-        //在this.nodes副本中除去当前节点及该节点的所有子节点的引用
-        DataHelper.forEach(notAddableNodeSet, function(curNode){
-            delete addableNodeSet[curNode.id];
-        });
-        return addableNodeSet;
-
-    },
-
-    /**
-     * 删除节点
-     * 先先断开父节点的children和connectChildren连接，再渲染删除，然后删除递归数据
-     * @param node
-     */
-    removeNode: function(node) {
-        this._removeParentConnect(node);
-        this.gRenderer.removeNodeRender(node);
-
-        this._removeNodeData(node);
-
-    },
-
     /**
      * 递归删除节点的数据
      * @param node
@@ -207,14 +185,6 @@ Graph.prototype = {
         if(node.connectFather){
             delete self.edges[node.connectFather.id];
         }
-
-    },
-    setSelected: function(node){
-        if(this.selected == node) { return };
-        var oldSelected = this.selected;
-        this.selected = node;
-
-        this.gRenderer.setSelectedRender(this.selected, oldSelected);
 
     },
     /**
@@ -259,23 +229,11 @@ Graph.prototype = {
     },
 
     /**
-     * 设置节点的文本
-     * @param node
-     * @param label
-     */
-    setLabel: function(node, label){
-        node.label = label;
-
-        //label改变渲染
-        this.gRenderer.setLabelRender(node);
-    },
-
-    /**
      * 获得node节点所有子节点的集合
      * @param node
      * @returns {{}}
      */
-    getChildrenNodeSet: function(node){
+    _getChildrenNodeSet: function(node){
         var self = this;
         var childrenNodeSet = {};
         self._makeChildrenNodeSet(node.children, childrenNodeSet);
@@ -288,12 +246,52 @@ Graph.prototype = {
             childrenNodeSet[child.id] = child;
             self._makeChildrenNodeSet(child.children, childrenNodeSet);
         });
+    },
+    setParent: function(parentId, childId){
+        var self = this;
+
+        var parent = self.nodes[parentId];
+        var child = self.nodes[childId];
+        if(child === parent || parent ===null) { return null; }
+        if(child.father === parent) { return; }
+        else{
+            //需要设置新父节点的children，才能正确删除重绘子节点时
+            delete child.father.children[child.id];
+            //在child.connectFather改变之前，递归删除子节点
+            this.gRenderer.removeNodeRender(child);
+        }
+
+        this._setParentData(parent, child);
+
+        this._resetChildrenProperty(child.children);
+
+        //在新的father上递归添加原节点（递归添加）的渲染
+        this.gRenderer.setParentRender(child);
+
+    },
+    //获得当前节点可成为父节点候选的节点集
+    getParentAddableNodeSet: function(node){
+        var self = this;
+
+        var addableNodeSet = {};
+        //获得this.nodes的副本
+        DataHelper.forEach(self.nodes, function(curNode){
+            addableNodeSet[curNode.id] = curNode;
+        });
+
+        var notAddableNodeSet = self._getChildrenNodeSet(node);
+        notAddableNodeSet[node.id] = node;
+        if(node.father){
+            notAddableNodeSet[node.father.id] = node.father;
+        }
+
+        //在this.nodes副本中除去当前节点及该节点的所有子节点的引用
+        DataHelper.forEach(notAddableNodeSet, function(curNode){
+            delete addableNodeSet[curNode.id];
+        });
+        return addableNodeSet;
+
     }
-
-
 };
-
-
-
 
 export default Graph;

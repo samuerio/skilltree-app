@@ -85,7 +85,7 @@ AbstractRender.prototype._reRenderNode = function(node, x, y, direction){
     if(!node.shape){
         node.x = x;
         node.y = y;
-        node.gRenderer.drawNode(node);
+        node.gRenderer.renderNodeModel(node);
         //左边节点需左移一个节点宽度
         if(direction === -1){
             node.translate(-nodeShapeRelative.getSingleNodeWidth(node), 0);

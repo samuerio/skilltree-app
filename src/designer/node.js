@@ -53,9 +53,9 @@ Node.prototype = {
     construct: Node,
     getRootNode: function () {
         if (this === this.graph.root) {
-            return this
+            return this;
         }
-        ;
+
         if (!this.father) {
             return this;
         } else {
@@ -90,14 +90,22 @@ Node.prototype = {
     isSecondMoreNode: function () {
         return !this.isRootNode() && !this.isFirstLevelNode();
     },
+    /**
+     * 平移变换
+     * @param dx
+     * @param dy
+     */
     translate: function (dx, dy) {
         var self = this;
         self.x += dx;
         self.y += dy;
 
-        //节点移动渲染
-        this.gRenderer.translateSingleNodeRender(self, dx, dy);
-
+        //进行nodeModel的重新渲染
+        this.gRenderer.renderNodeModel(this);
+        //节点平移后,进行父连线的重新绘画
+        if(this.shape && this.connectFather){
+            this.gRenderer._drawEdge(this.connectFather);
+        }
 
         DataHelper.forEach(self.children, function (child) {
             child.translate(dx, dy);

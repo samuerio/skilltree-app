@@ -38,7 +38,7 @@ Renderer.prototype = {
     addNodeRender: function(node){
         //节点渲染
         if(node.x && node.y){
-            this.drawNode(node);
+            this.renderNodeModel(node);
         }else{//如果没有设置x,y.则按照父节点的位置设置之其x y的值
             this._reRenderChildrenNode(node.father);
 
@@ -53,39 +53,34 @@ Renderer.prototype = {
         if(node.connectFather){
             this._drawEdge(node.connectFather);
         }
-
-        /**
-         * 设置node的相关交互事件
-         */
-        this._setDrag(node);
     },
 
     /**
-     * 创建node的shape
-     * @param node
+     * 渲染NodeModel到Paper Canvas
+     * @param nodeModel
      * @private
      */
-    drawNode: function(node){
+    renderNodeModel: function(nodeModel){
 
-        //创建node的shape对象
+        if(nodeModel.shape){
+            nodeModel.shape[0].remove();
+            nodeModel.shape[1].remove();
+        }
+
         var paper = this.paper;
-        //已设置node的x和y时才能渲染节点
-        var label = paper.text(node.x, node.y, node.label);
-        var textBox = label.getBBox();
-        //得到矩形的长度
-        var rectWidth = textBox.width + this._widthNodePadding;
-        var rectHeight = textBox.height + this._heightNodePadding;
-
-
-        var rect = paper.rect(node.x, node.y,
+        var label = paper.text(nodeModel.x, nodeModel.y, nodeModel.label);
+        var rect = paper.rect(nodeModel.x, nodeModel.y,
             nodeShapeRelative.nodeDefaultWidth,
             nodeShapeRelative.nodeDefaultHeight, 4)
-            .data('id', node.id);
+            .data('id', nodeModel.id);
 
         label.toFront();
 
-        node.shape = paper.set().push(label).push(rect);
-        node.shape.nodeShape(node);
+        nodeModel.shape = paper.set().push(label).push(rect);
+        nodeModel.shape.nodeShape(nodeModel);
+
+        //绑定相关监听事件
+        this._setDrag(nodeModel);
     },
 
     setParentRender: function(node){
@@ -135,32 +130,6 @@ Renderer.prototype = {
     },
 
     /**
-     * 移动节点的渲染: 节点移动渲染(通过设置attr的x和y属性),边重绘
-     * @param node
-     * @param dx
-     * @param dy
-     */
-    translateSingleNodeRender: function(node, dx, dy){
-        if(node.shape){
-            var rect = node.shape[1];
-            var posX = rect.attr('x');
-            var posY = rect.attr('y');
-            rect.attr({ x: posX + dx,  y: posY + dy} );
-
-            var label = node.shape[0];
-            var labelX = label.attr('x');
-            var labelY = label.attr('y');
-            label.attr( {x: labelX + dx, y: labelY + dy} );
-        }
-
-
-        //移动节点后,边重画
-        if(node.shape && node.connectFather){
-            this._drawEdge(node.connectFather);
-        }
-    },
-
-    /**
      * 选择节点时的渲染
      * @param node 被选中的节点
      * @param oldSelected: 之前被选中的节点
@@ -199,12 +168,6 @@ Renderer.prototype = {
             DataHelper.forEach(node.children, function(child){
                 child.translate(gap, 0);
             });
-
-            //右节点的边需要重画
-            if(node.shape && node.connectFather){
-              this._drawEdge(node.connectFather);
-            }
-
         }else if(node.direction === -1){//如果改变label的节点为左方向节点,则向左移动该节点(translate回递归)和toolbar
             node.translate(-gap, 0);
         }else if(node.isRootNode()){//如果节点为根结点
@@ -229,10 +192,11 @@ Renderer.prototype = {
         var self = this;
         this.canvasDom.addEventListener('mousedown', function(event){
             if(event.target.nodeName === 'svg'){
-                var text = $('#tempText').val();
-                if(graph.selected && $('#tempText').length){
+                let inputDom = document.getElementById('tempText');
+                if(graph.selected && inputDom){
+                    var text = inputDom.value;
                     graph.setLabel(graph.selected, text);
-                    $('#tempText').remove();
+                    inputDom.parentNode.removeChild(inputDom);
                 }
 
                 graph.setSelected(null);
@@ -242,10 +206,11 @@ Renderer.prototype = {
 
         this.canvasDom.addEventListener('keyup', function(event){
             if(event.keyCode === 13){
-                var text = $('#tempText').val();
-                if(graph.selected && $('#tempText').length){
+                let inputDom = document.getElementById('tempText');
+                if(graph.selected && inputDom){
+                    var text = inputDom.value;
                     graph.setLabel(graph.selected, text);
-                    $('#tempText').remove();
+                    inputDom.parentNode.removeChild(inputDom);
                 }
 
                 graph.setSelected(null);
