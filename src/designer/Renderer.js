@@ -13,33 +13,24 @@ let Raphael = require('raphael')
 
 function Renderer(options){
 
-    this.type = options.type;
     this.canvasDom = document.getElementById(options.canvasId);
     this.paper = new Raphael(this.canvasDom);
 
-
-    //视野设置
+    //视窗拉拽事件
     this.viewportHandle = Viewport(this.canvasDom, this.paper);
     this.viewportHandle.setViewportDrag();
 
     //小工具条对象
     this.toolbar = Toolbar();
 
-    this.enableRender = {
-        canRender: true
-    };
-
+    //Raphael Extension  &&  Custom Attr Value
     shapeCustomAttr.init(this.paper);
-
 }
 
 Renderer.prototype = {
+
     constructor: Renderer,
 
-    EnableRender: function(canRender){
-        this.enableRender.canRender = canRender;
-        this.canvasDom.style.opacity = canRender ? 1 : 0.5;
-    },
     /**
      * 新增节点时的渲染
      * @param node
@@ -124,11 +115,6 @@ Renderer.prototype = {
 
     },
 
-
-    getCanvasWidth: function(){
-
-        return this.canvasDom.clientWidth;
-    },
 
     /**
      * 删除节点渲染
@@ -346,17 +332,12 @@ Renderer.prototype = {
     _setDrag: function(node){
         var DragHandle = Drag(node, {
             toolbar: this.toolbar,
-            viewportHandle: this.viewportHandle,
-            enableRender: this.enableRender
+            viewportHandle: this.viewportHandle
         });
 
         DragHandle.setDrag();
 
     }
-
-
-
-
 };
 
 

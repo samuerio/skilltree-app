@@ -28,10 +28,6 @@ var Drag = function(aNode, options){
     var overlapNodeId = null;
 
 
-    var enableRender = options.enableRender;
-
-
-
     /**
      * 取得克隆的shape：用于占位
      * @param node
@@ -196,40 +192,24 @@ var Drag = function(aNode, options){
                 //TODO 由于drag会和dbclick事件冲突.建议使用原生的 mousedown mousemove mouseup来模拟drag效果
                 //node.shape.drag(moveFnc, startFnc, endFnc);
                 node.shape.mousedown(function(){
-                    if(!enableRender.canRender) { return false; }
                     node.graph.setSelected(node);
                     toolbar.setActive(node);
                 });
             }else{
                 node.shape.mousedown(function(event){
-                    if(!enableRender.canRender) { return false; }
                     viewportHandle.mousedownHandle(event);
                 });
                 node.shape.mousemove(function(event){
-                    if(!enableRender.canRender) { return false; }
-
                     viewportHandle.mousemoveHandle(event);
-
                 });
                 node.shape.mouseup(function(event){
-                    if(!enableRender.canRender) { return false; }
                     viewportHandle.mouseupHandle(event);
                 });
 
 
                 node.shape.mousedown(function(){
-                    if(!enableRender.canRender) { return false; }
                     node.graph.setSelected(node);
                     toolbar.setActive(node);
-                });
-                node.shape.mousemove(function(){
-                    if(!enableRender.canRender) { return false; }
-                    if(viewportHandle.isDragging()){
-                    }
-                });
-                node.shape.mouseup(function(){
-                    if(!enableRender.canRender) { return false; }
-
                 });
             }
             //add label dbClick event
