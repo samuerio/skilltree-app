@@ -34,23 +34,19 @@ Graph.prototype = {
     addNode: function(parent, attr){
 
         var nodeModel = new Node(this, attr);
-        this._setParentData(parent, nodeModel);//进行引用信息的更新
+        //初始化运行时信息
+        this._initRunTimeData(parent, nodeModel);
 
-        //节点渲染
-        if(nodeModel.x && nodeModel.y){
+        if(nodeModel.x && nodeModel.y){//存在节点坐标,则直接渲染
             this.gRenderer.renderNodeModel(nodeModel);
-        }else{//如果没有设置x,y.则按照父节点的位置设置之其x y的值
+        }else{//不存在节点坐标,先计算出坐标x y再进行渲染
+
             this.gRenderer._reRenderChildrenNode(nodeModel.father);
 
             //向上递归移动父节点的同级节点,只有一个点时不用移动
             if(nodeModel.father && nodeModel.father.childrenCount() > 1) {
                 this.gRenderer._resetBrotherPosition(nodeModel.father, nodeShapeRelative.getNodeAreaHeight(nodeModel));
             }
-        }
-
-        //边渲染
-        if(nodeModel.connectFather){
-            this.gRenderer._drawEdge(nodeModel.connectFather);
         }
 
         return nodeModel;
@@ -61,7 +57,7 @@ Graph.prototype = {
      * @param node
      */
     removeNode: function(node) {
-        this._removeParentConnect(node);
+        this._removeParent(node);
         this.gRenderer.removeNodeRender(node);
 
         this._removeNodeData(node);
@@ -73,14 +69,14 @@ Graph.prototype = {
      * @param label
      */
     setLabel: function(nodeModel, label){
-        nodeModel.label = label;
 
         var oldWidth = nodeModel.shape[1].attr('width');
+        
+        nodeModel.label = label;
         nodeModel.shape.nodeShape(nodeModel);
         var newWidth = nodeModel.shape[1].attr('width');
 
         var gap = newWidth - oldWidth;
-
 
         if(nodeModel.direction === 1){ //如果改变label的节点为右方向节点,则只向右移动该节点的子节点
             DataHelper.forEach(nodeModel.children, function(child){
@@ -136,12 +132,12 @@ Graph.prototype = {
         });
     },
     /**
-     * 更新/添加父节点和子节点的相互引用,以及设置child的direction值
+     * 初始化运行时信息, 父节点/父边的引用  子节点/子边的引用  节点的方向信息
      * @param parent
      * @param child
      * @returns {*}
      */
-    _setParentData: function(parent, child){
+    _initRunTimeData: function(parent, child){
 
         //如果设置父节点为自己或parent为null时,则返回null
         if(child === parent || parent === null) { return null };
@@ -149,7 +145,7 @@ Graph.prototype = {
         //如果parent与child的父节点相等,则退出
         if(child.father === parent) { return child.connectFather };
 
-        this._removeParentConnect(child);
+        this._removeParent(child);
 
         //设置child的father
         child.father = parent;
@@ -162,19 +158,69 @@ Graph.prototype = {
         child.father.connectChildren[child.connectFather.id] = child.connectFather;
 
         this._setNodeDirection(child);
-
-
-
+        
         return child.connectFather;
     },
-    _removeParentConnect: function(node){
+    /**
+     * 移除父节点的应用信息 包括NodeModel以及EdgeModel
+     * @param nodeModel
+     * @private
+     */
+    _removeParent: function(nodeModel){
         //若child存在旧父节点,则删除旧父节点child上该节点的引用
-        if(node.father) {
-            delete node.father.children[node.id];
+        if(nodeModel.father) {
+            delete nodeModel.father.children[nodeModel.id];
         }
         //若child存在旧父节点,则删除旧父节点connectChildren上与child的边的引用
-        if(node.connectFather) {
-            delete node.father.connectChildren[node.connectFather.id];
+        if(nodeModel.connectFather) {
+            delete nodeModel.father.connectChildren[nodeModel.connectFather.id];
+        }
+    },
+    /**
+     * 设置节点的direction属性
+     * -1表示左边,1表示右边,null表示未设置
+     * @param node
+     * @private
+     */
+    _setNodeDirection: function(node){
+        let self = this;
+
+        if(node.isRootNode()){
+            node.direction = null;
+        }
+
+        //如果为第一层节点,则根据左右节点数赋值位置值
+        if(node.isFirstLevelNode()){
+            if(_isFirstNodeRightMoreThanLeft()){
+                node.direction = -1;
+            }else{
+                node.direction = 1;
+            }
+        }
+        //如果为第n层(n>=2)节点,则按照父节点的direction设置
+        else if(!node.isFirstLevelNode() && !node.isRootNode()){
+            node.direction = node.father.direction;
+        }
+
+        /**
+         * 判断第一层节点中右边节点大于(不等于)左边节点
+         * @returns boolean
+         * @private
+         */
+        function _isFirstNodeRightMoreThanLeft(){
+            var root = self.root;
+            var leftCount = 0,
+                rightCount = 0;
+
+            DataHelper.forEach(root.children, function(rootChild){
+                if(rootChild.direction === -1){
+                    leftCount++;
+                }else if(rootChild.direction === 1){
+                    rightCount++;
+                }
+            });
+
+            return rightCount > leftCount;
         }
     },
     /**
@@ -186,7 +232,7 @@ Graph.prototype = {
         var self = this;
         //删除父节点相关:删除父节点与该节点的边界,从父节点的children上删除该节点,最后删除父节点引用
         //数组中的属性设为undefined,其他引用设为null
-        self._removeParentConnect(node);
+        self._removeParent(node);
         node.father = null;
         node.connectFather = null;
 
@@ -201,47 +247,6 @@ Graph.prototype = {
         }
 
     },
-    /**
-     * 设置节点的direction属性
-     * -1表示左边,1表示右边,null表示未设置
-     * @param node
-     * @private
-     */
-    _setNodeDirection: function(node){
-        //如果为第一层节点,则根据左右节点数赋值位置值
-        if(node.isFirstLevelNode()){
-            if(this._isFirstNodeRightMoreThanLeft()){
-                node.direction = -1;
-            }else{
-                node.direction = 1;
-            }
-        }
-        //如果为第n层(n>=2)节点,则按照父节点的direction设置
-        else if(!node.isFirstLevelNode() && !node.isRootNode()){
-            node.direction = node.father.direction;
-        }
-    },
-    /**
-     * 判断第一层节点中右边节点大于(不等于)左边节点
-     * @returns boolean
-     * @private
-     */
-    _isFirstNodeRightMoreThanLeft: function(){
-        var root = this.root;
-        var leftCount = 0,
-            rightCount = 0;
-
-        DataHelper.forEach(root.children, function(rootChild){
-            if(rootChild.direction === -1){
-                leftCount++;
-            }else if(rootChild.direction === 1){
-                rightCount++;
-            }
-        });
-
-        return rightCount > leftCount;
-    },
-
     /**
      * 获得node节点所有子节点的集合
      * @param node
@@ -275,7 +280,7 @@ Graph.prototype = {
             this.gRenderer.removeNodeRender(child);
         }
 
-        this._setParentData(parent, child);
+        this._initRunTimeData(parent, child);
 
         this._resetChildrenProperty(child.children);
 

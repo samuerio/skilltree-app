@@ -11,12 +11,12 @@ import nodeShapeRelative from './nodeShapeRelative';
  */
 var ChildrenRenderFactory = (function(){
     return {
-        createRenderStrategy: function(node){
+        createRenderStrategy: function(nodeModel){
             var strategy;
             //如果结点是根结点,则实现第一层结点添加算法
-            if(node.isRootNode()){
+            if(nodeModel.isRootNode()){
                 strategy = new ChildrenRenderStrategy(new FirstRender());
-            }else if(node.isFirstLevelNode()){
+            }else if(nodeModel.isFirstLevelNode()){
                 strategy = new ChildrenRenderStrategy(new FirstLevelRender());
             }else{
                 strategy = new ChildrenRenderStrategy(new SecondAndMoreRender());
@@ -49,8 +49,8 @@ function AbstractRender() {
 
 AbstractRender.prototype.commonRender = function(father, children, direction){
     //获取父结点的中间坐标
-    var hfx = father.x + nodeShapeRelative.getSingleNodeWidth(father)/2;
-    var hfy = father.y + nodeShapeRelative.getSingleNodeHeight(father)/2;
+    var hfx = father.x + father.shape[1].attr('width')/2;
+    var hfy = father.y + father.shape[1].attr('height')/2;
 
     var childrenAreaHeight = 0,     //结点的所有子结点所占区域的高度
         startY,                     //子节点区域的起始高度
@@ -58,7 +58,7 @@ AbstractRender.prototype.commonRender = function(father, children, direction){
         childY,                     //子节点的y坐标
         self = this;
 
-    childX = hfx + direction * (this.nodeXInterval + nodeShapeRelative.getSingleNodeWidth(father)/2);
+    childX = hfx + direction * (this.nodeXInterval + father.shape[1].attr('width')/2);
 
 
     DataHelper.forEach(children, function(child){
@@ -126,9 +126,6 @@ FirstRender.prototype.doRender = function(node){
     }else{
         this.renderLessThanTwo(node, children.rightChildren, 1);
     }
-
-
-
 };
 
 /**

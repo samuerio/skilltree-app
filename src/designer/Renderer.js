@@ -28,7 +28,7 @@ Renderer.prototype = {
     constructor: Renderer,
 
     /**
-     * 渲染NodeModel到Paper Canvas
+     * 渲染NodeModel到Paper Canvas(效果:思维导图节点&&父边)
      * @param nodeModel
      * @private
      */
@@ -42,14 +42,18 @@ Renderer.prototype = {
         var paper = this.paper;
         var label = paper.text(nodeModel.x, nodeModel.y, nodeModel.label);
         var rect = paper.rect(nodeModel.x, nodeModel.y,
-            nodeShapeRelative.nodeDefaultWidth,
-            nodeShapeRelative.nodeDefaultHeight, 4)
+            Node.DEFAULT_WIDTH,Node.DEFAULT_HEIGHT, 4)
             .data('id', nodeModel.id);
 
         label.toFront();
 
         nodeModel.shape = paper.set().push(label).push(rect);
         nodeModel.shape.nodeShape(nodeModel);
+
+        let fatherEdgeModel = nodeModel.connectFather;
+        if(fatherEdgeModel){
+            EdgeDraw(fatherEdgeModel).drawEdge();
+        }
 
         //绑定相关监听事件
         this._setDrag(nodeModel);
@@ -70,8 +74,9 @@ Renderer.prototype = {
             }
         }
 
-        if(node.connectFather){
-            self._drawEdge(node.connectFather);
+        let fatherEdgeModel = node.connectFather;
+        if(fatherEdgeModel){
+            EdgeDraw(fatherEdgeModel).drawEdge();
         }
         //设置拖动
         this._setDrag(node);
@@ -147,25 +152,14 @@ Renderer.prototype = {
         });
 
     },
-
-
-    /**
-     * 创建edge的shape,如果已存在则删除原边重绘(重新设置edge的shape)
-     * @param edge 边对象
-     */
-    _drawEdge: function(edge){
-        var edgeDraw = EdgeDraw(edge);
-        edgeDraw.drawEdge();
-    },
-
     /**
      * 重新设置当前节点的子节点的位置
      * @param node 当前节点
      * @private
      */
-    _reRenderChildrenNode: function(node){
-        var childrenRenderStrategy = ChildrenRenderFactory.createRenderStrategy(node);
-        childrenRenderStrategy.reRenderChildrenNode(node);
+    _reRenderChildrenNode: function(nodeModel){
+        var childrenRenderStrategy = ChildrenRenderFactory.createRenderStrategy(nodeModel);
+        childrenRenderStrategy.reRenderChildrenNode(nodeModel);
     },
 
     /**

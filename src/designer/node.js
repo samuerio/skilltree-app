@@ -4,12 +4,10 @@ let Node = function (g, attr) {
     if (!attr) {
         attr = {}
     }
-    ;
+
     this.graph = g;
     this.gRenderer = g.gRenderer;
 
-    //节点的id
-    //this.id = attr.id || ++(this.graph.nodeCount);
 
     if (attr.hasOwnProperty('id')) {
         this.id = attr.id;
@@ -50,6 +48,13 @@ let Node = function (g, attr) {
 
     this.data = attr.data || null;
 };
+
+/**
+ * Node 宽高的常量值
+ * @type {number}
+ */
+Node.DEFAULT_WIDTH = 70;
+Node.DEFAULT_HEIGHT = 38;
 
 Node.prototype = {
     construct: Node,
@@ -104,10 +109,6 @@ Node.prototype = {
 
         //进行nodeModel的重新渲染
         this.gRenderer.renderNodeModel(this);
-        //节点平移后,进行父连线的重新绘画
-        if(this.shape && this.connectFather){
-            this.gRenderer._drawEdge(this.connectFather);
-        }
 
         DataHelper.forEach(self.children, function (child) {
             child.translate(dx, dy);
