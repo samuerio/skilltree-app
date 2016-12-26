@@ -5,7 +5,7 @@ import Node from './node';
 import Edge from './edge';
 
 
-var Graph = function(gRenderer){
+var Graph = function(gRenderer,rootNodeData){
     //渲染层的对象
     this.gRenderer = gRenderer;
     this.nodeCount = 0;
@@ -18,7 +18,7 @@ var Graph = function(gRenderer){
 
     this.selected = null;
     //创建graph时则创建一个根节点,根节点id为0x
-    this.root = this._initRoot();
+    this.root = this._initRoot(rootNodeData);
     //@workaround: svg点击事件:如果点击的是canvas,取消selected
     this.gRenderer.setCanvasClick(this);
 };
@@ -27,16 +27,15 @@ Graph.prototype = {
     constructor: Graph,
     /**
      * 增加节点,需要指定父节点
-     * @param parent 新增节点的父节点
-     * @param attr
+     * @param parentNodeModel 新增节点的父节点
+     * @param nodeData
      * @returns {Node}
      */
-    addNode: function(parent, attr){
+    addNode: function(parentNodeModel, nodeData){
 
-        var nodeModel = new Node(this, attr);
+        var nodeModel = new Node(this, nodeData);
         //初始化运行时信息
-        this._initRunTimeData(parent, nodeModel);
-
+        this._initRunTimeData(parentNodeModel, nodeModel);
         if(nodeModel.x && nodeModel.y){//存在节点坐标,则直接渲染
             this.gRenderer.renderNodeModel(nodeModel);
         }else{//不存在节点坐标,先计算出坐标x y再进行渲染
@@ -111,13 +110,13 @@ Graph.prototype = {
      * @returns {*}
      * @private
      */
-    _initRoot: function(){
+    _initRoot: function(rootNodeData){
         var root = null;
-        root = this.addNode(null, {
+        root = this.addNode(null, rootNodeData || {
             x: this.gRenderer.paper.width / 2 -50,
             y: 200,
-            id: 0});
-        this.setLabel(root,"中心主题");
+            label:'中心主题'}
+        );
         return root;
     },
     //重新设置节点的direction和edge等
@@ -310,7 +309,40 @@ Graph.prototype = {
         });
         return addableNodeSet;
 
+    },
+    getJSON(){
+        let nodeJSONList = [];
+        getNodeJSON(this.root);
+
+        function getNodeJSON(node){
+            nodeJSONList.push(node.toJSON());
+
+            DataHelper.forEach(node.children,function(childrenNode){
+                getNodeJSON(childrenNode);
+            })
+        }
+        return nodeJSONList;
     }
 };
 
 export default Graph;
+
+
+/**
+ * 获取子节点数据集
+ * @param pid
+ * @param sourceNodeDatas
+ * @returns {Array}
+ */
+export function getChildrenNodeData(pid,sourceNodeDatas){
+    var children = [];
+    if(Array.isArray(sourceNodeDatas)){
+        sourceNodeDatas.forEach(function(nodeData){
+            if(nodeData.punid === pid){
+                delete nodeData.punid;
+                children.push(nodeData);
+            }
+        });
+    }
+    return children;
+}

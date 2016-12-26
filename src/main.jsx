@@ -21,7 +21,12 @@ import 'antd/dist/antd.css';
 
 import {initDrawBoard} from './designer/drawBoard'
 import Renderer from './designer/Renderer'
-import Graph from './designer/Graph'
+import Graph,{getChildrenNodeData} from './designer/Graph'
+
+
+
+let nodeDatas = require('./json/nodeData.json');
+
 
 //初始化设计器画板
 initDrawBoard();
@@ -29,13 +34,39 @@ initDrawBoard();
 var renderer = new Renderer({
     canvasId: 'mindmap-canvas'
 });
-var graph = new Graph(renderer);
-document.graph = graph;
+
+//获取根节点
+let [rootNodeData] = getChildrenNodeData(null,nodeDatas);
+var graph = new Graph(renderer,rootNodeData);
+
+renderToParent(graph.root,nodeDatas);
+/**
+ * 递归渲染到父节点上
+ * @param parentNodeModel
+ * @param sourceNodesData
+ */
+function renderToParent(parentNodeModel,sourceNodesData){
+    let {id} = parentNodeModel;
+    var childrenNodeData = getChildrenNodeData(id,sourceNodesData);
+    childrenNodeData.forEach(function(childNodeData){
+        var childNodeModel = graph.addNode(parentNodeModel,childNodeData);
+        if(childNodeData.isParent === true){
+            renderToParent(childNodeModel,sourceNodesData);
+        }
+        delete childNodeData.isParent;
+    });
+}
+
+
 
 $('#node-plus').click(function(){
     if(graph.selected){
         graph.addNode(graph.selected, {});
     }
+});
+
+$('#save-graphy').on('click',function(){
+    console.log(JSON.stringify(graph.getJSON()));
 });
 
 $('#node-cancel').click(function(){
@@ -48,6 +79,9 @@ $('#node-cancel').click(function(){
         }
     }
 });
+
+
+
 
 
 

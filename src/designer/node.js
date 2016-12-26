@@ -1,30 +1,16 @@
 import DataHelper from './otherModule/DataHelper';
 
-let Node = function (g, attr) {
-    if (!attr) {
-        attr = {}
-    }
+let Node = function (g, {id,x,y,label}) {
 
     this.graph = g;
     this.gRenderer = g.gRenderer;
 
-
-    if (attr.hasOwnProperty('id')) {
-        this.id = attr.id;
-    } else {
-        this.id = ++(this.graph.nodeCount);
-    }
+    this.id = id || newId();
+    this.x = x;
+    this.y = y;
+    this.label = label || "任务";//节点的文本
 
     this.graph.nodes[this.id] = this;
-
-
-    if (attr.hasOwnProperty('x') && attr.hasOwnProperty('y')) {
-        this.x = attr.x;
-        this.y = attr.y;
-    } else {
-        this.x = null;
-        this.y = null;
-    }
 
 
     //节点的父节点引用
@@ -37,16 +23,12 @@ let Node = function (g, attr) {
     //与子节点的边的引用集合
     this.connectChildren = {};
 
-    //节点的文本
-    this.label = attr.label || "任务" + this.id;
-
     //节点的图形,其类型为Raphael的element或set对象
     this.shape = null;
 
     //判断在根结点左边还是右边的属性
     this.direction = null;
 
-    this.data = attr.data || null;
 };
 
 /**
@@ -114,7 +96,45 @@ Node.prototype = {
             child.translate(dx, dy);
         });
 
+    },
+    toJSON(){
+        let id = this.id;
+        let punid = null;
+        punid = this.father && this.father.id;
+
+        let x = this.x;
+        let y = this.y;
+        let label = this.label;
+        let isParent = !isEmptyObjet(this.children);
+
+
+        return {
+            id,punid,x,y,label,isParent
+        }
     }
 };
+
+/**
+ * 判别对象是否为空
+ * @param obj
+ * @returns {boolean}
+ */
+function isEmptyObjet(obj){
+    var result = true;
+    for (var key in obj){
+        if(obj.hasOwnProperty(key)){
+            result = false;
+            break;
+        }
+    }
+    return result;
+}
+
+
+function newId() {
+    var b = Math.random();
+    var a = (b + new Date().getTime());
+    return a.toString(16).replace(".", "")
+}
 
 export default Node;
