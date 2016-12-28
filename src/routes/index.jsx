@@ -1,79 +1,31 @@
 import React, { Component } from 'react';
 import { Route, IndexRoute } from 'react-router';
-import UserCenter from '../container/usercenter.jsx';
-//import SkillCenter from 'container/skilltreecenter.jsx';
-//import SkillTreeArea from 'container/skilltreearea.jsx'
-//import TasksArea from 'container/tasksarea.jsx'
-//import TaskArea from 'container/taskarea.jsx'
-//import AccountArea from 'container/accountarea.jsx'
-
-import { Menu, Icon } from 'antd';
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
+import UserCenter from '../components/usercenter/userCenter.jsx';
+import Overview from '../components/usercenter/overview.jsx';
+import SkillTree from '../components/area/skillTree.jsx';
 
 
-//class App extends Component {
-//    render() {
-//        return (
-//            <div>{this.props.children}</div>
-//        )
-//    }
-//}
 
-const App = React.createClass({
-    getInitialState() {
-        return {
-            current: 'mail',
-        };
-    },
-    handleClick(e) {
-        console.log('click ', e);
-        this.setState({
-            current: e.key,
-        });
-    },
+class App extends Component {
     render() {
         return (
-            <Menu onClick={this.handleClick}
-                  selectedKeys={[this.state.current]}
-                  mode="inline"
-            >
-                <Menu.Item key="mail">
-                    <Icon type="mail" />Navigation One
-                </Menu.Item>
-                <Menu.Item key="app" disabled>
-                    <Icon type="appstore" />Navigation Two
-                </Menu.Item>
-                <SubMenu title={<span><Icon type="setting" />Navigation Three - Submenu</span>}>
-                    <MenuItemGroup title="Item 1">
-                        <Menu.Item key="setting:1">Option 1</Menu.Item>
-                        <Menu.Item key="setting:2">Option 2</Menu.Item>
-                    </MenuItemGroup>
-                    <MenuItemGroup title="Item 2">
-                        <Menu.Item key="setting:3">Option 3</Menu.Item>
-                        <Menu.Item key="setting:4">Option 4</Menu.Item>
-                    </MenuItemGroup>
-                </SubMenu>
-                <Menu.Item key="alipay">
-                    <a href="https://ant.design" target="_blank" rel="noopener noreferrer">Navigation Four - Link</a>
-                </Menu.Item>
-            </Menu>
-        );
-    },
-});
+            <div>{this.props.children}</div>
+        )
+    }
+}
 
-//let routes = (
-//    <Route path='/' component={App} >
-//        <IndexRoute component={UserCenter} />
-//        <Route path='user/' component= {UserCenter} />
-//    </Route>
-//);
+
 let routes = (
     <Route path='/' component={App} >
+        <Route path='user' component= {UserCenter}>
+            <IndexRoute component={Overview} />
+            <Route path='skilltrees/:state' component={SkillTree} />
+        </Route>
     </Route>
 );
 
 /*
+ <IndexRoute component={UserCenter} />
  <Route path='user/' component= {UserCenter} />
      <Route path='skilltrees/:state' component={SkillTreeArea} />
      <Route path='tasks/:state' component={TasksArea} />

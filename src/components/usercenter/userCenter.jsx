@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
-import SideBar from './sidebar.jsx';
-import StateMenu from './stateMenu.jsx';
-import ContentArea from './contentArea.jsx';
+
+import TopMenu from './topMenu.jsx';
+import Sidebar from './sidebar.jsx';
 
 class UserCenter extends Component{
     render(){
         return (
             <div>
-                <SideBar  />
+                <TopMenu />
+                <Sidebar />
                 <div className="wrapper">
-                    <StateMenu />
-                    <ContentArea />
+                    {this.props.children}
                 </div>
             </div>
         )

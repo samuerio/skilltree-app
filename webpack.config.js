@@ -30,7 +30,7 @@ module.exports = {
                 secure:false
             }
         },
-        //historyApiFallback:true,
+        historyApiFallback:true,
         port:'3000',
         //hot: true,
         inline: true
