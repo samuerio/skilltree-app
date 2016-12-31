@@ -1,19 +1,20 @@
-import UserCenter from '../components/usercenter.jsx';
+import UserCenter from '../components/usercenter/userCenter.jsx';
 import {bindActionCreators} from  'redux';
 import {connect} from  'react-redux';
-import {userMenuClick} from '../actions';
+import {menuClick} from '../actions/actionCreators';
 
 
 function mapStateToProps(state){
-    let{userCenter} = state;
+    let{userCenter,isFetching} = state;
     return{
-        userCenter
+        userCenter,
+        isFetching
     };
 }
 
 function  mapDispatchToProps(dispatch){
     return{
-        userMenuClick:bindActionCreators(userMenuClick,dispatch)
+        menuClick:bindActionCreators(menuClick,dispatch)
     }
 }
 

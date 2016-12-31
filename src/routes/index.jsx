@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Route, IndexRoute } from 'react-router';
-import UserCenter from '../components/usercenter/userCenter.jsx';
+import UserCenter from '../container/userCenter.jsx';
 import Overview from '../components/usercenter/overview.jsx';
-import SkillTree from '../components/area/skillTree.jsx';
 
 
 
@@ -17,12 +16,16 @@ class App extends Component {
 
 let routes = (
     <Route path='/' component={App} >
-        <Route path='user' component= {UserCenter}>
-            <IndexRoute component={Overview} />
-            <Route path='skilltrees/:state' component={SkillTree} />
-        </Route>
+        <Route path='user' component= {UserCenter} />
     </Route>
 );
+
+
+
+//<Route path='user' component= {UserCenter}>
+//    <IndexRoute component={Overview} />
+//    <Route path='skilltrees/(:state)' component={SkillTree} />
+//</Route>
 
 /*
  <IndexRoute component={UserCenter} />

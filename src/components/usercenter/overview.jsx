@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
-import Projects from './projects.jsx';
+import Skills from './skills.jsx';
 import Tasks from './tasks.jsx';
 import Activitys from './activitys.jsx';
 import {Row,Col} from 'antd';
 
 class Overivew extends Component{
     render(){
+        let {skills,isFetching} = this.props;
         return(
             <section className="user-index">
                 <Row gutter={16} >
                     <Col className="gutter-row" span={15} >
-                        <Projects />
+                        <Skills skills={skills}  isFetching={isFetching}  />
                         <Activitys />
                     </Col>
                     <Col className="gutter-row" span={9} >

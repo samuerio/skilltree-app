@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 
 class Card extends Component{
     render(){
+       let {title} = this.props;
        return(
            <div className="card">
                <div className="content">
@@ -9,7 +10,7 @@ class Card extends Component{
                        <i className="icon icon-line-chart"></i>&nbsp TRENDING
                    </h6>
                    <h4 className="card-title">
-                       <a href="#pablo">Java Core Skills</a>
+                       <a href="#pablo">{title}</a>
                    </h4>
                    <div className="footer">
                        <div className="author">

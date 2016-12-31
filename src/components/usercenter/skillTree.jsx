@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import SecMenu from './secMenu.jsx';
-import Projects from '../usercenter/projects.jsx';
+import Skills from '../usercenter/skills.jsx';
 
 class SkillTree extends Component{
     render(){
@@ -8,7 +8,7 @@ class SkillTree extends Component{
             <div>
                 <SecMenu />
                 <div className="container" >
-                    <Projects />
+                    <Skills />
                 </div>
             </div>
         )
