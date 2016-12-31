@@ -16,7 +16,7 @@ class Skills extends Component {
         }
         if(skills.data && skills.data.length !== 0){
             skills.data.map(function(skill,idx){
-                skillGroup[`${idx%3}`].push(<card title={skill.name} />);
+                skillGroup[`${idx%3}`].push(<Card key={idx} title={skill.name} />);
             });
         }
         return(
@@ -41,8 +41,9 @@ class Skills extends Component {
         );
     }
     componentWillMount(){
-        //let{fetchSkills,skills} = this.props;
-        //fetchSkills(skills.filter);
+        let{fetchSkills,skills} = this.props;
+        console.log(this.props);
+        fetchSkills(skills.filter);
     }
 }
 

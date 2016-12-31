@@ -1,4 +1,4 @@
-import {MENU_FILTER_CLICK} from './constants'
+import {MENU_FILTER_CLICK,FETCHING_DATA,RECEIVE_SKILLS,RECEIVE_DATA} from './constants'
 
 /**
  * 侧边栏点击事件
@@ -9,3 +9,49 @@ export function menuClick(indexMenu){
         type:MENU_FILTER_CLICK
     }
 }
+
+/**
+ * 获取skills数据
+ * @param filter
+ */
+export function fetchSkills(filter){
+    return function(dispatch){
+        dispatch(requestData());
+        $.post('/skilltree-app/app.action?type=skill',
+            {operType:'getList',creator:'111111'})
+        .then(function(data){
+            data = JSON.parse(data);
+            if(data.isSuccess){
+                dispatch(receiveSkills(data.content));
+            }
+            dispatch(receiveData());
+        })
+    }
+}
+
+function receiveSkills(skills){
+    return {
+        type:RECEIVE_SKILLS,
+        data:skills
+    }
+}
+
+
+//-------------------------Global Action
+
+/**
+ * 请求数据
+ * @returns {{type}}
+ */
+function requestData(){
+    return{
+        type:FETCHING_DATA
+    }
+}
+
+function receiveData(){
+    return{
+        type:RECEIVE_DATA
+    }
+}
+

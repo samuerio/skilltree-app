@@ -21,12 +21,8 @@ var plugins = [
 module.exports = {
     devServer: {
         proxy:{
-            '/api/*':{
-                target:"127.0.0.1:8080",
-                secure:false
-            },
             '/skilltree-app/*':{
-                target:'http://192.168.31.113:8080',
+                target:'http://127.0.0.1:8080',
                 secure:false
             }
         },

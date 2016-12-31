@@ -1,6 +1,6 @@
 import * as actions from '../actions/constants'
 import deepAssign from 'deep-assign';
-import {MENU_FILTER_CLICK} from '../actions/constants'
+import {MENU_FILTER_CLICK,RECEIVE_SKILLS} from '../actions/constants'
 
 
 let initialState = {
@@ -23,6 +23,12 @@ export default function(state={
             let { indexMenu } = action;
             return Object.assign({},state,{
                 indexMenu:indexMenu
+            });
+        case RECEIVE_SKILLS:
+            return deepAssign({},state,{
+                skills:{
+                    data:action.data
+                }
             });
         default:
             return state;
