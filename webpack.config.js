@@ -28,8 +28,8 @@ module.exports = {
         },
         historyApiFallback:true,
         port:'3000',
-        //hot: true,
-        inline: true
+        hot: true
+        //inline: true
     },
     entry:['./src/main.jsx'],
     output:{
@@ -40,7 +40,12 @@ module.exports = {
     module:{
         loaders:[
             {
-                test:/\.jsx|\.js$/,
+                test:/\.jsx$/,
+                exclude:/node_modules/,
+                loaders:['react-hot', 'babel?presets[]=react,presets[]=es2015']
+            },
+            {
+                test:/\.js$/,
                 exclude:/node_modules/,
                 loader:'babel'
             },

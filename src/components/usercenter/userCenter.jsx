@@ -7,7 +7,7 @@ import SkillTree from './skillTree.jsx';
 
 class UserCenter extends Component{
     render(){
-        let {isFetching,userCenter,menuClick,fetchSkills} = this.props;
+        let {isFetching,userCenter,menuClick,fetchSkills,skillFilter} = this.props;
         let {indexMenu,skills} = userCenter;
 
         let children = null;
@@ -16,13 +16,18 @@ class UserCenter extends Component{
                 children = <Overview skills={skills} isFetching={isFetching} fetchSkills={fetchSkills} />;
                 break;
             case 'skilltree':
-                children = <SkillTree skills={skills} isFetching={isFetching} fetchSkills={fetchSkills} />;
+                children = <SkillTree
+                    skills={skills}
+                    isFetching={isFetching}
+                    fetchSkills={fetchSkills}
+                    skillFilter={skillFilter}
+                />;
         }
 
         return (
             <div>
                 <TopMenu />
-                <Sidebar indexMenu={indexMenu} menuClick={menuClick} />
+                <Sidebar indexMenu={indexMenu} menuClick={menuClick}  skillFilter={skillFilter}  />
                 <div className="wrapper">
                     {children}
                 </div>

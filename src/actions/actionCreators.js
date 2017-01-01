@@ -1,4 +1,4 @@
-import {MENU_FILTER_CLICK,FETCHING_DATA,RECEIVE_SKILLS,RECEIVE_DATA} from './constants'
+import {MENU_FILTER_CLICK,FETCHING_DATA,RECEIVE_SKILLS,RECEIVE_DATA,SKILL_FILTER} from './constants'
 
 /**
  * 侧边栏点击事件
@@ -18,7 +18,7 @@ export function fetchSkills(filter){
     return function(dispatch){
         dispatch(requestData());
         $.post('/skilltree-app/app.action?type=skill',
-            {operType:'getList',creator:'111111'})
+            {operType:'getList',creator:'111111',filter:filter})
         .then(function(data){
             data = JSON.parse(data);
             if(data.isSuccess){
@@ -33,6 +33,13 @@ function receiveSkills(skills){
     return {
         type:RECEIVE_SKILLS,
         data:skills
+    }
+}
+
+export function skillFilter(filter){
+    return{
+        type:SKILL_FILTER,
+        filter:filter
     }
 }
 

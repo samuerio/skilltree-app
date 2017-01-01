@@ -3,3 +3,5 @@ export const RECEIVE_SKILLS = "RECEIVE_SKILLS";
 
 export const FETCHING_DATA = "FETCHING_DATA";
 export const RECEIVE_DATA = "RECEIVE_DATA";
+
+export const SKILL_FILTER = "SKILL_FILTER";

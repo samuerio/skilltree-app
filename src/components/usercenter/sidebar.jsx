@@ -19,7 +19,7 @@ class Sidebar extends Component{
             }
         ]
 
-        let {indexMenu,menuClick} = this.props;
+        let {indexMenu,menuClick,skillFilter} = this.props;
         let $menu = null;
         return(<div className="sidebar">
             {
@@ -30,11 +30,18 @@ class Sidebar extends Component{
                     }
                     if(menu.type === 'overview'){
                         return (
-                            <a className={itemClass} onClick={()=>menuClick('overview')} key={index} ><img src="/src/assets/images/logo2.png" /></a>
+                            <a className={itemClass} onClick={()=>{menuClick('overview');skillFilter('own');}} key={index} ><img src="/src/assets/images/logo2.png" /></a>
                         )
                     }else{
                         return(
-                            <a className={itemClass} onClick={()=>menuClick(menu.type)} key={index}>
+                            <a className={itemClass} onClick={
+                                function(){
+                                    menuClick(menu.type);
+                                    if(menu.type === 'skilltree'){
+                                        skillFilter('all');
+                                    }
+                                }
+                            } key={index}>
                                 <i className={menu.iconClass}></i>
                                 <span className="menu-title">{menu.name}</span>
                             </a>
