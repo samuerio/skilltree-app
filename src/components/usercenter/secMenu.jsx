@@ -3,7 +3,7 @@ import React,{Component} from 'react';
 class SecMenu extends Component{
     render(){
 
-        let{skillFilter,filter} = this.props;
+        let{skillFilter,filter,designerTabClick} = this.props;
 
         let childMenus = [
             {
@@ -38,7 +38,7 @@ class SecMenu extends Component{
             <div className="secMenu">
                 <header>
                     技能
-                    <a><i className="icon icon-plus"></i></a>
+                    <a onClick={()=>{skillFilter('create');designerTabClick('info');}} ><i className="icon icon-plus"></i></a>
                     <article>
                         按我创建的、参与的和归档的技能分类
                     </article>

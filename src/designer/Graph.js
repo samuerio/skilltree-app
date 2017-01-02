@@ -339,8 +339,13 @@ export function getChildrenNodeData(pid,sourceNodeDatas){
     if(Array.isArray(sourceNodeDatas)){
         sourceNodeDatas.forEach(function(nodeData){
             if(nodeData.punid === pid){
-                delete nodeData.punid;
-                children.push(nodeData);
+                let {id,x,y,label} = nodeData;
+                children.push({
+                    id,
+                    x,
+                    y,
+                    label
+                });
             }
         });
     }

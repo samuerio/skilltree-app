@@ -5,9 +5,6 @@ import Card from './card.jsx';
 class SkillGroup extends Component {
     render(){
         let {skills,isFetching} = this.props;
-        console.log('render`s props: ');
-        console.log(this.props);
-        console.log(this);
         if(isFetching){
             return <div>正在获取数据,请稍等...</div>
         }
@@ -46,15 +43,10 @@ class SkillGroup extends Component {
      * @param newProps
      */
     componentWillReceiveProps(newProps){
-        let{fetchSkills} = newProps;
-        console.log(this);
-        console.log('newProps: ');
-        console.log(newProps);
-        console.log('oldProps: ');
-        console.log(this.props);
-        console.log(this.props === newProps);
-
-        //fetchSkills(newProps.skills.filter);
+        let{fetchSkills,skills,isFetching} = newProps;
+        if((!skills.data || skills.data.length) === 0 && isFetching === false){
+            fetchSkills(skills.filter);
+        }
     }
 }
 

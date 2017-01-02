@@ -25,9 +25,6 @@ render(
 
 
 
-//初始化设计器
-//import {initDesigner} from './designer/index';
-//initDesigner();
 
 
 

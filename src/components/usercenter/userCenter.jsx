@@ -7,20 +7,26 @@ import SkillTree from './skillTree.jsx';
 
 class UserCenter extends Component{
     render(){
-        let {isFetching,userCenter,menuClick,fetchSkills,skillFilter} = this.props;
-        let {indexMenu,skills} = userCenter;
+        let {isFetching,userCenter,menuClick,fetchSkills,skillFilter,designerTabClick} = this.props;
+        let {indexMenu,skills,designer} = userCenter;
 
         let children = null;
         switch (indexMenu){
             case 'overview':
-                children = <Overview skills={skills} isFetching={isFetching} fetchSkills={fetchSkills} />;
+                children = <Overview skills={skills} isFetching={isFetching}
+                                     fetchSkills={fetchSkills}
+                                     skillFilter={skillFilter}
+                                     menuClick={menuClick}
+                                     designerTabClick = {designerTabClick} />;
                 break;
             case 'skilltree':
                 children = <SkillTree
                     skills={skills}
+                    designer = {designer}
                     isFetching={isFetching}
                     fetchSkills={fetchSkills}
                     skillFilter={skillFilter}
+                    designerTabClick = {designerTabClick}
                 />;
         }
 

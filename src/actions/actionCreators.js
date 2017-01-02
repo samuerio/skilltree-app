@@ -1,4 +1,4 @@
-import {MENU_FILTER_CLICK,FETCHING_DATA,RECEIVE_SKILLS,RECEIVE_DATA,SKILL_FILTER} from './constants'
+import {MENU_FILTER_CLICK,FETCHING_DATA,RECEIVE_SKILLS,RECEIVE_DATA,SKILL_FILTER,DESIGN_TAB_CLICK} from './constants'
 
 /**
  * 侧边栏点击事件
@@ -40,6 +40,13 @@ export function skillFilter(filter){
     return{
         type:SKILL_FILTER,
         filter:filter
+    }
+}
+
+export function designerTabClick(tabName){
+    return{
+        type:DESIGN_TAB_CLICK,
+        tab:tabName
     }
 }
 
