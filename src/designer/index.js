@@ -4,10 +4,10 @@ import Graph,{getChildrenNodeData} from './Graph'
 
 
 
-let nodeDatas = require('../json/nodeData.json');
+//let nodeDatas = require('../json/nodeData.json');
 
 
-export function initDesigner(){
+export function initDesigner(viewBox,nodeDatas){
     //初始化设计器画板
     initDrawBoard();
 
@@ -20,6 +20,9 @@ export function initDesigner(){
     var graph = new Graph(renderer,rootNodeData);
 
     renderToParent(graph.root,nodeDatas);
+
+    let{x,y,width,height} = viewBox;
+    graph.gRenderer.paper.setViewBox(x,y,width,height,false);
 
     /**
      * 递归渲染到父节点上
@@ -60,4 +63,6 @@ export function initDesigner(){
             }
         }
     });
+
+    return graph;
 }

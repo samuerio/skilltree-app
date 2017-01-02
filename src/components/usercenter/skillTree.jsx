@@ -5,10 +5,18 @@ import SkillDesigner from './skillDesigner.jsx'
 
 class SkillTree extends Component{
     render(){
-        let {designer,skills,fetchSkills,isFetching,skillFilter,designerTabClick} = this.props;
+        let {form,designer,skills,fetchSkills,isFetching,
+            skillFilter,designerTabClick,addFieldVal,removeField,saveCanvasData} = this.props;
         let $content = null;
         if(skills.filter === 'create'){
-            $content = <SkillDesigner designer={designer} designerTabClick={designerTabClick} />
+            $content = <SkillDesigner
+                designer={designer}
+                designerTabClick={designerTabClick}
+                form={form}
+                addFieldVal = {addFieldVal}
+                removeField = {removeField}
+                saveCanvasData = {saveCanvasData}
+            />
         }else{
             $content = (
                 <div className="my-skills">

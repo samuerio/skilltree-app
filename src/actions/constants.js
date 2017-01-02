@@ -6,3 +6,8 @@ export const RECEIVE_DATA = "RECEIVE_DATA";
 
 export const SKILL_FILTER = "SKILL_FILTER";
 export const DESIGN_TAB_CLICK = 'DESIGN_TAB_CLICK';
+
+export const ADD_FIELD_VAL = 'ADD_FIELD_VAL';
+export const REMOVE_FIELD = 'REMOVE_FIELD';
+
+export const SAVE_CANVAS_DATA = 'SAVE_CANVAS_DATA';

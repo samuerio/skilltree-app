@@ -1,4 +1,4 @@
-import {MENU_FILTER_CLICK,FETCHING_DATA,RECEIVE_SKILLS,RECEIVE_DATA,SKILL_FILTER,DESIGN_TAB_CLICK} from './constants'
+import * as actions from './constants'
 
 /**
  * 侧边栏点击事件
@@ -6,7 +6,7 @@ import {MENU_FILTER_CLICK,FETCHING_DATA,RECEIVE_SKILLS,RECEIVE_DATA,SKILL_FILTER
 export function menuClick(indexMenu){
     return {
         indexMenu:indexMenu,
-        type:MENU_FILTER_CLICK
+        type:actions.MENU_FILTER_CLICK
     }
 }
 
@@ -31,24 +31,26 @@ export function fetchSkills(filter){
 
 function receiveSkills(skills){
     return {
-        type:RECEIVE_SKILLS,
+        type:actions.RECEIVE_SKILLS,
         data:skills
     }
 }
 
 export function skillFilter(filter){
     return{
-        type:SKILL_FILTER,
+        type:actions.SKILL_FILTER,
         filter:filter
     }
 }
 
 export function designerTabClick(tabName){
     return{
-        type:DESIGN_TAB_CLICK,
+        type:actions.DESIGN_TAB_CLICK,
         tab:tabName
     }
 }
+
+
 
 
 //-------------------------Global Action
@@ -59,13 +61,57 @@ export function designerTabClick(tabName){
  */
 function requestData(){
     return{
-        type:FETCHING_DATA
+        type:actions.FETCHING_DATA
     }
 }
 
+/**
+ * 接收到数据
+ * @returns {{type}}
+ */
 function receiveData(){
     return{
-        type:RECEIVE_DATA
+        type:actions.RECEIVE_DATA
+    }
+}
+
+/**
+ * 添加表单字段值
+ * @param fieldName
+ * @param filedVal
+ * @returns {{type, fieldName: *, fieldVal: (fieldVal|*)}}
+ */
+export function addFieldVal(fieldName,filedVal){
+    return {
+        type:actions.ADD_FIELD_VAL,
+        fieldName:fieldName,
+        fieldVal:filedVal
+    }
+}
+
+/**
+ * 存储canvas数据到state
+ * @param viewBox
+ * @param mindNodes
+ * @returns {{type, viewBox: *, mindNodes: Array}}
+ */
+export function saveCanvasData(viewBox,mindNodes = []){
+    return {
+        type:actions.SAVE_CANVAS_DATA,
+        viewBox:viewBox,
+        mindNodes:mindNodes
+    }
+}
+
+/**
+ * 移除表单字段
+ * @param fieldName
+ * @returns {{type, fieldName: *}}
+ */
+export function removeField(fieldName){
+    return {
+        type:actions.REMOVE_FIELD,
+        fieldName:fieldName
     }
 }
 

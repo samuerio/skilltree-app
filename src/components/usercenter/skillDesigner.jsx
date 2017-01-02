@@ -8,8 +8,13 @@ import {initDesigner} from '../../designer/index';
 
 
 class SkillDesigner extends Component{
+    constructor(props) {
+        super(props);
+        //初始化画图对象的引用
+        this.graph = null;
+    }
     render(){
-        let {designer,designerTabClick} = this.props;
+        let {form,designer,designerTabClick,addFieldVal,saveCanvasData} = this.props;
         let {indexTab} = designer;
 
         let $tabContent = <div>{indexTab+'的tab内容为空'}</div>;
@@ -17,9 +22,46 @@ class SkillDesigner extends Component{
             $tabContent = (
                 <div>
                     <div className="header">
-                        <Button type="ghost">保存</Button>
-                        <Button type="ghost">新增</Button>
-                        <Button type="ghost">删除</Button>
+                        <Button type="ghost" onClick={()=>{
+
+                            let viewBox = this.graph.gRenderer.paper.canvas.getAttribute('viewBox');
+                            if(viewBox){
+                                let paramArr = viewBox.split(" ");
+                                viewBox = {
+                                    x:paramArr[0],
+                                    y:paramArr[1],
+                                    width:paramArr[2],
+                                    height:paramArr[3]
+                                }
+                            }else{
+                                viewBox = {
+                                    x:"0",
+                                    y:"0",
+                                    width:"1000",
+                                    height:"1000"
+                                }
+                            }
+
+                            let mindNodes = this.graph.getJSON();
+                            saveCanvasData(viewBox,mindNodes);
+                        }}>保存设计器配置</Button>
+                        <Button type="ghost" onClick={()=>{
+                            let graph = this.graph;
+                             if(graph.selected){
+                                graph.addNode(graph.selected, {});
+                            }
+                        }}>新增</Button>
+                        <Button type="ghost" onClick={()=>{
+                             let graph = this.graph;
+                              if(graph.selected){
+                                    if(graph.selected.isRootNode()){
+                                        console.log('cannot cancel root node');
+                                    }else{
+                                        graph.removeNode(graph.selected);
+                                        graph.setSelected(null);
+                                    }
+                                }
+                        }}>删除</Button>
                     </div>
                     <div style={{backgroundColor:'rgb(242, 242, 242)',marginTop:'10px',position:'relative'}} >
                         <canvas id="designer_grids"></canvas>
@@ -37,10 +79,15 @@ class SkillDesigner extends Component{
                           <Option value="disabled" disabled>Disabled</Option>
                           <Option value="Yiminghe">yiminghe</Option>
                         </Select>
-                        <Input size="large" placeholder="技能名称" />
+                        <Input id="name" size="large"  placeholder="技能名称" defaultValue={form.name || ''}
+                               onPressEnter={()=>addFieldVal('name',document.getElementById('name').value)} />
                     </div>
                     <div className="field">
-                        <Input type="textarea" rows={4} />
+                        <Input id="describe" type="textarea"  rows={4} defaultValue={form.describe || ''}
+                               onPressEnter={(e)=>{addFieldVal('describe',document.getElementById('describe').value)}} />
+                    </div>
+                    <div className="field">
+                        <Button type="primary"  size="large" >创建技能</Button>
                     </div>
                 </div>
             );
@@ -52,13 +99,17 @@ class SkillDesigner extends Component{
                     <nav className="designer-nav">
                                 <span>
                                     <a className={indexTab === 'info' ? 'nav-item selected' : 'nav-item'}
-                                                onClick={()=>designerTabClick('info')}>
+                                                onClick={
+                                                    ()=>(indexTab !== 'info') && designerTabClick('info')
+                                                }>
                                         <i className="icon icon-info"></i><span>基本信息</span>
                                     </a>
                                 </span>
                                 <span>
                                     <a className={indexTab === 'canvas' ? 'nav-item selected' : 'nav-item'}
-                                                onClick={()=>designerTabClick('canvas')} >
+                                                onClick={
+                                                    ()=>(indexTab !== 'canvas') && designerTabClick('canvas')
+                                                } >
                                         <i className="icon icon-puzzle"></i><span>设计器</span>
                                     </a>
                                 </span>
@@ -74,11 +125,31 @@ class SkillDesigner extends Component{
      * @param newProps
      */
     componentDidUpdate(){
-        let indexTab = this.props.designer.indexTab;
+        let {indexTab,data} = this.props.designer;
+        let {viewBox,mindNodes} = data;
         if(indexTab === 'canvas'){
             //初始化设计器
-            initDesigner();
+            this.graph = initDesigner(viewBox,mindNodes);
+        }else{
+            this.graph = null;
         }
+    }
+
+    /**
+     * 当设计器销毁时,删除form上的设计器表单字段
+     */
+    componentWillUnmount(){
+        let {removeField,saveCanvasData} = this.props;
+        ['name','describe'].map(function(fieldName){
+            removeField(fieldName);
+        });
+        //重置Canvas参数
+        saveCanvasData({
+            x:"0",
+            y:"0",
+            width:"1000",
+            height:"1000"
+        },[]);
     }
 }
 
