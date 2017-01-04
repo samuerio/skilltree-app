@@ -339,12 +339,13 @@ export function getChildrenNodeData(pid,sourceNodeDatas){
     if(Array.isArray(sourceNodeDatas)){
         sourceNodeDatas.forEach(function(nodeData){
             if(nodeData.punid === pid){
-                let {id,x,y,label} = nodeData;
+                let {id,x,y,label,isParent} = nodeData;
                 children.push({
                     id,
                     x,
                     y,
-                    label
+                    label,
+                    isParent
                 });
             }
         });

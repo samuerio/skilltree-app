@@ -83,11 +83,24 @@ class SkillDesigner extends Component{
                                onPressEnter={()=>addFieldVal('name',document.getElementById('name').value)} />
                     </div>
                     <div className="field">
-                        <Input id="describe" type="textarea"  rows={4} defaultValue={form.describe || ''}
-                               onPressEnter={(e)=>{addFieldVal('describe',document.getElementById('describe').value)}} />
+                        <Input id="description" type="textarea"  rows={4} defaultValue={form.description || ''}
+                               onPressEnter={(e)=>{addFieldVal('description',document.getElementById('description').value)}} />
                     </div>
                     <div className="field">
-                        <Button type="primary"  size="large" >创建技能</Button>
+                        <Button type="primary"  size="large" onClick={()=>{
+                            let {viewBox,mindNodes} = designer.data;
+                            //进行技能树的存储
+                            let actionUrl = '/skilltree-app/app.action?type=skill&operType=createSkill';
+                            $.post(actionUrl,{
+                                name:form.name || '',
+                                description:form.description || '',
+                                viewBox:JSON.stringify(viewBox),
+                                mindNodes:JSON.stringify(mindNodes)
+                            }).then(function(rs){
+                                rs = JSON.parse(rs);
+                                rs.isSuccess && alert('创建成功!');
+                            });
+                        }} >创建技能</Button>
                     </div>
                 </div>
             );
@@ -140,7 +153,7 @@ class SkillDesigner extends Component{
      */
     componentWillUnmount(){
         let {removeField,saveCanvasData} = this.props;
-        ['name','describe'].map(function(fieldName){
+        ['name','description'].map(function(fieldName){
             removeField(fieldName);
         });
         //重置Canvas参数
