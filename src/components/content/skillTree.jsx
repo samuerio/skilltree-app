@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import SecMenu from './secMenu.jsx';
-import SkillGroup from './skillGroup.jsx';
-import SkillDesigner from './skillDesigner.jsx'
+import StateMenu from '../stateMenu.jsx';
+import SkillGroup from '../common/skillGroup.jsx';
+import SkillDesigner from '../designer/skillDesigner.jsx'
 
 class SkillTree extends Component{
     render(){
@@ -29,7 +29,7 @@ class SkillTree extends Component{
         }
         return(
             <div>
-                <SecMenu skillFilter = {skillFilter} filter={skills.filter} designerTabClick={designerTabClick} />
+                <StateMenu skillFilter = {skillFilter} filter={skills.filter} designerTabClick={designerTabClick} />
                 <div className="container"  >
                     {$content}
                 </div>

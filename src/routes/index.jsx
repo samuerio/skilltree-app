@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, IndexRoute } from 'react-router';
 import UserCenter from '../container/userCenter.jsx';
-import Overview from '../components/usercenter/overview.jsx';
+//import Overview from '../components/usercenter/overview.jsx';
 
 
 

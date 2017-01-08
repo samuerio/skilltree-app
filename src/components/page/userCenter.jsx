@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 
-import TopMenu from './topMenu.jsx';
-import Sidebar from './sidebar.jsx';
-import Overview from './overview.jsx';
-import SkillTree from './skillTree.jsx';
+import NavBar from '../navbar.jsx';
+import Sidebar from '../sidebar.jsx';
+import Overview from '../content/overview.jsx';
+import SkillTree from '../content/skillTree.jsx';
 
 class UserCenter extends Component{
     render(){
@@ -37,7 +37,7 @@ class UserCenter extends Component{
 
         return (
             <div>
-                <TopMenu />
+                <NavBar />
                 <Sidebar indexMenu={indexMenu} menuClick={menuClick}  skillFilter={skillFilter}  />
                 <div className="wrapper">
                     {children}

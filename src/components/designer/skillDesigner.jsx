@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import {Button,Select,Input} from 'antd';
+import SkillInfoForm from './skillInfoForm.jsx'
 const Option = Select.Option;
 
 
@@ -13,6 +14,7 @@ class SkillDesigner extends Component{
         //初始化画图对象的引用
         this.graph = null;
     }
+
     render(){
         let {form,designer,designerTabClick,addFieldVal,saveCanvasData} = this.props;
         let {indexTab} = designer;
@@ -70,40 +72,7 @@ class SkillDesigner extends Component{
                 </div>
             );
         }else  if(indexTab === 'info'){
-            $tabContent = (
-                <div>
-                    <div className="field">
-                        <Select size="large" defaultValue="lucy" style={{ width: 120 }} >
-                          <Option value="jack">Jack</Option>
-                          <Option value="lucy">Lucy</Option>
-                          <Option value="disabled" disabled>Disabled</Option>
-                          <Option value="Yiminghe">yiminghe</Option>
-                        </Select>
-                        <Input id="name" size="large"  placeholder="技能名称" defaultValue={form.name || ''}
-                               onPressEnter={()=>addFieldVal('name',document.getElementById('name').value)} />
-                    </div>
-                    <div className="field">
-                        <Input id="description" type="textarea"  rows={4} defaultValue={form.description || ''}
-                               onPressEnter={(e)=>{addFieldVal('description',document.getElementById('description').value)}} />
-                    </div>
-                    <div className="field">
-                        <Button type="primary"  size="large" onClick={()=>{
-                            let {viewBox,mindNodes} = designer.data;
-                            //进行技能树的存储
-                            let actionUrl = '/skilltree-app/app.action?type=skill&operType=createSkill';
-                            $.post(actionUrl,{
-                                name:form.name || '',
-                                description:form.description || '',
-                                viewBox:JSON.stringify(viewBox),
-                                mindNodes:JSON.stringify(mindNodes)
-                            }).then(function(rs){
-                                rs = JSON.parse(rs);
-                                rs.isSuccess && alert('创建成功!');
-                            });
-                        }} >创建技能</Button>
-                    </div>
-                </div>
-            );
+            $tabContent = (<SkillInfoForm designer={designer} formData={form} addFieldVal={addFieldVal} submitSkillInfo={this.submitSkillInfo} />);
         }
 
         return(
@@ -120,9 +89,7 @@ class SkillDesigner extends Component{
                                 </span>
                                 <span>
                                     <a className={indexTab === 'canvas' ? 'nav-item selected' : 'nav-item'}
-                                                onClick={
-                                                    ()=>(indexTab !== 'canvas') && designerTabClick('canvas')
-                                                } >
+                                                onClick={()=>designerTabClick('canvas')} >
                                         <i className="icon icon-puzzle"></i><span>设计器</span>
                                     </a>
                                 </span>

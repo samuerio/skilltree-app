@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import SkillGroup from './skillGroup.jsx';
-import Tasks from './tasks.jsx';
-import Activitys from './activitys.jsx';
+import SkillGroup from '../common/skillGroup.jsx';
+import Tasks from '../common/tasks.jsx';
+import Activitys from '../common/activitys.jsx';
 import {Row,Col} from 'antd';
 
 class Overivew extends Component{

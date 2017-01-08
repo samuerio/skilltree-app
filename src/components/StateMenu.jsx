@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 
-class SecMenu extends Component{
+class StateMenu extends Component{
     render(){
 
         let{skillFilter,filter,designerTabClick} = this.props;
@@ -49,4 +49,4 @@ class SecMenu extends Component{
     }
 }
 
-export default SecMenu;
+export default StateMenu;
