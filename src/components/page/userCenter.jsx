@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
 
 import NavBar from '../navbar.jsx';
-import Sidebar from '../sidebar.jsx';
 import Overview from '../content/overview.jsx';
 import SkillTree from '../content/skillTree.jsx';
 
+import Sidebar from '../sidebar/index.jsx';
+import Icon from '../common/icon.jsx';
+
+
 class UserCenter extends Component{
+
     render(){
         let {form,isFetching,userCenter,menuClick,fetchSkills,
             skillFilter,designerTabClick,addFieldVal,removeField,saveCanvasData} = this.props;
@@ -38,7 +42,27 @@ class UserCenter extends Component{
         return (
             <div>
                 <NavBar />
-                <Sidebar indexMenu={indexMenu} menuClick={menuClick}  skillFilter={skillFilter}  />
+                <Sidebar selectedKey={indexMenu}  onClick={(alias)=>{
+                    menuClick(alias);
+                    switch(alias){
+                        case 'overview':
+                            skillFilter('own');
+                            break;
+                        case 'skilltree':
+                            skillFilter('all');
+                            break;
+                    }
+                }} >
+                    <Sidebar.Item alias="overview">
+                        <img src='/src/assets/images/logo2.png' />
+                    </Sidebar.Item>
+                    <Sidebar.Item alias="skilltree">
+                        <Icon type="tree" /><span className="menu-title">技能</span>
+                    </Sidebar.Item>
+                    <Sidebar.Item alias="task">
+                        <Icon type="task" /><span className="menu-title">任务</span>
+                    </Sidebar.Item>
+                </Sidebar>
                 <div className="wrapper">
                     {children}
                 </div>
@@ -46,5 +70,6 @@ class UserCenter extends Component{
         )
     }
 }
+
 
 export default UserCenter;
