@@ -14,6 +14,7 @@ var plugins = [
         allChunks: true,
         disable: false
     }),
+    new webpack.HotModuleReplacementPlugin()
 ];
 
 
@@ -28,8 +29,8 @@ module.exports = {
         },
         historyApiFallback:true,
         port:'3000',
-        hot: true
-        //inline: true
+        hot: true,
+        inline: true
     },
     entry:['./src/main.jsx'],
     output:{
