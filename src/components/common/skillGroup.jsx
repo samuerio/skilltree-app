@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {Row,Col} from 'antd';
 import Card from './card.jsx';
+import Loading from './loading.jsx';
 
 class SkillGroup extends Component {
     render(){
         let {skills,isFetching} = this.props;
         if(isFetching){
-            return <div>正在获取数据,请稍等...</div>
+            return <Loading />
         }
 
         let skillGroup = {

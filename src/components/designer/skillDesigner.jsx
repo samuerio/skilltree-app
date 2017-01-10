@@ -1,9 +1,7 @@
 import React,{Component} from 'react';
-import {Button,Select,Input} from 'antd';
+import {Button,Select,Input,message} from 'antd';
 import SkillInfoForm from './skillInfoForm.jsx'
 const Option = Select.Option;
-
-
 
 import {initDesigner} from '../../designer/index';
 
@@ -46,6 +44,7 @@ class SkillDesigner extends Component{
 
                             let mindNodes = this.graph.getJSON();
                             saveCanvasData(viewBox,mindNodes);
+                            message.success('配置保存成功!');
                         }}>保存设计器配置</Button>
                         <Button type="ghost" onClick={()=>{
                             let graph = this.graph;

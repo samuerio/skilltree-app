@@ -1,4 +1,4 @@
-import {Form,Input,Button} from 'antd';
+import {Form,Input,Button,message} from 'antd';
 import React,{Component} from 'react';
 const FormItem  = Form.Item;
 
@@ -30,11 +30,11 @@ export default Form.create({
     let {designer,formData} = props;
     return(
         <Form vertical >
-            <FormItem label="技能名称" labelCol={{span:4}} wrapperCol={{span:8}}>
+            <FormItem label="技能名称" labelCol={{span:4}} wrapperCol={{span:8}} hasFeedback>
                 {
                     getFieldDecorator('name',{
                         rules:[{
-                            required: true, message: 'Please input your E-mail!'
+                            required: true, message: '请输入技能名称!'
                         }]
                     })(<Input />)
                 }
@@ -47,7 +47,17 @@ export default Form.create({
             <FormItem wrapperCol={{ span: 8, offset: 4 }} >
                 <Button type="primary"  size="large" onClick={()=>{
                     let {viewBox,mindNodes} = designer.data;
-                    //进行技能树的存储
+
+                    props.form.validateFields(function(err,values){
+                        if(err){
+                            for( let fieldName in err ){
+                                let errorInfo = err[fieldName];
+                                message.error(errorInfo['errors'][0]['message']);
+                            }
+                            return;
+                        }
+
+                         //进行技能树的存储
                     let actionUrl = '/skilltree-app/app.action?type=skill&operType=createSkill';
                     $.post(actionUrl,{
                         name:formData.name || '',
@@ -56,7 +66,13 @@ export default Form.create({
                         mindNodes:JSON.stringify(mindNodes)
                     }).then(function(rs){
                         rs = JSON.parse(rs);
-                        rs.isSuccess && alert('创建成功!');
+                        if(rs.isSuccess){
+                            message.success('技能创建成功!');
+                        }else{
+                            message.error(rs.message);
+                        }
+                    });
+
                     });
                 }} >创建技能</Button>
             </FormItem>

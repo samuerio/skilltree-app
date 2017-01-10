@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, IndexRoute } from 'react-router';
 import UserCenter from '../container/userCenter.jsx';
-//import Overview from '../components/usercenter/overview.jsx';
+import SkillCenter from '../container/skillCenter.jsx';
 
 
 
@@ -17,6 +17,7 @@ class App extends Component {
 let routes = (
     <Route path='/' component={App} >
         <Route path='user' component= {UserCenter} />
+        <Route path='u/:username/s/:skillname/' component={SkillCenter} />
     </Route>
 );
 
