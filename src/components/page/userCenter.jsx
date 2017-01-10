@@ -1,58 +1,59 @@
 import React, {Component} from 'react';
 
-import NavBar from '../navbar.jsx';
+import NavBar from '../layout/navbar.jsx';
 import Overview from '../content/overview.jsx';
 import SkillTree from '../content/skillTree.jsx';
 
-import Sidebar from '../sidebar/index.jsx';
+import Sidebar from '../layout/sidebar/index.jsx';
 import Icon from '../common/icon.jsx';
+import ContentWrapper from '../layout/contentWrapper.jsx';
 
 
 class UserCenter extends Component{
 
-    render(){
-        let {form,isFetching,userCenter,menuClick,fetchSkills,
-            skillFilter,designerTabClick,addFieldVal,removeField,saveCanvasData} = this.props;
-        let {indexMenu,skills,designer} = userCenter;
+    constructor(props) {
+        super(props);
+        this.sideBarClick = this.sideBarClick.bind(this);
+    }
 
-        let children = null;
-        switch (indexMenu){
+    sideBarClick(alias){
+        let {menuClick,skillFilter} = this.props;
+        menuClick(alias);
+        switch(alias){
             case 'overview':
-                children = <Overview skills={skills} isFetching={isFetching}
-                                     fetchSkills={fetchSkills}
-                                     skillFilter={skillFilter}
-                                     menuClick={menuClick}
-                                     designerTabClick = {designerTabClick} />;
+                skillFilter('own');
                 break;
             case 'skilltree':
-                children = <SkillTree
-                    skills={skills}
-                    designer = {designer}
-                    isFetching={isFetching}
-                    form={form}
-                    addFieldVal = {addFieldVal}
-                    removeField = {removeField}
-                    fetchSkills={fetchSkills}
-                    skillFilter={skillFilter}
-                    designerTabClick = {designerTabClick}
-                    saveCanvasData = {saveCanvasData}
-                />;
+                skillFilter('all');
+                break;
+        }
+    }
+
+    render(){
+        //States
+        let {form,isFetching,userCenter} = this.props;
+        //Dispatchs
+        let {menuClick,fetchSkills,skillFilter,designerTabClick,
+            addFieldVal,removeField,saveCanvasData} = this.props;
+
+        let {indexMenu,skills,designer} = userCenter;
+        let content = null,contentProps = null;
+        switch (indexMenu){
+            case 'overview':
+                contentProps  = {skills,isFetching,fetchSkills,skillFilter,
+                    menuClick,designerTabClick}
+                content = <Overview {...contentProps} />;
+                break;
+            case 'skilltree':
+                contentProps = {skills,designer,isFetching,form,
+                    addFieldVal,removeField,fetchSkills,skillFilter,designerTabClick,saveCanvasData}
+                content = <SkillTree {...contentProps} />;
         }
 
         return (
             <div>
                 <NavBar />
-                <Sidebar selectedKey={indexMenu}  onClick={(alias)=>{
-                    menuClick(alias);
-                    switch(alias){
-                        case 'overview':
-                            skillFilter('own');
-                            break;
-                        case 'skilltree':
-                            skillFilter('all');
-                            break;
-                    }
-                }} >
+                <Sidebar selectedKey={indexMenu}  onClick={this.sideBarClick} >
                     <Sidebar.Item alias="overview">
                         <img src='/src/assets/images/logo2.png' />
                     </Sidebar.Item>
@@ -63,9 +64,9 @@ class UserCenter extends Component{
                         <Icon type="task" /><span className="menu-title">任务</span>
                     </Sidebar.Item>
                 </Sidebar>
-                <div className="wrapper">
-                    {children}
-                </div>
+                <ContentWrapper>
+                    {content}
+                </ContentWrapper>
             </div>
         )
     }

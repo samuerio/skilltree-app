@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Row,Col} from 'antd';
-import Card from './card.jsx';
-import Loading from './loading.jsx';
+import Card from '../card.jsx';
+import Loading from '../loading.jsx';
 
-class SkillGroup extends Component {
+class Group extends Component {
     render(){
         let {skills,isFetching} = this.props;
         if(isFetching){
@@ -51,4 +51,4 @@ class SkillGroup extends Component {
     }
 }
 
-export default SkillGroup;
+export default Group;

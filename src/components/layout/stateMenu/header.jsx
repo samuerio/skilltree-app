@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import Icon from '../common/icon.jsx'
+import Icon from '../../common/icon.jsx'
 
 class Header extends Component{
     render(){
