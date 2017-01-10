@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import StateMenu from '../stateMenu.jsx';
 import SkillGroup from '../common/skillGroup.jsx';
 import SkillDesigner from '../designer/skillDesigner.jsx'
+import Icon from '../common/icon.jsx';
+import StateMenu from '../stateMenu/index.jsx';
 
 class SkillTree extends Component{
     render(){
@@ -29,7 +30,20 @@ class SkillTree extends Component{
         }
         return(
             <div>
-                <StateMenu skillFilter = {skillFilter} filter={skills.filter} designerTabClick={designerTabClick} />
+                <StateMenu selectedAlias={skills.filter} onClick={(alias)=>{
+                    skillFilter(alias);
+                }}  >
+                    <StateMenu.Header title='技能' desc='按我创建的、参与的和归档的技能分类' addable onAdd={()=>{
+                        skillFilter('create');
+                        designerTabClick('info');
+                    }} />
+                    <StateMenu.Item alias="all">
+                        <Icon type="tree" /><span>所有技能</span>
+                    </StateMenu.Item>
+                    <StateMenu.Item alias="own">
+                        <Icon type="edit" /><span>由我创建</span>
+                    </StateMenu.Item>
+                </StateMenu>
                 <div className="container"  >
                     {$content}
                 </div>
