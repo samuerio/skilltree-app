@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import SkillDesigner from '../designer/skillDesigner.jsx'
+import Designer from '../designer/designer.jsx'
 import Icon from '../common/icon.jsx';
 import StateMenu from '../layout/stateMenu/index.jsx';
 import Skills from '../common/skills/index.jsx'
@@ -25,7 +25,7 @@ class SkillTree extends Component{
         if(skills.filter === 'create'){
             contentProps = {designer,form,
                 designerTabClick,addFieldVal,removeField,saveCanvasData}
-            content = <SkillDesigner {...contentProps} />
+            content = <Designer {...contentProps} />
         }else{
             contentProps = {skills,isFetching,fetchSkills}
             const titleMap = {
