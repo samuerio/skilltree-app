@@ -42,12 +42,12 @@ class Group extends Component {
     }
 
     /**
-     * 当filter有变动时,重新获取skills数据
+     * 当filter有变动时,则重新获取skills数据
      * @param newProps
      */
     componentWillReceiveProps(newProps){
-        let{fetchSkills,skills,isFetching,filter} = newProps;
-        if((!skills.data || skills.data.length=== 0)  && isFetching === false){
+        let{fetchSkills,isFetching,filter} = newProps;
+        if(filter !== this.props.filter  && isFetching === false){
             fetchSkills(filter);
         }
     }

@@ -24,7 +24,6 @@ class UserCenter extends Component{
     }
 
     sideBarClick(alias){
-        let {skillFilter} = this.props;
         switch(alias){
             case SIDEBAR_ALIAS.overview:
                 this.context.router.push('/user');

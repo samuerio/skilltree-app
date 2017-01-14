@@ -27,13 +27,6 @@ function receiveSkills(skills){
     }
 }
 
-export function skillFilter(filter){
-    return{
-        type:actions.SKILL_FILTER,
-        filter:filter
-    }
-}
-
 export function designerTabClick(tabName){
     return{
         type:actions.DESIGN_TAB_CLICK,

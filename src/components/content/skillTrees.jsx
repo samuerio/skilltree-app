@@ -1,65 +1,62 @@
-import React, {Component} from 'react';
+import React, {Component,PropTypes} from 'react';
 import Designer from '../designer/index.jsx'
 import Icon from '../common/icon.jsx';
 import StateMenu from '../layout/stateMenu/index.jsx';
 import Skills from '../common/skills/index.jsx'
+
+
+export const STATE_MENU_ALIAS = {
+    all:'all',
+    own:'own'
+}
 
 class SkillTrees extends Component{
 
     constructor(props) {
         super(props);
         this.addSkill = this.addSkill.bind(this);
+        this.stateMenuClick = this.stateMenuClick.bind(this);
     }
 
     addSkill(){
-        let {skillFilter,designerTabClick} = this.props;
-        skillFilter('create');
-        designerTabClick('info');
+        this.context.router.push('/user/skilltrees/create');
     }
 
-    componentWillMount(){
-        //初始化的skill filter状态只能是 all/create
-        let {skillFilter,skills} = this.props;
-        let {filter} = skills;
-
-        if(['all','create'].indexOf(filter) == -1){
-            filter = 'all';
-        }
-        skillFilter(filter);
+    stateMenuClick(alias){
+        this.context.router.push('/user/skilltrees/'+alias);
     }
 
     render(){
+        let filter = this.props.params['filter'] || STATE_MENU_ALIAS.all;
         let {form,designer,skills,fetchSkills,isFetching,
-            skillFilter,designerTabClick,addFieldVal,removeField,saveCanvasData} = this.props;
+                designerTabClick,addFieldVal,removeField,saveCanvasData} = this.props;
 
         let content ,contentProps ;
-        if(skills.filter === 'create'){
+        if(filter === 'create'){
             contentProps = {designer,form,
                 designerTabClick,addFieldVal,removeField,saveCanvasData}
             content = <Designer {...contentProps} />
         }else{
             contentProps = {skills,isFetching,fetchSkills}
             const titleMap = {
-                'all':'所有技能',
-                'own':'由我创建'
+                [STATE_MENU_ALIAS.all]:'所有技能',
+                [STATE_MENU_ALIAS.own]:'由我创建'
             }
             content = (
                 <Skills>
-                    <Skills.Header title={titleMap[skills.filter]} />
-                    <Skills.Group {...contentProps} />
+                    <Skills.Header title={titleMap[filter]} />
+                    <Skills.Group {...contentProps} filter={filter}/>
                 </Skills>
             );
         }
         return(
             <div>
-                <StateMenu selectedAlias={skills.filter} onClick={(alias)=>{
-                    skillFilter(alias);
-                }}  >
+                <StateMenu selectedAlias={filter} onClick={this.stateMenuClick}  >
                     <StateMenu.Header title='技能' desc='按我创建的、参与的和归档的技能分类' addable onAdd={this.addSkill} />
-                    <StateMenu.Item alias="all">
+                    <StateMenu.Item alias={STATE_MENU_ALIAS.all}>
                         <Icon type="tree" /><span>所有技能</span>
                     </StateMenu.Item>
-                    <StateMenu.Item alias="own">
+                    <StateMenu.Item alias={STATE_MENU_ALIAS.own}>
                         <Icon type="edit" /><span>由我创建</span>
                     </StateMenu.Item>
                 </StateMenu>
@@ -70,5 +67,9 @@ class SkillTrees extends Component{
         )
     }
 }
+
+SkillTrees.contextTypes = {
+    router: PropTypes.object.isRequired
+};
 
 export default SkillTrees;

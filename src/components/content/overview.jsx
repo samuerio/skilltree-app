@@ -13,18 +13,7 @@ class Overview extends Component{
     }
 
     createSkill(){
-        let {skillFilter,designerTabClick} = this.props;
-        //1.切换到skilltree的sidebar栏
-        this.context.router.push('/user/'+SIDEBAR_ALIAS.skilltrees);
-        //2.skill的filter调整为create
-        skillFilter('create');
-        //3.设计器的Tab栏调整为info Tab栏
-        designerTabClick('info');
-    }
-
-    componentWillMount(){
-        let {skillFilter} = this.props
-        skillFilter('own');
+        this.context.router.push('/user/skilltrees/create');
     }
 
     render(){
@@ -39,7 +28,7 @@ class Overview extends Component{
                                 <a  className="more-link" >查看所有</a>
                                 <a  className="more-link" onClick={this.createSkill}>+创建技能&nbsp;</a>
                             </Skills.Header>
-                            <Skills.Group {...{skills,isFetching,fetchSkills}} filter={skills.filter} />
+                            <Skills.Group {...{skills,isFetching,fetchSkills}} filter='own' />
                         </Skills>
                         <Activitys />
                     </Col>

@@ -5,6 +5,9 @@ import SkillCenter from '../container/skillCenter.jsx';
 import Overview from '../components/content/overview.jsx';
 import SkillTrees from '../components/content/skillTrees.jsx';
 
+import Skills from '../components/common/skills/index.jsx';
+import Designer from '../components/designer/index.jsx';
+
 
 
 class App extends Component {
@@ -20,15 +23,18 @@ let routes = (
     <Route path='/' component={App} >
         <Route path='user' component= {UserCenter} >
             <IndexRoute component={Overview} />
-            <Route path='/user/skilltrees' component={SkillTrees} />
-            <Route path='/user/skilltrees/(:state)' component={SkillTrees} >
-                <IndexRoute component={Overview} />
-            </Route>
+            <Route path='skilltrees(/:filter)' component={SkillTrees} />
         </Route>
         <Route path='u/:username/s/:skillname/' component={SkillCenter} />
     </Route>
 );
 
+//<Route path='/user/skilltrees' component={SkillTrees} >
+//    <IndexRoute component={Skills} />
+//    <Route path='/user/skilltrees/own' component={Skills} />
+//    <Route path='/user/skilltrees/all' component={Skills} />
+//    <Route path='/user/skilltrees/create' component={Designer} />
+//</Route>
 
 
 

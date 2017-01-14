@@ -1,7 +1,7 @@
 import UserCenter from '../components/page/userCenter.jsx';
 import {bindActionCreators} from  'redux';
 import {connect} from  'react-redux';
-import {fetchSkills,skillFilter,designerTabClick,
+import {fetchSkills,designerTabClick,
     addFieldVal,removeField,saveCanvasData} from '../actions/actionCreators';
 
 
@@ -17,7 +17,6 @@ function mapStateToProps(state){
 function  mapDispatchToProps(dispatch){
     return{
         fetchSkills:bindActionCreators(fetchSkills,dispatch),
-        skillFilter:bindActionCreators(skillFilter,dispatch),
         designerTabClick:bindActionCreators(designerTabClick,dispatch),
         addFieldVal:bindActionCreators(addFieldVal,dispatch),
         removeField:bindActionCreators(removeField,dispatch),

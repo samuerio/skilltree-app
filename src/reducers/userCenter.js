@@ -1,6 +1,6 @@
 import * as actions from '../actions/constants'
 import deepAssign from 'deep-assign';
-import {RECEIVE_SKILLS,SKILL_FILTER,DESIGN_TAB_CLICK,SAVE_CANVAS_DATA} from '../actions/constants'
+import {RECEIVE_SKILLS,DESIGN_TAB_CLICK,SAVE_CANVAS_DATA} from '../actions/constants'
 
 
 let initialState = {
@@ -44,20 +44,8 @@ export default function(state={
     let rsObj = null;
     switch(action.type){
         case RECEIVE_SKILLS:
-            return deepAssign({},state,{
-                skills:{
-                    data:action.data
-                }
-            });
-        case SKILL_FILTER:
-            //当进行filter变动时,要清空data数据
-            let {filter} = action;
-            rsObj = deepAssign({},state,{
-                skills:{
-                    filter:filter
-                }
-            });
-            rsObj.skills && (rsObj.skills.data = []);
+            rsObj = {...state};
+            rsObj.skills.data = action.data;
             return rsObj;
         case DESIGN_TAB_CLICK:
             let {tab} = action;
