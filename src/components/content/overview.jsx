@@ -1,10 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component,PropTypes} from 'react';
 import Tasks from '../common/tasks.jsx';
 import Activitys from '../common/activitys.jsx';
 import Skills from '../common/skills/index.jsx';
 import {Row,Col} from 'antd';
+import {SIDEBAR_ALIAS} from '../page/userCenter.jsx';
 
-class Overivew extends Component{
+class Overview extends Component{
 
     constructor(props) {
         super(props);
@@ -12,13 +13,18 @@ class Overivew extends Component{
     }
 
     createSkill(){
-        let {skillFilter,menuClick,designerTabClick} = this.props;
+        let {skillFilter,designerTabClick} = this.props;
         //1.切换到skilltree的sidebar栏
-        menuClick('skilltree');
+        this.context.router.push('/user/'+SIDEBAR_ALIAS.skilltrees);
         //2.skill的filter调整为create
         skillFilter('create');
         //3.设计器的Tab栏调整为info Tab栏
         designerTabClick('info');
+    }
+
+    componentWillMount(){
+        let {skillFilter} = this.props
+        skillFilter('own');
     }
 
     render(){
@@ -46,4 +52,8 @@ class Overivew extends Component{
     }
 }
 
-export default Overivew;
+Overview.contextTypes = {
+    router: PropTypes.object.isRequired
+};
+
+export default Overview;

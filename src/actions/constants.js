@@ -1,4 +1,3 @@
-export const MENU_FILTER_CLICK = "MENU_FILTER_CLICK";
 export const RECEIVE_SKILLS = "RECEIVE_SKILLS";
 
 export const FETCHING_DATA = "FETCHING_DATA";

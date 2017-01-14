@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import Designer from '../designer/designer.jsx'
+import Designer from '../designer/index.jsx'
 import Icon from '../common/icon.jsx';
 import StateMenu from '../layout/stateMenu/index.jsx';
 import Skills from '../common/skills/index.jsx'
 
-class SkillTree extends Component{
+class SkillTrees extends Component{
 
     constructor(props) {
         super(props);
@@ -15,6 +15,12 @@ class SkillTree extends Component{
         let {skillFilter,designerTabClick} = this.props;
         skillFilter('create');
         designerTabClick('info');
+    }
+
+    componentWillMount(){
+        let {skillFilter,skills} = this.props;
+        let filterStatus = skills.filter || 'all';
+        skillFilter(filterStatus);
     }
 
     render(){
@@ -60,4 +66,4 @@ class SkillTree extends Component{
     }
 }
 
-export default SkillTree;
+export default SkillTrees;

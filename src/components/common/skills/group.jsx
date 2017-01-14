@@ -4,6 +4,12 @@ import Card from '../card.jsx';
 import Loading from '../loading.jsx';
 
 class Group extends Component {
+
+    componentWillMount(){
+        let{fetchSkills,skills} = this.props;
+        fetchSkills(skills.filter);
+    }
+
     render(){
         let {skills,isFetching} = this.props;
         if(isFetching){
@@ -33,10 +39,6 @@ class Group extends Component {
                 </Col>
             </Row>
         );
-    }
-    componentWillMount(){
-        let{fetchSkills,skills} = this.props;
-        fetchSkills(skills.filter);
     }
 
     /**

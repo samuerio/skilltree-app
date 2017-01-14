@@ -1,12 +1,19 @@
-import React, {Component} from 'react';
+import React, {Component,PropTypes} from 'react';
 
 import NavBar from '../layout/navbar.jsx';
 import Overview from '../content/overview.jsx';
-import SkillTree from '../content/skillTree.jsx';
+import SkillTrees from '../content/skillTrees.jsx';
 
 import Sidebar from '../layout/sidebar/index.jsx';
 import Icon from '../common/icon.jsx';
 import ContentWrapper from '../layout/contentWrapper.jsx';
+
+
+export const SIDEBAR_ALIAS = {
+    overview:'overview',
+    skilltrees:'skilltrees',
+    tasks:'tasks'
+}
 
 
 class UserCenter extends Component{
@@ -17,13 +24,13 @@ class UserCenter extends Component{
     }
 
     sideBarClick(alias){
-        let {menuClick,skillFilter} = this.props;
-        menuClick(alias);
+        let {skillFilter} = this.props;
         switch(alias){
-            case 'overview':
-                skillFilter('own');
+            case SIDEBAR_ALIAS.overview:
+                this.context.router.push('/user');
                 break;
-            case 'skilltree':
+            case SIDEBAR_ALIAS.skilltrees:
+                this.context.router.push('/user/'+alias);
                 skillFilter('all');
                 break;
         }
@@ -33,44 +40,51 @@ class UserCenter extends Component{
         //States
         let {form,isFetching,userCenter} = this.props;
         //Dispatchs
-        let {menuClick,fetchSkills,skillFilter,designerTabClick,
-            addFieldVal,removeField,saveCanvasData} = this.props;
+        let {fetchSkills,skillFilter,designerTabClick,
+                        addFieldVal,removeField,saveCanvasData} = this.props;
 
-        let {indexMenu,skills,designer} = userCenter;
-        let content = null,contentProps = null;
-        switch (indexMenu){
-            case 'overview':
-                contentProps  = {skills,isFetching,fetchSkills,skillFilter,
-                    menuClick,designerTabClick}
-                content = <Overview {...contentProps} />;
-                break;
-            case 'skilltree':
-                contentProps = {skills,designer,isFetching,form,
-                    addFieldVal,removeField,fetchSkills,skillFilter,designerTabClick,saveCanvasData}
-                content = <SkillTree {...contentProps} />;
-        }
+        let indexMenu;//来源于路由,由路由维护
+        let {skills,designer} = userCenter;
 
+        let childrenWithProps = React.Children.map(this.props.children,(child)=>{
+            let typeName = child.type.name;
+            indexMenu = typeName.toLowerCase();
+            switch(typeName){
+                case 'Overview':
+                    return React.cloneElement(child,
+                        {skills,isFetching,fetchSkills,skillFilter,designerTabClick});
+                case  'SkillTrees':
+                    return React.cloneElement(child,
+                        {skills,designer,isFetching,form,
+                            addFieldVal,removeField,fetchSkills,skillFilter,designerTabClick,saveCanvasData});
+            }
+        });
         return (
             <div>
                 <NavBar />
                 <Sidebar selectedKey={indexMenu}  onClick={this.sideBarClick} >
-                    <Sidebar.Item alias="overview">
+                    <Sidebar.Item alias={SIDEBAR_ALIAS.overview}>
                         <img src='/src/assets/images/logo2.png' />
                     </Sidebar.Item>
-                    <Sidebar.Item alias="skilltree">
+                    <Sidebar.Item alias={SIDEBAR_ALIAS.skilltrees}>
                         <Icon type="tree" /><span className="menu-title">技能</span>
                     </Sidebar.Item>
-                    <Sidebar.Item alias="task">
+                    <Sidebar.Item alias={SIDEBAR_ALIAS.tasks}>
                         <Icon type="task" /><span className="menu-title">任务</span>
                     </Sidebar.Item>
                 </Sidebar>
                 <ContentWrapper>
-                    {content}
+                    {childrenWithProps}
                 </ContentWrapper>
             </div>
         )
     }
 }
 
+UserCenter.contextTypes = {
+    router: PropTypes.object.isRequired
+};
+
 
 export default UserCenter;
+

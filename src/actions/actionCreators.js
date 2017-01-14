@@ -1,14 +1,5 @@
 import * as actions from './constants'
 
-/**
- * 侧边栏点击事件
- */
-export function menuClick(indexMenu){
-    return {
-        indexMenu:indexMenu,
-        type:actions.MENU_FILTER_CLICK
-    }
-}
 
 /**
  * 获取skills数据
@@ -114,4 +105,5 @@ export function removeField(fieldName){
         fieldName:fieldName
     }
 }
+
 

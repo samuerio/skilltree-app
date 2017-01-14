@@ -1,6 +1,6 @@
 import * as actions from '../actions/constants'
 import deepAssign from 'deep-assign';
-import {MENU_FILTER_CLICK,RECEIVE_SKILLS,SKILL_FILTER,DESIGN_TAB_CLICK,SAVE_CANVAS_DATA} from '../actions/constants'
+import {RECEIVE_SKILLS,SKILL_FILTER,DESIGN_TAB_CLICK,SAVE_CANVAS_DATA} from '../actions/constants'
 
 
 let initialState = {
@@ -24,7 +24,6 @@ let initialState = {
 }
 
 export default function(state={
-    indexMenu:'overview',
     skills:{
         filter:'own',
         data:[]
@@ -44,11 +43,6 @@ export default function(state={
 },action){
     let rsObj = null;
     switch(action.type){
-        case MENU_FILTER_CLICK:
-            let { indexMenu } = action;
-            return Object.assign({},state,{
-                indexMenu:indexMenu
-            });
         case RECEIVE_SKILLS:
             return deepAssign({},state,{
                 skills:{
