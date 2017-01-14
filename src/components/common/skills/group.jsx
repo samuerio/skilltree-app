@@ -6,8 +6,8 @@ import Loading from '../loading.jsx';
 class Group extends Component {
 
     componentWillMount(){
-        let{fetchSkills,skills} = this.props;
-        fetchSkills(skills.filter);
+        let{fetchSkills,filter} = this.props;
+        fetchSkills(filter);
     }
 
     render(){
@@ -46,9 +46,9 @@ class Group extends Component {
      * @param newProps
      */
     componentWillReceiveProps(newProps){
-        let{fetchSkills,skills,isFetching} = newProps;
-        if((!skills.data || skills.data.length) === 0 && isFetching === false){
-            fetchSkills(skills.filter);
+        let{fetchSkills,skills,isFetching,filter} = newProps;
+        if((!skills.data || skills.data.length=== 0)  && isFetching === false){
+            fetchSkills(filter);
         }
     }
 }

@@ -31,7 +31,6 @@ class UserCenter extends Component{
                 break;
             case SIDEBAR_ALIAS.skilltrees:
                 this.context.router.push('/user/'+alias);
-                skillFilter('all');
                 break;
         }
     }

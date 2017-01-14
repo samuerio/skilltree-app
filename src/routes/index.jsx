@@ -21,7 +21,9 @@ let routes = (
         <Route path='user' component= {UserCenter} >
             <IndexRoute component={Overview} />
             <Route path='/user/skilltrees' component={SkillTrees} />
-            <Route path='/user/skilltrees/(:state)' component={SkillTrees} />
+            <Route path='/user/skilltrees/(:state)' component={SkillTrees} >
+                <IndexRoute component={Overview} />
+            </Route>
         </Route>
         <Route path='u/:username/s/:skillname/' component={SkillCenter} />
     </Route>
@@ -29,10 +31,6 @@ let routes = (
 
 
 
-//<Route path='user' component= {UserCenter}>
-//    <IndexRoute component={Overview} />
-//    <Route path='skilltrees/(:state)' component={SkillTree} />
-//</Route>
 
 /*
  <IndexRoute component={UserCenter} />

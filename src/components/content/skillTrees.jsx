@@ -18,9 +18,14 @@ class SkillTrees extends Component{
     }
 
     componentWillMount(){
+        //初始化的skill filter状态只能是 all/create
         let {skillFilter,skills} = this.props;
-        let filterStatus = skills.filter || 'all';
-        skillFilter(filterStatus);
+        let {filter} = skills;
+
+        if(['all','create'].indexOf(filter) == -1){
+            filter = 'all';
+        }
+        skillFilter(filter);
     }
 
     render(){

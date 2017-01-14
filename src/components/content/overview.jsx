@@ -39,7 +39,7 @@ class Overview extends Component{
                                 <a  className="more-link" >查看所有</a>
                                 <a  className="more-link" onClick={this.createSkill}>+创建技能&nbsp;</a>
                             </Skills.Header>
-                            <Skills.Group {...{skills,isFetching,fetchSkills}} />
+                            <Skills.Group {...{skills,isFetching,fetchSkills}} filter={skills.filter} />
                         </Skills>
                         <Activitys />
                     </Col>

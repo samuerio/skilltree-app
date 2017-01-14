@@ -1,4 +1,4 @@
-import Skill from './skill.jsx';
+import Skill from './skills.jsx';
 import Header from './header.jsx';
 import Group from './group.jsx';
 
