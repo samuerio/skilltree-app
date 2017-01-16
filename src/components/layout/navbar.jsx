@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 class NavBar extends Component{
     render(){
         return(
-            <div className="topMenu">
+            <div className="navbar">
                 <a href="https://developer.mozilla.org" >
                     <img src="/src/assets/images/logo.png" style={{height:'60px'}} />
                 </a>
