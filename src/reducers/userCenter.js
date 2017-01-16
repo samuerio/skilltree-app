@@ -25,7 +25,6 @@ let initialState = {
 
 export default function(state={
     skills:{
-        filter:'own',
         data:[]
     },
     designer:{

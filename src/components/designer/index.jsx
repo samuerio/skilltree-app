@@ -28,7 +28,7 @@ class Designer extends Component{
      * 当设计器销毁时,删除form上的设计器表单字段
      */
     componentWillUnmount(){
-        let {removeField,saveCanvasData} = this.props;
+        let {removeField,saveCanvasData,designerTabClick} = this.props;
         ['name','description'].map(function(fieldName){
             removeField(fieldName);
         });
@@ -39,6 +39,9 @@ class Designer extends Component{
             width:"1000",
             height:"1000"
         },[]);
+
+        //重置默认的Tab栏为info
+        designerTabClick('info');
     }
 }
 

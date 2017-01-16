@@ -29,13 +29,6 @@ let routes = (
     </Route>
 );
 
-//<Route path='/user/skilltrees' component={SkillTrees} >
-//    <IndexRoute component={Skills} />
-//    <Route path='/user/skilltrees/own' component={Skills} />
-//    <Route path='/user/skilltrees/all' component={Skills} />
-//    <Route path='/user/skilltrees/create' component={Designer} />
-//</Route>
-
 
 
 /*

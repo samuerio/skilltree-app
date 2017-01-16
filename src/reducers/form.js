@@ -4,11 +4,11 @@ export default function(state={},action){
     switch(action.type){
         case ADD_FIELD_VAL:
             let{fieldName,fieldVal} = action;
-            return Object.assign({},state,{
+            return {...state,...{
                 [fieldName]:fieldVal
-            })
+            }};
         case REMOVE_FIELD:
-            let rtObj = Object.assign({},state);
+            let rtObj = {...state};
             delete rtObj[action.fieldName];
             return rtObj;
         default:
