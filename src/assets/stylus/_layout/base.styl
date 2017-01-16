@@ -27,12 +27,25 @@
   -ms-transition: padding-left ease-in-out .3s;
   -o-transition: padding-left ease-in-out .3s;
   transition: padding-left ease-in-out .3s;
-
-  .container{
-    margin-left: 200px;
-    padding: 30px 60px 0;
-  }
 }
+
+
+.container{
+  margin-left: 200px;
+  padding: 30px 60px 0;
+}
+
+
+.stateMenu{
+  position: fixed;
+  width: 200px;
+  height: 100%!important;
+  margin: 0;
+  border-right: 1px solid $grey-light;
+  overflow-y: hidden;
+  z-index: $zindex-1;
+}
+
 
 .user-index{
   margin: 0;

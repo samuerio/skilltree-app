@@ -4,7 +4,7 @@ class NavBar extends Component{
     render(){
         return(
             <div className="navbar">
-                <a href="https://developer.mozilla.org" >
+                <a className="inline-block" href="https://developer.mozilla.org" >
                     <img src="/src/assets/images/logo.png" style={{height:'60px'}} />
                 </a>
             </div>

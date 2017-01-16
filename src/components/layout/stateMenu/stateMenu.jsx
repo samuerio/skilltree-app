@@ -9,7 +9,7 @@ class StateMenu extends Component{
             })
         )
         return(
-            <div className="secMenu">{childrenWithProps}</div>
+            <div className="stateMenu">{childrenWithProps}</div>
         );
     }
 }

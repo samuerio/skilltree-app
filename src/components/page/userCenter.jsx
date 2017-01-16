@@ -65,10 +65,10 @@ class UserCenter extends Component{
                         <img src='/src/assets/images/logo2.png' />
                     </Sidebar.Item>
                     <Sidebar.Item alias={SIDEBAR_ALIAS.skilltrees}>
-                        <Icon type="tree" /><span className="menu-title">技能</span>
+                        <Icon type="tree" /><span className="item-title">技能</span>
                     </Sidebar.Item>
                     <Sidebar.Item alias={SIDEBAR_ALIAS.tasks}>
-                        <Icon type="task" /><span className="menu-title">任务</span>
+                        <Icon type="task" /><span className="item-title">任务</span>
                     </Sidebar.Item>
                 </Sidebar>
                 <ContentWrapper>
