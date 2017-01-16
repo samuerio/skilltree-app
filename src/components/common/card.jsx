@@ -5,22 +5,22 @@ class Card extends Component{
        let {title} = this.props;
        return(
            <div className="card">
-               <div className="content">
+               <div className="card-content">
                    <h6 className="category text-danger">
                        <i className="icon icon-line-chart"></i>&nbsp TRENDING
                    </h6>
                    <h4 className="card-title">
                        <a href="#pablo">{title}</a>
                    </h4>
-                   <div className="footer">
-                       <div className="author">
+                   <div className="card-footer">
+                       <div className="author inline-block">
                            <a href="#pablo">
                                <img src="/src/assets/images/christian.jpg" alt="..." className="avatar img-raised" />
                                    <span>Lord Alex</span>
                            </a>
                        </div>
-                       <div className="stats">
-                           <i className="icon icon-like"></i>&nbsp 33
+                       <div className="stats inline-block">
+                           <i className="icon icon-like"></i> 33
                        </div>
                    </div>
                </div>

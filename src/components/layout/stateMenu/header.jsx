@@ -4,7 +4,7 @@ import Icon from '../../common/icon.jsx'
 class Header extends Component{
     render(){
         let{title,desc,addable,onAdd} = this.props;
-        let addButton = <a onClick={onAdd} ><Icon type='plus'/></a>;
+        let addButton = <a className="right" onClick={onAdd} ><Icon type='plus'/></a>;
         return(
             <header>
                 {title}

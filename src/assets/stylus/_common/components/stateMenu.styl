@@ -1,23 +1,11 @@
 .stateMenu{
-  a{
-    &:hover{
-      opacity: 1;
-      background-color: rgba(0,0,0,.02);
-    }
-    color: rgba(0,0,0,.75);
-  }
-
   header{
+    margin: 0 0 .3em;
+    padding: 30px 25px 10px;
     font-size: 17px;
     font-weight: 700;
-    padding: 30px 25px 10px;
-    margin: 0 0 .3em;
     border: none;
     background-color: transparent;
-
-    a{
-      float: right;
-    }
   }
 
   article{
@@ -25,26 +13,33 @@
     font-size: 12px;
     font-weight: 400;
     line-height: 16px;
-    color: #666;
     word-wrap: break-word;
     word-break: normal;
+    color: #666;
   }
 
   .item{
 
     &.active{
-      background: rgba(0,0,0,.08);
+      background: rgba(0,0,0,.08) !important;
       color: rgba(0,0,0,.95);
       opacity: 1;
     }
+
+    &:hover{
+      opacity: 1;
+      background-color: rgba(0,0,0,.02);
+    }
+
     display: block;
-    font-size: 14px;
+    margin: 0 0 .3em;
     padding: 10px 25px;
+    font-size: 14px;
+    white-space: nowrap;
+    color: rgba(0,0,0,.75);
     overflow: hidden;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
-    white-space: nowrap;
-    margin: 0 0 .3em;
     opacity: .8;
   }
 }

@@ -20,13 +20,13 @@ class Overview extends Component{
         let {skills,isFetching,fetchSkills} = this.props;
 
         return(
-            <section className="user-index">
+            <section style={{margin:0,padding:'12px 20px'}}>
                 <Row gutter={16} >
                     <Col className="gutter-row" span={15} >
                         <Skills >
                             <Skills.Header title='我的技能'>
-                                <a  className="more-link" >查看所有</a>
-                                <a  className="more-link" onClick={this.createSkill}>+创建技能&nbsp;</a>
+                                <a  className="title-action" >查看所有</a>
+                                <a  className="title-action" onClick={this.createSkill}>+创建技能&nbsp;</a>
                             </Skills.Header>
                             <Skills.Group {...{skills,isFetching,fetchSkills}} filter='own' />
                         </Skills>
