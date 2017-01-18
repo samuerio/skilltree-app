@@ -10,7 +10,7 @@ const pageWidth = 1000;
 const pageHeight = 1000;
 const pageBackgroundColor = "255,255,255";
 const darkerColor = "242,242,242";
-const darkestColor = "229,229,229"
+const darkestColor = "229,229,229";
 
 DrawBoard.defaults = {
     containerId:null,

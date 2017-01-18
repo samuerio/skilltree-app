@@ -1,6 +1,6 @@
 import  {forEach,count,newId,isEmptyObjet} from '../../util';
 
-let Node = function (g, {id,x,y,label}) {
+let NodeModel = function (g, {id,x,y,label}) {
 
     this.graph = g;
     this.gRenderer = g.gRenderer;
@@ -32,14 +32,14 @@ let Node = function (g, {id,x,y,label}) {
 };
 
 /**
- * Node 宽高的常量值
+ * NodeModel 宽高的常量值
  * @type {number}
  */
-Node.DEFAULT_WIDTH = 70;
-Node.DEFAULT_HEIGHT = 38;
+NodeModel.DEFAULT_WIDTH = 70;
+NodeModel.DEFAULT_HEIGHT = 38;
 
-Node.prototype = {
-    construct: Node,
+NodeModel.prototype = {
+    construct: NodeModel,
     getRootNode: function () {
         if (this === this.graph.root) {
             return this;
@@ -115,4 +115,4 @@ Node.prototype = {
 };
 
 
-export default Node;
+export default NodeModel;

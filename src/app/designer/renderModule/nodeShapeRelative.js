@@ -1,4 +1,4 @@
-import Node from '../schema/node'
+import NodeModel from '../schema/node'
 
 /**
  * 结点外形相关
@@ -20,7 +20,7 @@ var nodeShapeRelative = (function(){
             }else{//如果为新结点则返回默认高度
 
                 if(node.isFirstLevelNode()){
-                    return Node.DEFAULT_HEIGHT;
+                    return NodeModel.DEFAULT_HEIGHT;
                 }else{//@workaround:如果为第三层或以上层节点
                     return this.littleNodeDefaultHeight;
                 }
@@ -36,7 +36,7 @@ var nodeShapeRelative = (function(){
             if(node.shape){
                 return node.shape[1].attr('width');
             }else{
-                return Node.DEFAULT_WIDTH;
+                return NodeModel.DEFAULT_WIDTH;
             }
         },
         /**
@@ -57,7 +57,7 @@ var nodeShapeRelative = (function(){
                     return nodeModel.shape[1].attr('height') + this.nodeYInterval * 2;
                 }else{//未渲染
                     if(nodeModel.isFirstLevelNode()){
-                        return Node.DEFAULT_HEIGHT + this.nodeYInterval * 2;
+                        return NodeModel.DEFAULT_HEIGHT + this.nodeYInterval * 2;
                     }else{//@workaround:如果为第三层或以上层节点
                         return this.littleNodeDefaultHeight + this.nodeYInterval * 2;
                     }

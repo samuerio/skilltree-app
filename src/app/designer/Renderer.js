@@ -5,7 +5,8 @@ import ChildrenRenderFactory from './renderModule/ChildrenRenderFactory'
 import Drag from './renderModule/Drag'
 import Viewport from './renderModule/Viewport'
 import EdgeDraw from './renderModule/EdgeDraw'
-let Raphael = require('raphael')
+import NodeModel from './schema/node'
+let Raphael = require('raphael');
 
 
 
@@ -41,7 +42,7 @@ Renderer.prototype = {
         var paper = this.paper;
         var label = paper.text(nodeModel.x, nodeModel.y, nodeModel.label);
         var rect = paper.rect(nodeModel.x, nodeModel.y,
-            Node.DEFAULT_WIDTH,Node.DEFAULT_HEIGHT, 4)
+            NodeModel.DEFAULT_WIDTH,NodeModel.DEFAULT_HEIGHT, 4)
             .data('id', nodeModel.id);
 
         label.toFront();
@@ -92,16 +93,14 @@ Renderer.prototype = {
      * 需要先断开父节点的children和connectChildren连接才能重新调整当前节点层的节点
      * @param node
      */
-    removeNodeRender: function(node){
+    removeNode: function(node){
         this._reRenderChildrenNode(node.father);
         if(node.father){
             if(node.father.childrenCount() > 0 || node.childrenCount() > 1){
                 this._resetBrotherPosition(node.father, -nodeShapeRelative.getNodeAreaHeight(node));
             }
-
         }
-        this.removeNodeAndChildrenShape(node);
-
+        this._removeNodeModelShape(node);
     },
 
     /**
@@ -204,7 +203,7 @@ Renderer.prototype = {
      * @param node
      * @private
      */
-    removeNodeAndChildrenShape: function(node){
+    _removeNodeModelShape: function(node){
         var self = this;
         //删除节点和边的shape
         if(node.shape){
@@ -217,10 +216,8 @@ Renderer.prototype = {
         }
 
         forEach(node.children, function(child){
-            self.removeNodeAndChildrenShape(child);
+            self._removeNodeModelShape(child);
         });
-
-
     },
 
     /**

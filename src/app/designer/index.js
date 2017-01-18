@@ -2,11 +2,9 @@ import DrawBoard from './schema/drawBoard'
 import Renderer from './Renderer'
 import Graph,{getChildrenNodeData} from './Graph'
 import deepAssign from 'deep-assign';
-
-
+import NodeModel from './schema/node';
 
 //let nodeDatas = require('../json/nodeData.json');
-
 
 /**
  * CanvasRuntime Constructor
@@ -35,40 +33,13 @@ CanvasRuntime.prototype = {
     _init(){
         let {_viewBox,_nodeDatas} = this;
 
-        //初始化设计器画板,获取画板对象的引用
+        //初始化设计器画板
         this._drawBoard = new DrawBoard({containerId:'designer'});
 
-        var renderer = new Renderer({
-            canvasId: 'mindmap-canvas'
-        });
-
-        //获取根节点
-        let [rootNodeData] = getChildrenNodeData(null,_nodeDatas);
-        var graph = new Graph(renderer,rootNodeData);
-
-        renderToParent(graph.root,_nodeDatas);
-
-        let{x,y,width,height} = _viewBox;
-        graph.gRenderer.paper.setViewBox(x,y,width,height,false);
-
-        this._graph = graph;
-
-        /**
-         * 递归渲染到父节点上
-         * @param parentNodeModel
-         * @param sourceNodesData
-         */
-        function renderToParent(parentNodeModel,sourceNodesData){
-            let {id} = parentNodeModel;
-            var childrenNodeData = getChildrenNodeData(id,sourceNodesData);
-            childrenNodeData.forEach(function(childNodeData){
-                var childNodeModel = graph.addNode(parentNodeModel,childNodeData);
-                if(childNodeData.isParent === true){
-                    renderToParent(childNodeModel,sourceNodesData);
-                }
-                delete childNodeData.isParent;
-            });
-        }
+        //初始化思维导图
+        this._graph = new Graph(new Renderer({
+                canvasId: 'mindmap-canvas'
+            }),_nodeDatas,_viewBox);
     },
     reload(viewBox,nodeDatas){
         this._graph.remove();
@@ -82,7 +53,7 @@ CanvasRuntime.prototype = {
     addNode(){
         let {_graph} = this;
         if(_graph.selected){
-            _graph.addNode(_graph.selected, {});
+            _graph.addNode(_graph.selected, new NodeModel(_graph,{}));
         }
     },
     deleteNode(){
@@ -97,10 +68,10 @@ CanvasRuntime.prototype = {
         }
     },
     getViewBox(){
-        return this._graph.gRenderer.paper.canvas.getAttribute('viewBox');
+        return this._graph.getViewBox();
     },
     getMindNodes(){
-        return this._graph.getJSON();
+        return this._graph.getMindNodes();
     }
 }
 
