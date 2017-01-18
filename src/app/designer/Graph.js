@@ -1,8 +1,7 @@
-
 import  {forEach} from '../util';
 import nodeShapeRelative from  './renderModule/nodeShapeRelative'
-import Node from './node';
-import Edge from './edge';
+import Node from './schema/node';
+import Edge from './schema/edge';
 
 
 var Graph = function(gRenderer,rootNodeData){

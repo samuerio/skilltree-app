@@ -23,3 +23,27 @@ export function count(obj){
         return c;
     }
 }
+
+export function newId() {
+    var b = Math.random();
+    var a = (b + new Date().getTime());
+    return a.toString(16).replace(".", "")
+}
+
+
+
+/**
+ * 判别对象是否为空
+ * @param obj
+ * @returns {boolean}
+ */
+export function isEmptyObjet(obj){
+    var result = true;
+    for (var key in obj){
+        if(obj.hasOwnProperty(key)){
+            result = false;
+            break;
+        }
+    }
+    return result;
+}

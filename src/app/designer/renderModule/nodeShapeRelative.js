@@ -1,4 +1,4 @@
-import Node from '../node'
+import Node from '../schema/node'
 
 /**
  * 结点外形相关

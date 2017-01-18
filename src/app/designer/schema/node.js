@@ -1,4 +1,4 @@
-import  {forEach,count} from '../util';
+import  {forEach,count,newId,isEmptyObjet} from '../../util';
 
 let Node = function (g, {id,x,y,label}) {
 
@@ -114,27 +114,5 @@ Node.prototype = {
     }
 };
 
-/**
- * 判别对象是否为空
- * @param obj
- * @returns {boolean}
- */
-function isEmptyObjet(obj){
-    var result = true;
-    for (var key in obj){
-        if(obj.hasOwnProperty(key)){
-            result = false;
-            break;
-        }
-    }
-    return result;
-}
-
-
-function newId() {
-    var b = Math.random();
-    var a = (b + new Date().getTime());
-    return a.toString(16).replace(".", "")
-}
 
 export default Node;
