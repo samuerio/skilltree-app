@@ -321,6 +321,10 @@ Graph.prototype = {
             })
         }
         return nodeJSONList;
+    },
+    remove(){
+        //移除渲染的效果
+        this.gRenderer.paper.remove();
     }
 };
 

@@ -1,13 +1,36 @@
+import deepAssign from 'deep-assign';
 
-export function initDrawBoard(){
-    const pageWidth = 1000;
-    const pageHeight = 1000;
-    const pageBackgroundColor = "255,255,255";
-    const darkerColor = "242,242,242";
-    const darkestColor = "229,229,229"
+function DrawBoard(options){
+    this._setttings = deepAssign({},DrawBoard.defaults,options);
+    this._init();
+}
 
-    var $canvas = $("#designer_grids");
-    if ($canvas.length > 0) {
+
+const pageWidth = 1000;
+const pageHeight = 1000;
+const pageBackgroundColor = "255,255,255";
+const darkerColor = "242,242,242";
+const darkestColor = "229,229,229"
+
+DrawBoard.defaults = {
+    containerId:null,
+    pageWidth,
+    pageHeight,
+    pageBackgroundColor,
+    darkerColor,
+    darkestColor
+}
+
+DrawBoard.prototype = {
+    constructor:DrawBoard,
+    _init(){
+        let {containerId,pageWidth,pageHeight,
+            pageBackgroundColor,darkerColor,darkestColor} = this._setttings;
+        this._canvas = $('<canvas />');
+
+        let $canvas = this._canvas;
+        $(`#${containerId}`).append($canvas);
+
         $canvas.attr({width: pageWidth, height: pageHeight});
         var canvas = $canvas[0].getContext("2d");
         canvas.clearRect(0, 0, pageWidth, pageHeight);
@@ -59,6 +82,13 @@ export function initDrawBoard(){
                 canvas.stroke()
             }
         }
+    },
+    remove(){
+        //移除掉渲染的效果
+        this._canvas.remove();
     }
 }
+
+
+export default DrawBoard;
 
