@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import {Button,Select,Input,message} from 'antd';
-import {initDesigner} from '../../designer/index';
+import {initDesigner} from '../../app/designer/index';
 
 class Canvas extends Component{
 

@@ -1,8 +1,4 @@
-/**
- * Created by rockyren on 15/3/7.
- */
-
-import DataHelper from '../otherModule/DataHelper';
+import  {forEach} from '../../util';
 let Raphael = require('raphael')
 
 /**
@@ -52,7 +48,7 @@ var Drag = function(aNode, options){
         var addableBBoxSet = {};
         var addableSet = graph.getParentAddableNodeSet(node);
 
-        DataHelper.forEach(addableSet, function(curNode){
+        forEach(addableSet, function(curNode){
             addableBBoxSet[curNode.id] = curNode.shape.getBBox();
         });
         return addableBBoxSet;
@@ -81,7 +77,7 @@ var Drag = function(aNode, options){
      * @private
      */
     function _setChildrenOpacity(children){
-        DataHelper.forEach(children, function(child){
+        forEach(children, function(child){
             child.shape.opacityShape(child);
             child.connectFather.shape.opacityShape();
             _setChildrenOpacity(child.children);
@@ -94,7 +90,7 @@ var Drag = function(aNode, options){
      * @private
      */
     function _setChildrenNormal(children){
-        DataHelper.forEach(children, function(child){
+        forEach(children, function(child){
             child.shape.unOpacityShape();
             child.connectFather.shape.unOpacityShape();
             _setChildrenNormal(child.children);

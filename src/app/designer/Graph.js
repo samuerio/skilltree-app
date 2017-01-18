@@ -1,5 +1,5 @@
 
-import DataHelper from './otherModule/DataHelper';
+import  {forEach} from '../util';
 import nodeShapeRelative from  './renderModule/nodeShapeRelative'
 import Node from './node';
 import Edge from './edge';
@@ -78,14 +78,14 @@ Graph.prototype = {
         var gap = newWidth - oldWidth;
 
         if(nodeModel.direction === 1){ //如果改变label的节点为右方向节点,则只向右移动该节点的子节点
-            DataHelper.forEach(nodeModel.children, function(child){
+            forEach(nodeModel.children, function(child){
                 child.translate(gap, 0);
             });
         }else if(nodeModel.direction === -1){//如果改变label的节点为左方向节点,则向左移动该节点(translate回递归)
             nodeModel.translate(-gap, 0);
         }else if(nodeModel.isRootNode()){//如果节点为根结点
             nodeModel.translate(-gap/2, 0);
-            DataHelper.forEach(nodeModel.children, function(child){
+            forEach(nodeModel.children, function(child){
                 if(child.direction === 1){
                     child.translate(gap, 0);
                 }else if(child.direction === -1){
@@ -122,7 +122,7 @@ Graph.prototype = {
     //重新设置节点的direction和edge等
     _resetChildrenProperty: function(children){
         var self = this;
-        DataHelper.forEach(children, function(child){
+        forEach(children, function(child){
             child.connectFather = new Edge(this, source, target);
 
 
@@ -211,7 +211,7 @@ Graph.prototype = {
             var leftCount = 0,
                 rightCount = 0;
 
-            DataHelper.forEach(root.children, function(rootChild){
+            forEach(root.children, function(rootChild){
                 if(rootChild.direction === -1){
                     leftCount++;
                 }else if(rootChild.direction === 1){
@@ -235,7 +235,7 @@ Graph.prototype = {
         node.father = null;
         node.connectFather = null;
 
-        DataHelper.forEach(node.children, function(child){
+        forEach(node.children, function(child){
             self._removeNodeData(child);
         });
 
@@ -260,7 +260,7 @@ Graph.prototype = {
     },
     _makeChildrenNodeSet: function(children, childrenNodeSet){
         var self = this;
-        DataHelper.forEach(children, function(child){
+        forEach(children, function(child){
             childrenNodeSet[child.id] = child;
             self._makeChildrenNodeSet(child.children, childrenNodeSet);
         });
@@ -293,7 +293,7 @@ Graph.prototype = {
 
         var addableNodeSet = {};
         //获得this.nodes的副本
-        DataHelper.forEach(self.nodes, function(curNode){
+        forEach(self.nodes, function(curNode){
             addableNodeSet[curNode.id] = curNode;
         });
 
@@ -304,7 +304,7 @@ Graph.prototype = {
         }
 
         //在this.nodes副本中除去当前节点及该节点的所有子节点的引用
-        DataHelper.forEach(notAddableNodeSet, function(curNode){
+        forEach(notAddableNodeSet, function(curNode){
             delete addableNodeSet[curNode.id];
         });
         return addableNodeSet;
@@ -317,7 +317,7 @@ Graph.prototype = {
         function getNodeJSON(node){
             nodeJSONList.push(node.toJSON());
 
-            DataHelper.forEach(node.children,function(childrenNode){
+            forEach(node.children,function(childrenNode){
                 getNodeJSON(childrenNode);
             })
         }

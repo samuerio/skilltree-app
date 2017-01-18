@@ -1,5 +1,4 @@
-
-import DataHelper from './otherModule/DataHelper';
+import  {forEach} from '../util';
 import shapeCustomAttr from './renderModule/shapeCustomAttr'
 import nodeShapeRelative from  './renderModule/nodeShapeRelative'
 import ChildrenRenderFactory from './renderModule/ChildrenRenderFactory'
@@ -81,7 +80,7 @@ Renderer.prototype = {
         //设置拖动
         this._setDrag(node);
 
-        DataHelper.forEach(node.children, function(child){
+        forEach(node.children, function(child){
             self.setParentRender(child);
         });
 
@@ -175,7 +174,7 @@ Renderer.prototype = {
 
         //移动兄弟节点
         if(node.father){
-            DataHelper.forEach(node.father.children, function(brother){
+            forEach(node.father.children, function(brother){
                 //当同级结点与当前结点direction相同时才上下移动
                 if(brother.direction === node.direction){
                     if(brother !== node){
@@ -217,7 +216,7 @@ Renderer.prototype = {
             node.connectFather = null;
         }
 
-        DataHelper.forEach(node.children, function(child){
+        forEach(node.children, function(child){
             self.removeNodeAndChildrenShape(child);
         });
 

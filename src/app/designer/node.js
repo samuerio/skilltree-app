@@ -1,4 +1,4 @@
-import DataHelper from './otherModule/DataHelper';
+import  {forEach,count} from '../util';
 
 let Node = function (g, {id,x,y,label}) {
 
@@ -59,12 +59,12 @@ Node.prototype = {
         return this === this.getRootNode();
     },
     childrenCount: function () {
-        return DataHelper.count(this.children);
+        return count(this.children);
     },
     childrenWithShapeCount: function () {
         var self = this;
         var count = 0;
-        DataHelper.forEach(self.children, function (child) {
+        forEach(self.children, function (child) {
             //console.log(child);
             if (child.shape) {
                 count++;
@@ -92,7 +92,7 @@ Node.prototype = {
         //进行nodeModel的重新渲染
         this.gRenderer.renderNodeModel(this);
 
-        DataHelper.forEach(self.children, function (child) {
+        forEach(self.children, function (child) {
             child.translate(dx, dy);
         });
 

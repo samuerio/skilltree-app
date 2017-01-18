@@ -42,27 +42,5 @@ export function initDesigner(viewBox,nodeDatas){
     }
 
 
-    //-------绑定相关事件-------
-    $('#node-plus').click(function(){
-        if(graph.selected){
-            graph.addNode(graph.selected, {});
-        }
-    });
-
-    $('#save-graphy').on('click',function(){
-        console.log(JSON.stringify(graph.getJSON()));
-    });
-
-    $('#node-cancel').click(function(){
-        if(graph.selected){
-            if(graph.selected.isRootNode()){
-                console.log('cannot cancel root node');
-            }else{
-                graph.removeNode(graph.selected);
-                graph.setSelected(null);
-            }
-        }
-    });
-
     return graph;
 }

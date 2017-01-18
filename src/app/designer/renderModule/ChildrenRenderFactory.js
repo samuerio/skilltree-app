@@ -1,8 +1,4 @@
-/**
- * Created by rockyren on 14/12/25.
- */
-//-----------
-import  DataHelper from '../otherModule/DataHelper';
+import  {forEach} from '../../util';
 import nodeShapeRelative from './nodeShapeRelative';
 
 /**
@@ -61,7 +57,7 @@ AbstractRender.prototype.commonRender = function(father, children, direction){
     childX = hfx + direction * (this.nodeXInterval + father.shape[1].attr('width')/2);
 
 
-    DataHelper.forEach(children, function(child){
+    forEach(children, function(child){
         //通过结点的areHeight属性保存结点高度
         child.areaHeight = nodeShapeRelative.getNodeAreaHeight(child);
         childrenAreaHeight += child.areaHeight;
@@ -69,7 +65,7 @@ AbstractRender.prototype.commonRender = function(father, children, direction){
 
     startY = hfy - childrenAreaHeight/2;
 
-    DataHelper.forEach(children, function(child){
+    forEach(children, function(child){
         //计算子结点y坐标
         childY = startY + child.areaHeight/2 - nodeShapeRelative.getSingleNodeHeight(child)/2;
 
@@ -138,7 +134,7 @@ FirstRender.prototype.renderLessThanTwo = function(father, leftChildren, directi
     var self = this;
     //1表示第一个节点，-1表示第二个节点
     var countFlag = 1;
-    DataHelper.forEach(leftChildren, function(child){
+    forEach(leftChildren, function(child){
 
 
         var hfx = father.x + nodeShapeRelative.getSingleNodeWidth(father)/2;
@@ -168,7 +164,7 @@ FirstRender.prototype.getDirectionChildren = function(node){
         rightChildren = {},
         leftCount = 0,
         rightCount = 0;
-    DataHelper.forEach(node.children, function(child){
+    forEach(node.children, function(child){
         if(child.direction == -1){
             leftChildren[child.id] = child;
             leftCount++;
