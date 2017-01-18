@@ -339,6 +339,7 @@ Graph.prototype = {
      * @param nodeModel
      */
     removeNode: function(nodeModel) {
+        //这一步非常重要,提前去掉父节点对该子节点的引用,以便重新计算其余节点位置
         this._removeParentRel(nodeModel);
         this.gRenderer.removeNode(nodeModel);
         this._removeNodeModel(nodeModel);

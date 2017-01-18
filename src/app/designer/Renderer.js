@@ -94,13 +94,15 @@ Renderer.prototype = {
      * @param node
      */
     removeNode: function(node){
+        this._removeNodeModelShape(node);
+        //删除节点后,重新计算并渲染所删除节点的同级节点(为了调整位置)
         this._reRenderChildrenNode(node.father);
         if(node.father){
             if(node.father.childrenCount() > 0 || node.childrenCount() > 1){
+                //删除节点后,重新计算并递归渲染所删节点的父节点的同级节点(为了调整位置)
                 this._resetBrotherPosition(node.father, -nodeShapeRelative.getNodeAreaHeight(node));
             }
         }
-        this._removeNodeModelShape(node);
     },
 
     /**
