@@ -19,8 +19,6 @@ var Graph = function(gRenderer,nodeDatas,viewBox){
     this.root = null;
 
     this._init(nodeDatas,viewBox);
-    //@workaround: svg点击事件:如果点击的是canvas,取消selected
-    this.gRenderer.setCanvasClick(this);
 };
 
 Graph.defaults = {
@@ -43,6 +41,8 @@ Graph.prototype = {
         _self.root = this._initRoot(rootNodeData);
         //将其他节点数据递归渲染到MindTree上
         renderToParent(_self.root,nodeDatas);
+
+        _self._initEvent();
         
         /**
          * 递归渲染到父节点上
@@ -103,6 +103,39 @@ Graph.prototype = {
                 y: 200,
                 label:'中心主题'}));
         return root;
+    },
+    /**
+     * 初始化事件
+     * @private
+     */
+    _initEvent(){
+
+        let graph = this;
+        let canvasDom = this.gRenderer.canvasDom;
+
+        canvasDom.addEventListener('mousedown', function(event){
+            if(event.target.nodeName === 'svg'){
+                cancelSelect();
+            }
+        });
+
+        canvasDom.addEventListener('keyup', function(event){
+            if(event.keyCode === 13){
+                cancelSelect();
+            }
+        });
+
+        function cancelSelect(){
+            let inputDom = document.getElementById('tempText');
+            if(graph.selected && inputDom){
+                var text = inputDom.value;
+                graph.setLabel(graph.selected, text);
+                inputDom.parentNode.removeChild(inputDom);
+            }
+
+            graph.setSelected(null);
+        }
+
     },
     //重新设置节点的direction和edge等
     _resetChildrenProperty: function(children){
@@ -226,65 +259,65 @@ Graph.prototype = {
      * @param node
      * @returns {{}}
      */
-    _getChildrenNodeSet: function(node){
-        var self = this;
-        var childrenNodeSet = {};
-        self._makeChildrenNodeSet(node.children, childrenNodeSet);
-        return childrenNodeSet;
-
-    },
-    _makeChildrenNodeSet: function(children, childrenNodeSet){
-        var self = this;
-        forEach(children, function(child){
-            childrenNodeSet[child.id] = child;
-            self._makeChildrenNodeSet(child.children, childrenNodeSet);
-        });
-    },
-    setParent: function(parentId, childId){
-        var self = this;
-
-        var parent = self.nodes[parentId];
-        var child = self.nodes[childId];
-        if(child === parent || parent ===null) { return null; }
-        if(child.father === parent) { return; }
-        else{
-            //需要设置新父节点的children，才能正确删除重绘子节点时
-            delete child.father.children[child.id];
-            //在child.connectFather改变之前，递归删除子节点
-            this.gRenderer.removeNode(child);
-        }
-
-        this._prepareRuntimeData(parent, child);
-
-        this._resetChildrenProperty(child.children);
-
-        //在新的father上递归添加原节点（递归添加）的渲染
-        this.gRenderer.setParentRender(child);
-
-    },
+    //_getChildrenNodeSet: function(node){
+    //    var self = this;
+    //    var childrenNodeSet = {};
+    //    self._makeChildrenNodeSet(node.children, childrenNodeSet);
+    //    return childrenNodeSet;
+    //
+    //},
+    //_makeChildrenNodeSet: function(children, childrenNodeSet){
+    //    var self = this;
+    //    forEach(children, function(child){
+    //        childrenNodeSet[child.id] = child;
+    //        self._makeChildrenNodeSet(child.children, childrenNodeSet);
+    //    });
+    //},
+    //setParent: function(parentId, childId){
+    //    var self = this;
+    //
+    //    var parent = self.nodes[parentId];
+    //    var child = self.nodes[childId];
+    //    if(child === parent || parent ===null) { return null; }
+    //    if(child.father === parent) { return; }
+    //    else{
+    //        //需要设置新父节点的children，才能正确删除重绘子节点时
+    //        delete child.father.children[child.id];
+    //        //在child.connectFather改变之前，递归删除子节点
+    //        this.gRenderer.removeNode(child);
+    //    }
+    //
+    //    this._prepareRuntimeData(parent, child);
+    //
+    //    this._resetChildrenProperty(child.children);
+    //
+    //    //在新的father上递归添加原节点（递归添加）的渲染
+    //    this.gRenderer.setParentRender(child);
+    //
+    //},
     //获得当前节点可成为父节点候选的节点集
-    getParentAddableNodeSet: function(node){
-        var self = this;
-
-        var addableNodeSet = {};
-        //获得this.nodes的副本
-        forEach(self.nodes, function(curNode){
-            addableNodeSet[curNode.id] = curNode;
-        });
-
-        var notAddableNodeSet = self._getChildrenNodeSet(node);
-        notAddableNodeSet[node.id] = node;
-        if(node.father){
-            notAddableNodeSet[node.father.id] = node.father;
-        }
-
-        //在this.nodes副本中除去当前节点及该节点的所有子节点的引用
-        forEach(notAddableNodeSet, function(curNode){
-            delete addableNodeSet[curNode.id];
-        });
-        return addableNodeSet;
-
-    },
+    //getParentAddableNodeSet: function(node){
+    //    var self = this;
+    //
+    //    var addableNodeSet = {};
+    //    //获得this.nodes的副本
+    //    forEach(self.nodes, function(curNode){
+    //        addableNodeSet[curNode.id] = curNode;
+    //    });
+    //
+    //    var notAddableNodeSet = self._getChildrenNodeSet(node);
+    //    notAddableNodeSet[node.id] = node;
+    //    if(node.father){
+    //        notAddableNodeSet[node.father.id] = node.father;
+    //    }
+    //
+    //    //在this.nodes副本中除去当前节点及该节点的所有子节点的引用
+    //    forEach(notAddableNodeSet, function(curNode){
+    //        delete addableNodeSet[curNode.id];
+    //    });
+    //    return addableNodeSet;
+    //
+    //},
     /**
      * 获取思维导图Json数组
      * @returns {Array}

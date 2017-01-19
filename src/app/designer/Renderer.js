@@ -59,33 +59,33 @@ Renderer.prototype = {
         this._setDrag(nodeModel);
     },
 
-    setParentRender: function(node){
-        var self = this;
-
-        var childrenWithShapeCount1 = node.father.childrenWithShapeCount();
-
-        self._reRenderChildrenNode(node.father);
-        var childrenWithShapeCount2 = node.father.childrenWithShapeCount();
-
-        //向上递归移动父节点的同级节点,只有一个点时不用移动
-        if(node.father && node.father.childrenCount() > 1) {
-            if(childrenWithShapeCount2 - childrenWithShapeCount1 <= 1){
-                self._resetBrotherPosition(node.father, nodeShapeRelative.getNodeAreaHeight(node));
-            }
-        }
-
-        let fatherEdgeModel = node.connectFather;
-        if(fatherEdgeModel){
-            EdgeDraw(fatherEdgeModel).drawEdge();
-        }
-        //设置拖动
-        this._setDrag(node);
-
-        forEach(node.children, function(child){
-            self.setParentRender(child);
-        });
-
-    },
+    //setParentRender: function(node){
+    //    var self = this;
+    //
+    //    var childrenWithShapeCount1 = node.father.childrenWithShapeCount();
+    //
+    //    self._reRenderChildrenNode(node.father);
+    //    var childrenWithShapeCount2 = node.father.childrenWithShapeCount();
+    //
+    //    //向上递归移动父节点的同级节点,只有一个点时不用移动
+    //    if(node.father && node.father.childrenCount() > 1) {
+    //        if(childrenWithShapeCount2 - childrenWithShapeCount1 <= 1){
+    //            self._resetBrotherPosition(node.father, nodeShapeRelative.getNodeAreaHeight(node));
+    //        }
+    //    }
+    //
+    //    let fatherEdgeModel = node.connectFather;
+    //    if(fatherEdgeModel){
+    //        EdgeDraw(fatherEdgeModel).drawEdge();
+    //    }
+    //    //设置拖动
+    //    this._setDrag(node);
+    //
+    //    forEach(node.children, function(child){
+    //        self.setParentRender(child);
+    //    });
+    //
+    //},
 
 
     /**
@@ -117,40 +117,6 @@ Renderer.prototype = {
         if(oldSelected && oldSelected.shape){
             oldSelected.shape.unSelectedShape(oldSelected);
         }
-    },
-
-    /**
-     * 点击画布时,取消graph的选择
-     * @param graph
-     */
-    setCanvasClick: function(graph) {
-        var self = this;
-        this.canvasDom.addEventListener('mousedown', function(event){
-            if(event.target.nodeName === 'svg'){
-                let inputDom = document.getElementById('tempText');
-                if(graph.selected && inputDom){
-                    var text = inputDom.value;
-                    graph.setLabel(graph.selected, text);
-                    inputDom.parentNode.removeChild(inputDom);
-                }
-
-                graph.setSelected(null);
-            }
-        });
-
-        this.canvasDom.addEventListener('keyup', function(event){
-            if(event.keyCode === 13){
-                let inputDom = document.getElementById('tempText');
-                if(graph.selected && inputDom){
-                    var text = inputDom.value;
-                    graph.setLabel(graph.selected, text);
-                    inputDom.parentNode.removeChild(inputDom);
-                }
-
-                graph.setSelected(null);
-            }
-        });
-
     },
     /**
      * 重新设置当前节点的子节点的位置
@@ -233,7 +199,6 @@ Renderer.prototype = {
         });
 
         DragHandle.setDrag();
-
     }
 };
 
