@@ -57,6 +57,47 @@ Renderer.prototype = {
 
         //绑定相关监听事件
         this._setDrag(nodeModel);
+        nodeModel.listener().dblclick(function(event){
+            var {x,y,fill} = this.attr();
+            var fontSize = this.attr()['font-size'];
+            var fontFamily = this.attr()['font-family'];
+
+            var paper = this.paper;
+            var viewBoxX =   0;
+            var viewBoxY =   0;
+
+            if(paper._viewBox){
+                viewBoxX = paper._viewBox[0];
+                viewBoxY = paper._viewBox[1];
+            }
+
+            var width = this[0].clientWidth;
+            var height = this[0].clientHeight;
+
+            //input 绝对定位为
+            var left = x-width/2-viewBoxX;
+            var top = y-height/2-viewBoxY;
+            var inputEle = document.createElement('input');
+            inputEle.setAttribute('value',this.attr('text'));
+            inputEle.setAttribute('type','text');
+            inputEle.setAttribute('id','tempText');
+            inputEle.style.position = 'absolute';
+            inputEle.style.top = top+'px';
+            inputEle.style.left = left+'px';
+            inputEle.style.border = 'none';
+            inputEle.style.lineHeight = '1';
+            inputEle.style.fontSize = fontSize+'px';
+            inputEle.style.fontFamily = fontFamily;
+            inputEle.style.color = fill;
+            inputEle.style.backgroundColor = 'transparent';
+            inputEle.style.zIndex = '1000';
+            inputEle.style.width = width+'px';
+
+            var mindmapCanvas = document.getElementById('mindmap-canvas');
+            mindmapCanvas.appendChild(inputEle);
+            this.attr({text:''});
+            $(inputEle).focus();
+        });
     },
 
     //setParentRender: function(node){

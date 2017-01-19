@@ -111,6 +111,18 @@ NodeModel.prototype = {
         return {
             id,punid,x,y,label,isParent
         }
+    },
+    listener(){
+        let _self = this;
+        return{
+            /**
+             * 双击事件
+             * @param callBack
+             */
+            dblclick:function(callBack){
+                _self.shape[0].dblclick(callBack);
+            }
+        }
     }
 };
 
