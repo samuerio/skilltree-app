@@ -1,4 +1,4 @@
-import NodeModel from '../schema/node'
+import NodeModel from '../schema/nodeModal'
 
 /**
  * 结点外形相关

@@ -1,9 +1,10 @@
-let Edge = function (g, source, target, attr) {
-    if (!attr) attr = {};
-    this.graph = g;
+import  {newId} from '../../util';
 
-    this.id = ++(this.graph.edgeCount);
+let EdgeModal = function (graph, source, target) {
 
+    this.id =  newId();
+
+    this.graph = graph;
     this.graph.edges[this.id] = this;
 
     //起点节点的引用
@@ -15,4 +16,4 @@ let Edge = function (g, source, target, attr) {
     this.shape = null;
 };
 
-export default Edge;
+export default EdgeModal;

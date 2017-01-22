@@ -16,16 +16,9 @@ class Canvas extends Component{
 
     saveConfig(){
         let {saveCanvasData} = this.props;
+
         let viewBox = this.canvasRuntime.getViewBox();
-        if(viewBox){
-            let paramArr = viewBox.split(" ");
-            viewBox = {
-                x:paramArr[0],
-                y:paramArr[1],
-                width:paramArr[2],
-                height:paramArr[3]
-            }
-        }else{
+        if(!viewBox){
             viewBox = {
                 x:"0",
                 y:"0",
@@ -36,7 +29,7 @@ class Canvas extends Component{
 
         let mindNodes = this.canvasRuntime.getMindNodes();
         saveCanvasData(viewBox,mindNodes);
-        message.success('配置保存成功!');
+        message.info('配置保存成功!');
     }
 
     addMindNode(){

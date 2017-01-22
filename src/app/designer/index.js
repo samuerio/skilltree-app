@@ -2,7 +2,7 @@ import DrawBoard from './schema/drawBoard'
 import Renderer from './Renderer'
 import Graph,{getChildrenNodeData} from './Graph'
 import deepAssign from 'deep-assign';
-import NodeModel from './schema/node';
+import NodeModel from './schema/nodeModal';
 
 //let nodeDatas = require('../json/nodeData.json');
 

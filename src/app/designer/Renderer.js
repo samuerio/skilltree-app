@@ -2,22 +2,16 @@ import  {forEach} from '../util';
 import enhance from './modules/raphaelEnhance'
 import nodeShapeRelative from  './renderModule/nodeShapeRelative'
 import ChildrenRenderFactory from './renderModule/ChildrenRenderFactory'
-import Drag from './renderModule/Drag'
-import Viewport from './renderModule/Viewport'
-import EdgeDraw from './renderModule/EdgeDraw'
-import NodeModel from './schema/node'
+import EdgeDraw from './modules/EdgeDraw'
+import NodeModel from './schema/nodeModal'
 let Raphael = require('raphael');
 
 
 
-function Renderer(options){
+function Renderer({canvasId}){
 
-    this.canvasDom = document.getElementById(options.canvasId);
+    this.canvasDom = document.getElementById(canvasId);
     this.paper = new Raphael(this.canvasDom);
-
-    //视窗拉拽事件
-    this.viewportHandle = Viewport(this.canvasDom, this.paper);
-    this.viewportHandle.setViewportDrag();
 
     //Raphael Extension  &&  Custom Attr Value
     enhance(this.paper);
@@ -52,11 +46,11 @@ Renderer.prototype = {
 
         let fatherEdgeModel = nodeModel.connectFather;
         if(fatherEdgeModel){
-            EdgeDraw(fatherEdgeModel).drawEdge();
+            EdgeDraw.create(fatherEdgeModel).render();
+            //EdgeDraw(fatherEdgeModel).drawEdge();
         }
 
         //绑定相关监听事件
-        this._setDrag(nodeModel);
         nodeModel.listener().dblclick(function(event){
             var {x,y,fill} = this.attr();
             var fontSize = this.attr()['font-size'];
@@ -98,36 +92,21 @@ Renderer.prototype = {
             this.attr({text:''});
             $(inputEle).focus();
         });
+
+        nodeModel.shape.mousedown(function(){
+            nodeModel.graph.setSelected(nodeModel);
+        });
+
+        nodeModel.shape.mousedown(function(event){
+            nodeModel.graph._listener().beginDrag(event);
+        });
+        nodeModel.shape.mousemove(function(event){
+            nodeModel.graph._listener().dragging(event);
+        });
+        nodeModel.shape.mouseup(function(event){
+            nodeModel.graph._listener().endDrag(event);
+        });
     },
-
-    //setParentRender: function(node){
-    //    var self = this;
-    //
-    //    var childrenWithShapeCount1 = node.father.childrenWithShapeCount();
-    //
-    //    self._reRenderChildrenNode(node.father);
-    //    var childrenWithShapeCount2 = node.father.childrenWithShapeCount();
-    //
-    //    //向上递归移动父节点的同级节点,只有一个点时不用移动
-    //    if(node.father && node.father.childrenCount() > 1) {
-    //        if(childrenWithShapeCount2 - childrenWithShapeCount1 <= 1){
-    //            self._resetBrotherPosition(node.father, nodeShapeRelative.getNodeAreaHeight(node));
-    //        }
-    //    }
-    //
-    //    let fatherEdgeModel = node.connectFather;
-    //    if(fatherEdgeModel){
-    //        EdgeDraw(fatherEdgeModel).drawEdge();
-    //    }
-    //    //设置拖动
-    //    this._setDrag(node);
-    //
-    //    forEach(node.children, function(child){
-    //        self.setParentRender(child);
-    //    });
-    //
-    //},
-
 
     /**
      * 删除节点渲染
