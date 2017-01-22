@@ -1,5 +1,5 @@
 import  {forEach} from '../util';
-import shapeCustomAttr from './renderModule/shapeCustomAttr'
+import enhance from './modules/raphaelEnhance'
 import nodeShapeRelative from  './renderModule/nodeShapeRelative'
 import ChildrenRenderFactory from './renderModule/ChildrenRenderFactory'
 import Drag from './renderModule/Drag'
@@ -20,7 +20,7 @@ function Renderer(options){
     this.viewportHandle.setViewportDrag();
 
     //Raphael Extension  &&  Custom Attr Value
-    shapeCustomAttr.init(this.paper);
+    enhance(this.paper);
 }
 
 Renderer.prototype = {
@@ -153,7 +153,7 @@ Renderer.prototype = {
      */
     setSelectedRender: function(node, oldSelected){
         if(node && node.shape){
-            node.shape.selectedShape(node);
+            node.shape.selectedShape();
         }
         if(oldSelected && oldSelected.shape){
             oldSelected.shape.unSelectedShape(oldSelected);

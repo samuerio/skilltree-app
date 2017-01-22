@@ -134,8 +134,7 @@ Raphael.st.nodeShape = function(nodeModel){
 /**
  * 被选择的外形
  */
-Raphael.st.selectedShape = function(node){
-    //@workaround:暂时选择的样式
+Raphael.st.selectedShape = function(nodeModel){
     this[1].attr({
         stroke: '#ff0033',
         'stroke-width': 2.5
@@ -152,13 +151,12 @@ Raphael.st.selectedShape = function(node){
  * 取消选择的外形：根据节点的类型不同而改变取消选择的外形
  * @param node
  */
-Raphael.st.unSelectedShape = function(node){
-    if(node.isSecondMoreNode()){
+Raphael.st.unSelectedShape = function(nodeModel){
+    if(nodeModel.isSecondMoreNode()){
         this[1].attr({
             'secondMoreStroke': null
         })
     }else{
-        //@workaround:暂时被选择的样式
         this[1].attr({
             'rootAndFirstStroke': null
         })
@@ -170,7 +168,7 @@ Raphael.st.unSelectedShape = function(node){
  * 重叠时节点的外形
  * @param node
  */
-Raphael.st.overlapShape = function(node){
+Raphael.st.overlapShape = function(nodeModel){
     this[1].attr({
         stroke: 'blue'
     })
@@ -180,8 +178,8 @@ Raphael.st.overlapShape = function(node){
  * 取消重叠时，节点的外形：设置根据节点的类型不同而不同
  * @param node
  */
-Raphael.st.unOverlapShape = function(node){
-    if(node.isSecondMoreNode()){
+Raphael.st.unOverlapShape = function(nodeModel){
+    if(nodeModel.isSecondMoreNode()){
         this[1].attr({
             'secondMoreStroke': null
         })
@@ -196,9 +194,9 @@ Raphael.st.unOverlapShape = function(node){
  * 设置节点文本值
  * @param node
  */
-Raphael.st.setLabel = function(node){
+Raphael.st.setLabel = function(nodeModel){
     this[0].attr({
-        'text': node.label
+        'text': nodeModel.label
     })
 };
 
@@ -206,8 +204,8 @@ Raphael.st.setLabel = function(node){
  * 透明样式：用于拖动节点时的透明显示
  * @param node
  */
-Raphael.st.dragNodeOpacityShape = function(node){
-    Raphael.st.unSelectedShape.call(this, node);
+Raphael.st.dragNodeOpacityShape = function(nodeModel){
+    Raphael.st.unSelectedShape.call(this, nodeModel);
 
     this.attr({
         opacity: 0.4
@@ -216,37 +214,34 @@ Raphael.st.dragNodeOpacityShape = function(node){
 
 };
 
-Raphael.st.opacityShape = function(){
+Raphael.st.opacityShape = function(nodeModel){
     this.attr({
         opacity: 0.5
     })
 };
 
 
-Raphael.st.unOpacityShape = function(){
+Raphael.st.unOpacityShape = function(nodeModel){
     this.attr({
         opacity: 1
     })
 };
 
 
-export default {
-    init: function(paper){
+export default function enhance(paper){
+    //设置默认的属性
+    //默认的根结点和第一层节点的外框笔触样式
+    paper.customAttributes.rootAndFirstStroke = function(){
+        return {
+            'stroke': '#808080',
+            'stroke-width': 1
+        }
+    };
 
-        //设置默认的属性
-        //默认的根结点和第一层节点的外框笔触样式
-        paper.customAttributes.rootAndFirstStroke = function(){
-            return {
-                'stroke': '#808080',
-                'stroke-width': 1
-            }
-        };
-
-        //默认的n>=2层节点的外框笔触样式
-        paper.customAttributes.secondMoreStroke = function(){
-            return {
-                'stroke': 'none'
-            }
-        };
-    }
+    //默认的n>=2层节点的外框笔触样式
+    paper.customAttributes.secondMoreStroke = function(){
+        return {
+            'stroke': 'none'
+        }
+    };
 }

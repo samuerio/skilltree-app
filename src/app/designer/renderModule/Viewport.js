@@ -1,4 +1,3 @@
-
 /**
  * 画布视野设置模块
  * @param aCanvasDom 画布的dom对象
@@ -72,8 +71,6 @@ var Viewport = function(aCanvasDom, aPaper){
 
             lastX = event.layerX;
             lastY = event.layerY;
-
-            //console.log(viewBox.x, viewBox.y);
         }
     }
 
@@ -83,58 +80,33 @@ var Viewport = function(aCanvasDom, aPaper){
         }
     }
 
-    /**
-     * 画布视野移动设置
-     */
-    function setViewportDrag(){
-        //添加画布的鼠标点击事件
-        canvasDom.addEventListener('mousedown', function(event){
-            if(event.target.nodeName !== 'svg') { return };
-            mousedownHandle(event);
-            /*
-             realScale = 1.0 / scale;
-
-             lastX = event.layerX;
-             lastY = event.layerY;
-             dragging = true;*/
-        });
-
-        //添加画布的鼠标移动事件
-        canvasDom.addEventListener('mousemove', function(event){
-            if(event.target.nodeName !== 'svg') { return };
-            mousemoveHandle(event);
-            /*
-             if(dragging){
-             dX = -(event.layerX - lastX) * realScale;
-             dY = -(event.layerY - lastY) * realScale;
-
-             viewBox.x += dX;
-             viewBox.y += dY;
-
-             _setViewport(viewBox.x, viewBox.y, scale);
-
-             lastX = event.layerX;
-             lastY = event.layerY;
-             }*/
-        });
-
-        //添加画布的鼠标释放事件
-        canvasDom.addEventListener('mouseup', function(event){
-            if(event.target.nodeName !== 'svg') { return };
-            mouseupHandle(event);
-            /*
-             if(dragging){
-             dragging = false;
-             }*/
-        });
-    }
-
 
     return {
         isDragging: function(){
             return dragging;
         },
-        setViewportDrag: setViewportDrag,
+        /**
+         * 设置画布视窗移动
+         */
+        setViewportDrag(){
+            //添加画布的鼠标点击事件
+            canvasDom.addEventListener('mousedown', function(event){
+                if(event.target.nodeName !== 'svg') { return };
+                mousedownHandle(event);
+            });
+
+            //添加画布的鼠标移动事件
+            canvasDom.addEventListener('mousemove', function(event){
+                if(event.target.nodeName !== 'svg') { return };
+                mousemoveHandle(event);
+            });
+
+            //添加画布的鼠标释放事件
+            canvasDom.addEventListener('mouseup', function(event){
+                if(event.target.nodeName !== 'svg') { return };
+                mouseupHandle(event);
+            });
+        },
         getViewbox: function(){
             return viewBox;
         },

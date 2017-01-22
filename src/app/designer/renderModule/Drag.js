@@ -151,16 +151,11 @@ var Drag = function(aNode, options){
         cloneShape.remove();
         cloneShape = null;
 
-
-        //@workaround：将节点设为被选择样式
-        node.shape.selectedShape(node);
+        node.shape.selectedShape();
 
         _setChildrenNormal(node.children);
 
         if(lastOverlapId){
-//                graph.nodes[lastOverlapId].shape[1].attr({
-//                    'stroke': 'black'
-//                });
             var lastOverlapNode = graph.nodes[lastOverlapId];
             lastOverlapNode.shape.nodeShape(lastOverlapNode);
         }
