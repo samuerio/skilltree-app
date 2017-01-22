@@ -121,37 +121,28 @@ Graph.prototype = {
     _initEvent(){
 
         let _self = this;
-        let canvasDom = this.gRenderer.paper.canvas;
+        let canvasSVG = this.gRenderer.paper.canvas;
 
-        canvasDom.addEventListener('mousedown', function(event){
-            if(event.target.nodeName === 'svg'){
-                _self._listener().cancelSelect();
-            }
-        });
-
-        canvasDom.addEventListener('keyup', function(event){
+        this.gRenderer.canvasDom.addEventListener('keyup', function(event){
             if(event.keyCode === 13){
                 _self._listener().cancelSelect();
             }
         });
 
-        //添加画布的鼠标点击事件
-        canvasDom.addEventListener('mousedown', function(event){
-            if(event.target.nodeName !== 'svg') { return };
-            _self._listener().beginDrag(event);
+        canvasSVG.addEventListener('mousedown', function(event){
+            if(event.target.nodeName === 'svg'){
+                _self._listener().cancelSelect();
+            }
         });
+
+        //添加画布的鼠标点击事件
+        canvasSVG.addEventListener('mousedown', _self._listener().beginDrag);
 
         //添加画布的鼠标移动事件
-        canvasDom.addEventListener('mousemove', function(event){
-            if(event.target.nodeName !== 'svg') { return };
-            _self._listener().dragging(event);
-        });
+        canvasSVG.addEventListener('mousemove', _self._listener().dragging);
 
         //添加画布的鼠标释放事件
-        canvasDom.addEventListener('mouseup', function(event){
-            if(event.target.nodeName !== 'svg') { return };
-            _self._listener().endDrag(event);
-        });
+        canvasSVG.addEventListener('mouseup', _self._listener().endDrag);
 
     },
     /**
