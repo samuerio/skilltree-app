@@ -99,7 +99,7 @@ Graph.prototype = {
      */
     _initViewBox(viewBox){
         let{x,y,width,height} = viewBox;
-        this.gRenderer.paper.setViewBox(x,y,width,height,true);
+        this.gRenderer.paper.setViewBox(x,y,width,height,false);
     },
     /**
      * 初始化根结点
@@ -174,8 +174,8 @@ Graph.prototype = {
                     let distanceX = -(event.layerX - lastX);
                     let distanceY = -(event.layerY - lastY);
 
-                    _self.viewBox.x = distanceX + eval(_self.viewBox.x);
-                    _self.viewBox.y = distanceY + eval(_self.viewBox.y);
+                    _self.viewBox.x = distanceX + Number(_self.viewBox.x);
+                    _self.viewBox.y = distanceY + Number(_self.viewBox.y);
 
                     _self._initViewBox(_self.viewBox);
 

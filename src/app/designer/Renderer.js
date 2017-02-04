@@ -206,19 +206,6 @@ Renderer.prototype = {
         forEach(node.children, function(child){
             self._removeNodeModelShape(child);
         });
-    },
-
-    /**
-     * 设置node的拖动
-     * @param node
-     * @private
-     */
-    _setDrag: function(node){
-        var DragHandle = Drag(node, {
-            viewportHandle: this.viewportHandle
-        });
-
-        DragHandle.setDrag();
     }
 };
 

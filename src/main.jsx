@@ -14,6 +14,9 @@ import routes from './routes/index.jsx';
 import store from './store';
 
 
+'use strict';
+
+
 
 render(
     <Provider store={store}>
